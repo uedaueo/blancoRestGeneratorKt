@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- blancoCalcParser define file for blancoWsdl -->
+<blanco version="0.1.0">
+    <target name="blancoCalcParser">
+        <blancocalcparser name="wsdl">
+            <propertyblock name="blancotelegram-common" waitY="1">
+                <startstring>電文定義・共通</startstring>
+                <propertykey name="name" waitX="2">
+                    <value>電文ID</value>
+                </propertykey>
+                <propertykey name="description" waitX="2">
+                    <value>説明</value>
+                </propertykey>
+                <propertykey name="type" waitX="2">
+                    <value>電文種類</value>
+                </propertykey>
+                <propertykey name="telegramMethod" waitX="2">
+                    <value>電文のMETHOD</value>
+                </propertykey>
+<!--                <propertykey name="superClass" waitX="2">-->
+<!--                    <value>電文の親クラス</value>-->
+<!--                </propertykey>-->
+                <!--
+                <propertykey name="namespace" waitX="2">
+                    <value>名前空間</value>
+                </propertykey>
+                -->
+                <propertykey name="package" waitX="2">
+                    <value>パッケージ</value>
+                </propertykey>
+                <propertykey name="basedir" waitX="2">
+                    <value>配置ディレクトリ</value>
+                </propertykey>
+                <propertykey name="annotation" waitX="2">
+                    <value>アノテーション</value>
+                </propertykey>
+<!--                <propertykey name="createImportList" waitX="2">-->
+<!--                    <value>import文の自動生成</value>-->
+<!--                </propertykey>-->
+
+                <valuemapping>
+                    <result>Input</result>
+                    <source>要求電文(C→S)</source>
+                </valuemapping>
+                <valuemapping>
+                    <result>Output</result>
+                    <source>応答電文(S→C)</source>
+                </valuemapping>
+                <valuemapping>
+                    <result>true</result>
+                    <source>YES</source>
+                </valuemapping>
+            </propertyblock>
+
+            <propertyblock name="blancotelegram-extends" waitY="1">
+                <startstring>電文定義・継承</startstring>
+                <propertykey name="name" waitX="2">
+                    <value>クラス名</value>
+                </propertykey>
+                <propertykey name="package" waitX="2">
+                    <value>パッケージ</value>
+                </propertykey>
+                <propertykey name="namespace" waitX="2">
+                    <value>名前空間</value>
+                </propertykey>
+            </propertyblock>
+
+            <tableblock name="blancotelegram-implements" waitY="2" titleheight="2" rowname="interface">
+                <startstring>電文定義・実装</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>インタフェース名</value>
+                </tablecolumn>
+
+            </tableblock>
+
+            <tableblock name="blancotelegram-import" waitY="2" titleheight="2" rowname="import">
+                <startstring>電文定義・インポート</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>インポートクラス名</value>
+                </tablecolumn>
+
+            </tableblock>
+
+            <tableblock name="blancotelegram-header" waitY="2" titleheight="2" rowname="header">
+                <startstring>電文定義・ヘッダ情報</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>ヘッダ記述文</value>
+                </tablecolumn>
+
+            </tableblock>
+
+            <tableblock name="blancotelegram-list" waitY="2" titleheight="3" rowname="field">
+                <startstring>電文定義・一覧</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="fieldName">
+                    <value>項目名</value>
+                </tablecolumn>
+                <tablecolumn name="fieldDescription">
+                    <value>項目の説明</value>
+                    <value>項目の説明
+                        JavaDocに利用されます</value>
+                </tablecolumn>
+                <tablecolumn name="fieldType">
+                    <value>型</value>
+                </tablecolumn>
+                <tablecolumn name="fieldGeneric">
+                    <value>総称型</value>
+                </tablecolumn>
+                <tablecolumn name="annotation">
+                    <value>アノテーション</value>
+                </tablecolumn>
+                <tablecolumn name="fieldRequired">
+                    <value>必須</value>
+                </tablecolumn>
+                <tablecolumn name="default">
+                    <value>デフォルト</value>
+                </tablecolumn>
+                <tablecolumn name="fieldTypeKt">
+                    <value>型(Kt)</value>
+                </tablecolumn>
+                <tablecolumn name="fieldGenericKt">
+                    <value>総称型(Kt)</value>
+                </tablecolumn>
+                <tablecolumn name="annotationKt">
+                    <value>アノテーション(Kt)</value>
+                </tablecolumn>
+                <tablecolumn name="defaultKt">
+                    <value>デフォルト(Kt)</value>
+                </tablecolumn>
+                <tablecolumn name="nullable">
+                    <value>Nullable</value>
+                </tablecolumn>
+                <tablecolumn name="fixedValue">
+                    <value>変更不可変数</value>
+                </tablecolumn>
+                <tablecolumn name="constructorArg">
+                    <value>コンストラクタ引数</value>
+                </tablecolumn>
+                <tablecolumn name="minLength">
+                    <value>Min長</value>
+                </tablecolumn>
+                <tablecolumn name="maxLength">
+                    <value>Max長</value>
+                </tablecolumn>
+                <tablecolumn name="minInclusive">
+                    <value>Min値</value>
+                </tablecolumn>
+                <tablecolumn name="maxInclusive">
+                    <value>Max値</value>
+                </tablecolumn>
+                <tablecolumn name="pattern">
+                    <value>正規表現</value>
+                </tablecolumn>
+                <tablecolumn name="fieldBiko">
+                    <value>備考</value>
+                </tablecolumn>
+
+                <valuemapping>
+                    <result>true</result>
+                    <source>YES</source>
+                </valuemapping>
+            </tableblock>
+
+            <propertyblock name="blancotelegramprocess-common" waitY="1">
+                <startstring>電文処理定義・共通</startstring>
+                <propertykey name="name" waitX="3">
+                    <value>電文処理ID</value>
+                </propertykey>
+                <propertykey name="description" waitX="3">
+                    <value>説明</value>
+                </propertykey>
+                <propertykey name="noAuthentication" waitX="3">
+                    <value>認証が不要なAPI</value>
+                </propertykey>
+                <propertykey name="webServiceId" waitX="3">
+                    <value>ウェブサービスID</value>
+                </propertykey>
+                <propertykey name="location" waitX="3">
+                    <value>ロケーション</value>
+                </propertykey>
+                <propertykey name="namespace" waitX="3">
+                    <value>名前空間</value>
+                </propertykey>
+                <propertykey name="package" waitX="3">
+                    <value>パッケージ</value>
+                </propertykey>
+                <propertykey name="basedir" waitX="3">
+                    <value>配置ディレクトリ</value>
+                </propertykey>
+                <propertykey name="impledirKt" waitX="3">
+                    <value>実装ディレクトリ(Kt)</value>
+                </propertykey>
+                <propertykey name="annotation" waitX="3">
+                    <value>アノテーション</value>
+                </propertykey>
+                <propertykey name="metaIdList" waitX="3">
+                    <value>メタIDリスト</value>
+                </propertykey>
+                <propertykey name="createImportList" waitX="3">
+                    <value>import文の自動生成</value>
+                </propertykey>
+
+                <valuemapping>
+                    <result>true</result>
+                    <source>YES</source>
+                </valuemapping>
+            </propertyblock>
+
+            <propertyblock name="blancotelegramprocess-extends" waitY="1">
+                <startstring>電文処理定義・継承</startstring>
+                <propertykey name="name" waitX="3">
+                    <value>クラス名</value>
+                </propertykey>
+                <propertykey name="package" waitX="3">
+                    <value>パッケージ</value>
+                </propertykey>
+            </propertyblock>
+
+
+            <tableblock name="blancotelegramprocess-implements" waitY="2" titleheight="2" rowname="interface">
+                <startstring>電文処理定義・実装</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>インタフェース名</value>
+                </tablecolumn>
+
+            </tableblock>
+
+            <tableblock name="blancotelegramprocess-import" waitY="2" titleheight="2" rowname="import">
+                <startstring>電文処理定義・インポート</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>インポートクラス名</value>
+                </tablecolumn>
+
+            </tableblock>
+
+            <tableblock name="blancotelegramprocess-header" waitY="2" titleheight="2" rowname="header">
+                <startstring>電文処理定義・ヘッダ情報</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>ヘッダ記述文</value>
+                </tablecolumn>
+
+            </tableblock>
+
+            <tableblock name="blancotelegramprocess-description" waitY="2" titleheight="2" rowname="line">
+                <startstring>電文処理定義・内容</startstring>
+
+                <tablecolumn name="input">
+                    <value>入力</value>
+                </tablecolumn>
+
+                <tablecolumn name="process">
+                    <value>処理</value>
+                </tablecolumn>
+
+                <tablecolumn name="output">
+                    <value>出力</value>
+                </tablecolumn>
+
+            </tableblock>
+
+        </blancocalcparser>
+    </target>
+</blanco>

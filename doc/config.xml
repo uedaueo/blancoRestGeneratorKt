@@ -9,5 +9,5 @@
     <entry key="SocketTimeout">3</entry>
     <entry key="ConnectionTimeout">3</entry>
     <entry key="Loglevel">LOG_DEBUG</entry>
-    <entry key="DefaultPackage">blanco.restgeneratorts</entry>
+    <entry key="DefaultPackage">blanco.restgeneratorkt</entry>
 </properties>

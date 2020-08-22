@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>blanco.restgeneratorts</groupId>
-	<artifactId>blanco-restgeneratorts</artifactId>
+	<groupId>blanco.restgeneratorkt</groupId>
+	<artifactId>blanco-restgeneratorkt</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.8</version>
-	<name>blanco-restgeneratorts</name>
+	<version>0.0.1</version>
+	<name>blanco-restgeneratorkt</name>
 	<url>https://igapyon.github.io/blancofw-maven2</url>
 
 	<!-- basic spec for jar -->
@@ -91,8 +91,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>blanco.valueobjectts</groupId>
-			<artifactId>blanco-valueobjectts</artifactId>
+			<groupId>blanco.valueobjectkt</groupId>
+			<artifactId>blanco-valueobjectkt</artifactId>
 			<version>[0.0,1.0)</version>
 		</dependency>
 
@@ -164,6 +164,18 @@
 			<version>3.13</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.google.googlejavaformat/google-java-format -->
+		<dependency>
+			<groupId>com.google.googlejavaformat</groupId>
+			<artifactId>google-java-format</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.facebook/ktfmt -->
+		<dependency>
+			<groupId>com.facebook</groupId>
+			<artifactId>ktfmt</artifactId>
+			<version>0.13</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -266,16 +278,16 @@
 					</execution>
 
 					<execution>
-						<id>blanco-meta-restgeneratorts-test</id>
+						<id>blanco-meta-restgeneratorkt-test</id>
 						<phase>generate-test-sources</phase>
 						<configuration>
 							<target>
-								<taskdef name="blancovalueobjectts" classname="blanco.valueobjectts.task.BlancoValueObjectTsTask" classpathref="maven.runtime.classpath">
+								<taskdef name="blancovalueobjectkt" classname="blanco.valueobjectkt.task.BlancoValueObjectKtTask" classpathref="maven.runtime.classpath">
 								</taskdef>
-								<taskdef name="blancorestgeneratorts" classname="blanco.restgeneratorts.task.BlancoRestGeneratorTsTask" classpathref="maven.runtime.classpath">
+								<taskdef name="blancorestgeneratorkt" classname="blanco.restgeneratorkt.task.BlancoRestGeneratorKtTask" classpathref="maven.runtime.classpath">
 								</taskdef>
-								<blancovalueobjectts metadir="meta/telegrams" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" />
-								<blancorestgeneratorts metadir="meta/api" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" />
+								<blancovalueobjectkt metadir="meta/telegrams" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" />
+								<blancorestgeneratorkt metadir="meta/api" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" />
 							</target>
 						</configuration>
 						<goals>
