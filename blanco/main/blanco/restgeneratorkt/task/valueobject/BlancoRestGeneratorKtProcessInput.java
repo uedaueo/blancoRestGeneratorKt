@@ -106,6 +106,28 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fServerType = "micronaut";
 
     /**
+     * blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。
+     *
+     * フィールド: [basepackage]。
+     */
+    private String fBasepackage;
+
+    /**
+     * ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。
+     *
+     * フィールド: [runtimepackage]。
+     */
+    private String fRuntimepackage;
+
+    /**
+     * ユーティリティ類の生成を省略する場合はfalseを指定します。
+     *
+     * フィールド: [genUtils]。
+     * デフォルト: [true]。
+     */
+    private boolean fGenUtils = true;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [verboseモードで動作させるかどうか。]。
@@ -402,6 +424,73 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [basepackage] の値を設定します。
+     *
+     * フィールドの説明: [blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。]。
+     *
+     * @param argBasepackage フィールド[basepackage]に設定する値。
+     */
+    public void setBasepackage(final String argBasepackage) {
+        fBasepackage = argBasepackage;
+    }
+
+    /**
+     * フィールド [basepackage] の値を取得します。
+     *
+     * フィールドの説明: [blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。]。
+     *
+     * @return フィールド[basepackage]から取得した値。
+     */
+    public String getBasepackage() {
+        return fBasepackage;
+    }
+
+    /**
+     * フィールド [runtimepackage] の値を設定します。
+     *
+     * フィールドの説明: [ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。]。
+     *
+     * @param argRuntimepackage フィールド[runtimepackage]に設定する値。
+     */
+    public void setRuntimepackage(final String argRuntimepackage) {
+        fRuntimepackage = argRuntimepackage;
+    }
+
+    /**
+     * フィールド [runtimepackage] の値を取得します。
+     *
+     * フィールドの説明: [ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。]。
+     *
+     * @return フィールド[runtimepackage]から取得した値。
+     */
+    public String getRuntimepackage() {
+        return fRuntimepackage;
+    }
+
+    /**
+     * フィールド [genUtils] の値を設定します。
+     *
+     * フィールドの説明: [ユーティリティ類の生成を省略する場合はfalseを指定します。]。
+     *
+     * @param argGenUtils フィールド[genUtils]に設定する値。
+     */
+    public void setGenUtils(final boolean argGenUtils) {
+        fGenUtils = argGenUtils;
+    }
+
+    /**
+     * フィールド [genUtils] の値を取得します。
+     *
+     * フィールドの説明: [ユーティリティ類の生成を省略する場合はfalseを指定します。]。
+     * デフォルト: [true]。
+     *
+     * @return フィールド[genUtils]から取得した値。
+     */
+    public boolean getGenUtils() {
+        return fGenUtils;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -429,6 +518,9 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",targetStyle=" + fTargetStyle);
         buf.append(",client=" + fClient);
         buf.append(",serverType=" + fServerType);
+        buf.append(",basepackage=" + fBasepackage);
+        buf.append(",runtimepackage=" + fRuntimepackage);
+        buf.append(",genUtils=" + fGenUtils);
         buf.append("]");
         return buf.toString();
     }
@@ -490,5 +582,14 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fServerType
         // Type: java.lang.String
         target.fServerType = this.fServerType;
+        // Name: fBasepackage
+        // Type: java.lang.String
+        target.fBasepackage = this.fBasepackage;
+        // Name: fRuntimepackage
+        // Type: java.lang.String
+        target.fRuntimepackage = this.fRuntimepackage;
+        // Name: fGenUtils
+        // Type: boolean
+        target.fGenUtils = this.fGenUtils;
     }
 }

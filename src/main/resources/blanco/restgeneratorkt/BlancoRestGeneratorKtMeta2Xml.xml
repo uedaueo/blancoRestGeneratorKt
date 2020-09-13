@@ -113,7 +113,8 @@
                 <tablecolumn name="fieldDescription">
                     <value>項目の説明</value>
                     <value>項目の説明
-                        JavaDocに利用されます</value>
+JavaDocに利用されます</value>
+
                 </tablecolumn>
                 <tablecolumn name="fieldType">
                     <value>型</value>
@@ -207,6 +208,12 @@
                 </propertykey>
                 <propertykey name="annotation" waitX="3">
                     <value>アノテーション</value>
+                </propertykey>
+                <propertykey name="requestHeaderClass" waitX="3">
+                    <value>リクエストヘッダ情報実装クラス(Kt)</value>
+                </propertykey>
+                <propertykey name="responseHeaderClass" waitX="3">
+                    <value>レスポンスヘッダ情報実装クラス(Kt)</value>
                 </propertykey>
                 <propertykey name="metaIdList" waitX="3">
                     <value>メタIDリスト</value>

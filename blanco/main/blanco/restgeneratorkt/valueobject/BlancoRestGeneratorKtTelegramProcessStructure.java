@@ -135,6 +135,20 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private HashMap<java.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>> fListTelegrams = new java.util.HashMap<>();
 
     /**
+     * リクエスト電文のヘッダクラス名（Canonical）
+     *
+     * フィールド: [requestHeaderClass]。
+     */
+    private String fRequestHeaderClass;
+
+    /**
+     * レスポンス電文のヘッダクラス名（Canonical）
+     *
+     * フィールド: [responseHeaderClass]。
+     */
+    private String fResponseHeaderClass;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -517,6 +531,50 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [requestHeaderClass] の値を設定します。
+     *
+     * フィールドの説明: [リクエスト電文のヘッダクラス名（Canonical）]。
+     *
+     * @param argRequestHeaderClass フィールド[requestHeaderClass]に設定する値。
+     */
+    public void setRequestHeaderClass(final String argRequestHeaderClass) {
+        fRequestHeaderClass = argRequestHeaderClass;
+    }
+
+    /**
+     * フィールド [requestHeaderClass] の値を取得します。
+     *
+     * フィールドの説明: [リクエスト電文のヘッダクラス名（Canonical）]。
+     *
+     * @return フィールド[requestHeaderClass]から取得した値。
+     */
+    public String getRequestHeaderClass() {
+        return fRequestHeaderClass;
+    }
+
+    /**
+     * フィールド [responseHeaderClass] の値を設定します。
+     *
+     * フィールドの説明: [レスポンス電文のヘッダクラス名（Canonical）]。
+     *
+     * @param argResponseHeaderClass フィールド[responseHeaderClass]に設定する値。
+     */
+    public void setResponseHeaderClass(final String argResponseHeaderClass) {
+        fResponseHeaderClass = argResponseHeaderClass;
+    }
+
+    /**
+     * フィールド [responseHeaderClass] の値を取得します。
+     *
+     * フィールドの説明: [レスポンス電文のヘッダクラス名（Canonical）]。
+     *
+     * @return フィールド[responseHeaderClass]から取得した値。
+     */
+    public String getResponseHeaderClass() {
+        return fResponseHeaderClass;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -548,6 +606,8 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",importList=" + fImportList);
         buf.append(",headerList=" + fHeaderList);
         buf.append(",listTelegrams=" + fListTelegrams);
+        buf.append(",requestHeaderClass=" + fRequestHeaderClass);
+        buf.append(",responseHeaderClass=" + fResponseHeaderClass);
         buf.append("]");
         return buf.toString();
     }
@@ -661,5 +721,11 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fListTelegrams
         // Type: java.util.HashMap
         // フィールド[fListTelegrams]はサポート外の型[java.util.HashMap<java.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>>]です。
+        // Name: fRequestHeaderClass
+        // Type: java.lang.String
+        target.fRequestHeaderClass = this.fRequestHeaderClass;
+        // Name: fResponseHeaderClass
+        // Type: java.lang.String
+        target.fResponseHeaderClass = this.fResponseHeaderClass;
     }
 }

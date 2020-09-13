@@ -46,6 +46,10 @@ public class BlancoRestGeneratorKtUtil {
 
     public static HashMap<String, BlancoValueObjectKtClassStructure> objects = new HashMap<>();
 
+    public static String basePackage = null;
+    public static String runtimePackage = null;
+    public static boolean genUtils = true;
+
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {
             System.out.println("BlancoRestGeneratorKtObjectsInfo : processValueObjects start !");
@@ -95,8 +99,8 @@ public class BlancoRestGeneratorKtUtil {
              * まず始めにすべてのシートを検索して，クラス名とpackage名のリストを作ります．
              * php形式の定義書では，クラスを指定する際にpackage名が指定されていないからです．
              */
-            BlancoValueObjectKtXmlParser.classList =
-                    BlancoValueObjectKtXmlParser.createClassListFromSheets(fileMeta3);
+//            BlancoValueObjectKtXmlParser.classList =
+//                    BlancoValueObjectKtXmlParser.createClassListFromSheets(fileMeta3);
             final BlancoValueObjectKtClassStructure[] structures = parser.parse(fileMeta3[index]);
 
             if (structures != null ) {

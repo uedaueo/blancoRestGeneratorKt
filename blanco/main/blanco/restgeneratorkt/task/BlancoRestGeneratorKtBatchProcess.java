@@ -46,6 +46,7 @@ public class BlancoRestGeneratorKtBatchProcess {
 
         boolean isNeedUsage = false;
         boolean isFieldMetadirProcessed = false;
+        boolean isFieldBasepackageProcessed = false;
 
         // コマンドライン引数の解析をおこないます。
         for (int index = 0; index < args.length; index++) {
@@ -82,6 +83,13 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setClient(Boolean.valueOf(arg.substring(8)).booleanValue());
             } else if (arg.startsWith("-serverType=")) {
                 input.setServerType(arg.substring(12));
+            } else if (arg.startsWith("-basepackage=")) {
+                input.setBasepackage(arg.substring(13));
+                isFieldBasepackageProcessed = true;
+            } else if (arg.startsWith("-runtimepackage=")) {
+                input.setRuntimepackage(arg.substring(16));
+            } else if (arg.startsWith("-genUtils=")) {
+                input.setGenUtils(Boolean.valueOf(arg.substring(10)).booleanValue());
             } else if (arg.equals("-?") || arg.equals("-help")) {
                 usage();
                 System.exit(END_SUCCESS);
@@ -97,6 +105,10 @@ public class BlancoRestGeneratorKtBatchProcess {
 
         if( isFieldMetadirProcessed == false) {
             System.out.println("BlancoRestGeneratorKtBatchProcess: 処理開始失敗。入力パラメータ[input]の必須フィールド値[metadir]に値が設定されていません。");
+            System.exit(END_ILLEGAL_ARGUMENT_EXCEPTION);
+        }
+        if( isFieldBasepackageProcessed == false) {
+            System.out.println("BlancoRestGeneratorKtBatchProcess: 処理開始失敗。入力パラメータ[input]の必須フィールド値[basepackage]に値が設定されていません。");
             System.exit(END_ILLEGAL_ARGUMENT_EXCEPTION);
         }
 
@@ -175,7 +187,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -serverType=値13");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -serverType=値13 -basepackage=値14 -runtimepackage=値15 -genUtils=値16");
         System.out.println("    -verbose");
         System.out.println("      説明[verboseモードで動作させるかどうか。]");
         System.out.println("      型[真偽]");
@@ -226,6 +238,17 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("      説明[Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。]");
         System.out.println("      型[文字列]");
         System.out.println("      デフォルト値[micronaut]");
+        System.out.println("    -basepackage");
+        System.out.println("      説明[blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。]");
+        System.out.println("      型[文字列]");
+        System.out.println("      必須パラメータ");
+        System.out.println("    -runtimepackage");
+        System.out.println("      説明[ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。]");
+        System.out.println("      型[文字列]");
+        System.out.println("    -genUtils");
+        System.out.println("      説明[ユーティリティ類の生成を省略する場合はfalseを指定します。]");
+        System.out.println("      型[真偽]");
+        System.out.println("      デフォルト値[true]");
         System.out.println("    -? , -help");
         System.out.println("      説明[使い方を表示します。]");
     }
@@ -242,6 +265,9 @@ public class BlancoRestGeneratorKtBatchProcess {
         }
         if (input.getMetadir() == null) {
             throw new IllegalArgumentException("BlancoRestGeneratorKtBatchProcess: 処理開始失敗。入力パラメータ[input]の必須フィールド値[metadir]に値が設定されていません。");
+        }
+        if (input.getBasepackage() == null) {
+            throw new IllegalArgumentException("BlancoRestGeneratorKtBatchProcess: 処理開始失敗。入力パラメータ[input]の必須フィールド値[basepackage]に値が設定されていません。");
         }
     }
 }

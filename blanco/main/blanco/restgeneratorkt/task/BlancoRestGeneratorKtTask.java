@@ -89,6 +89,21 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldServerTypeProcessed = false;
 
     /**
+     * フィールド [basepackage] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldBasepackageProcessed = false;
+
+    /**
+     * フィールド [runtimepackage] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldRuntimepackageProcessed = false;
+
+    /**
+     * フィールド [genUtils] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldGenUtilsProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -421,6 +436,83 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[basepackage]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 13<br>
+     * blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setBasepackage(final String arg) {
+        fInput.setBasepackage(arg);
+        fIsFieldBasepackageProcessed = true;
+    }
+
+    /**
+     * Antタスクの[basepackage]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 13<br>
+     * blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。<br>
+     * 必須アトリビュートです。Apache Antタスク上で必ず値が指定されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getBasepackage() {
+        return fInput.getBasepackage();
+    }
+
+    /**
+     * Antタスクの[runtimepackage]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 14<br>
+     * ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setRuntimepackage(final String arg) {
+        fInput.setRuntimepackage(arg);
+        fIsFieldRuntimepackageProcessed = true;
+    }
+
+    /**
+     * Antタスクの[runtimepackage]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 14<br>
+     * ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getRuntimepackage() {
+        return fInput.getRuntimepackage();
+    }
+
+    /**
+     * Antタスクの[genUtils]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 15<br>
+     * ユーティリティ類の生成を省略する場合はfalseを指定します。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setGenUtils(final boolean arg) {
+        fInput.setGenUtils(arg);
+        fIsFieldGenUtilsProcessed = true;
+    }
+
+    /**
+     * Antタスクの[genUtils]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 15<br>
+     * ユーティリティ類の生成を省略する場合はfalseを指定します。<br>
+     * デフォルト値[true]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public boolean getGenUtils() {
+        return fInput.getGenUtils();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -432,6 +524,10 @@ public class BlancoRestGeneratorKtTask extends Task {
         // 項目番号[1]、アトリビュート[metadir]は必須入力です。入力チェックを行います。
         if (fIsFieldMetadirProcessed == false) {
             throw new BuildException("必須アトリビュート[metadir]が設定されていません。処理を中断します。");
+        }
+        // 項目番号[13]、アトリビュート[basepackage]は必須入力です。入力チェックを行います。
+        if (fIsFieldBasepackageProcessed == false) {
+            throw new BuildException("必須アトリビュート[basepackage]が設定されていません。処理を中断します。");
         }
 
         if (getVerbose()) {
@@ -448,6 +544,9 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- targetStyle:[" + getTargetStyle() + "]");
             System.out.println("- client:[" + getClient() + "]");
             System.out.println("- serverType:[" + getServerType() + "]");
+            System.out.println("- basepackage:[" + getBasepackage() + "]");
+            System.out.println("- runtimepackage:[" + getRuntimepackage() + "]");
+            System.out.println("- genUtils:[" + getGenUtils() + "]");
         }
 
         try {

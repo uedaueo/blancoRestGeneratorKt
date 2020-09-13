@@ -74,6 +74,10 @@ public class BlancoRestGeneratorKtXmlParser {
             return null;
         }
 
+        if (this.isVerbose()) {
+            System.out.println("[" + argMetaXmlSourceFile.getName() + "の処理を開始します]");
+        }
+
         // まず電文の一覧を取得します。
         Map<String, BlancoRestGeneratorKtTelegramStructure> telegramStructureMap =
                 parseTelegrams(elementRoot);
@@ -230,6 +234,7 @@ public class BlancoRestGeneratorKtXmlParser {
         /* micronaut では必ず @Introspected をつける */
         if ("micronaut".equalsIgnoreCase(this.getServerType())) {
             argTelegramStructure.getAnnotationList().add("Introspected");
+            argTelegramStructure.getImportList().add("io.micronaut.core.annotation.Introspected");
         }
 
         argTelegramStructure.setCreateImportList("true"
@@ -744,11 +749,11 @@ public class BlancoRestGeneratorKtXmlParser {
         }
 
         // WebサービスID
-        argProcessStructure.setPackage(BlancoXmlBindingUtil.getTextContent(
+        argProcessStructure.setServiceId(BlancoXmlBindingUtil.getTextContent(
                 argElementCommon, "webServiceId"));
 
         // ロケーション
-        argProcessStructure.setPackage(BlancoXmlBindingUtil.getTextContent(
+        argProcessStructure.setLocation(BlancoXmlBindingUtil.getTextContent(
                 argElementCommon, "location"));
 
         // パッケージ
@@ -769,6 +774,15 @@ public class BlancoRestGeneratorKtXmlParser {
         if (BlancoStringUtil.null2Blank(classAnnotation).length() > 0) {
             argProcessStructure.setAnnotationList(createAnnotaionList(classAnnotation));
         }
+
+        // リクエストヘッダクラス情報
+        String requestHeaderClass = BlancoXmlBindingUtil.getTextContent(
+                argElementCommon, "requestHeaderClass");
+        argProcessStructure.setRequestHeaderClass(BlancoStringUtil.null2Blank(requestHeaderClass));
+        // レスポンスヘッダクラス情報
+        String responseHeaderClass = BlancoXmlBindingUtil.getTextContent(
+                argElementCommon, "responseHeaderClass");
+        argProcessStructure.setResponseHeaderClass(BlancoStringUtil.null2Blank(responseHeaderClass));
 
         // メタIDリスト
         String metaIds = BlancoXmlBindingUtil.getTextContent(
@@ -1053,7 +1067,7 @@ public class BlancoRestGeneratorKtXmlParser {
                 }
 
                 /* その他はそのまま記述する */
-                System.out.println("/* tueda */ Unknown php type: " + kotlinType);
+//                System.out.println("/* tueda */ Unknown php type: " + kotlinType);
             }
         }
         return kotlinType;

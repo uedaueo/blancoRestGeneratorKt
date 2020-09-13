@@ -66,16 +66,27 @@ public class BlancoRestGeneratorKtProcessImpl implements
                 strTarget = strTarget + "/" + BlancoRestGeneratorKtConstants.TARGET_DIR_SUFFIX_BLANCO;
             }
             /* style が free だったらtargetdirをそのまま使う */
-            if (input.getVerbose()) {
-                System.out.println("BlancoRestGeneratorKtProcessImpl#process TARGETDIR = " + strTarget);
+//            if (input.getVerbose()) {
+//                System.out.println("BlancoRestGeneratorKtProcessImpl#process TARGETDIR = " + strTarget);
+//            }
+
+            BlancoRestGeneratorKtUtil.encoding = input.getEncoding();
+            BlancoRestGeneratorKtUtil.isVerbose = input.getVerbose();
+            BlancoRestGeneratorKtUtil.basePackage = input.getBasepackage();
+            if (BlancoRestGeneratorKtUtil.basePackage == null || BlancoRestGeneratorKtUtil.basePackage.length() == 0) {
+                throw new IllegalArgumentException(fBundle.getAnttaskErr002());
             }
+            if (input.getRuntimepackage() != null && input.getRuntimepackage().length() > 0) {
+                BlancoRestGeneratorKtUtil.runtimePackage = input.getRuntimepackage();
+            } else {
+                BlancoRestGeneratorKtUtil.runtimePackage = BlancoRestGeneratorKtUtil.basePackage;
+            }
+            BlancoRestGeneratorKtUtil.genUtils = input.getGenUtils();
 
             /*
              * validator を作る時に使うために，
              * ValueObject で既に定義されている（はずの）オブジェクトを取得しておく
              */
-            BlancoRestGeneratorKtUtil.encoding = input.getEncoding();
-            BlancoRestGeneratorKtUtil.isVerbose = input.getVerbose();
             BlancoRestGeneratorKtUtil.processValueObjects(input);
 
             // テンポラリディレクトリを作成。

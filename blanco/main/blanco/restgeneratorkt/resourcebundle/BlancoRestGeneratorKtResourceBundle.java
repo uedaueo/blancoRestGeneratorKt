@@ -1139,6 +1139,26 @@ public class BlancoRestGeneratorKtResourceBundle {
     }
 
     /**
+     * bundle[BlancoRestGeneratorKt], key[ANTTASK.ERR002]
+     *
+     * [AntTaskパラメータbasepackageは必須項目です。] (ja)<br>
+     *
+     * @return key[ANTTASK.ERR002]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getAnttaskErr002() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "AntTaskパラメータbasepackageは必須項目です。";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("ANTTASK.ERR002");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
      * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.INITIALIZER.DESCRIPTION]
      *
      * [API実装クラスが実装すべき初期化メソッドです] (ja)<br>
@@ -1509,6 +1529,46 @@ public class BlancoRestGeneratorKtResourceBundle {
         // 与えられた引数を元に置換文字列を置き換えます。
         messageFormat.format(new Object[] {arg0}, strbuf, null);
         return strbuf.toString();
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.06]
+     *
+     * [java.util.Date 型ではデフォルト値を許容しません。] (ja)<br>
+     *
+     * @return key[BLANCOREST.ERROR.MSG.06]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getBlancorestErrorMsg06() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "java.util.Date 型ではデフォルト値を許容しません。";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.06");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.07]
+     *
+     * [フィールドにデフォルト値が設定されていません。blancoValueObjectKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。] (ja)<br>
+     *
+     * @return key[BLANCOREST.ERROR.MSG.07]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getBlancorestErrorMsg07() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "フィールドにデフォルト値が設定されていません。blancoValueObjectKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.07");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
     }
 
     /**

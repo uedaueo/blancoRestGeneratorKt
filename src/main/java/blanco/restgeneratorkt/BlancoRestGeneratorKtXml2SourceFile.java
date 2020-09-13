@@ -11,8 +11,8 @@ package blanco.restgeneratorkt;
 
 import blanco.cg.BlancoCgObjectFactory;
 import blanco.cg.BlancoCgSupportedLang;
+import blanco.cg.BlancoCgTransformer;
 import blanco.cg.transformer.BlancoCgTransformerFactory;
-import blanco.cg.util.BlancoCgLineUtil;
 import blanco.cg.util.BlancoCgSourceUtil;
 import blanco.cg.valueobject.*;
 import blanco.commons.util.BlancoNameAdjuster;
@@ -118,6 +118,11 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     private BlancoCgClass fCgClass = null;
 
     /**
+     * 内部的に利用するblancoCg用インタフェイス情報。
+     */
+    private BlancoCgInterface fCgInterface = null;
+
+    /**
      * フィールド名やメソッド名の名前変形を行うかどうか。
      *
      */
@@ -155,9 +160,9 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                         final File argDirectoryTarget)
             throws IOException, TransformerException {
 
-        if (this.isVerbose()) {
-            System.out.println("BlancoRestGeneratorKtXml2SourceFile#process file = " + argMetaXmlSourceFile.getName());
-        }
+//        if (this.isVerbose()) {
+//            System.out.println("BlancoRestGeneratorKtXml2SourceFile#process file = " + argMetaXmlSourceFile.getName());
+//        }
 
         fNameAdjust = true; // BlancoRestGenerator では常にフィールド名を変形します。
 
@@ -173,11 +178,43 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             return;
         }
 
+        if (BlancoRestGeneratorKtUtil.genUtils) {
+            // util系を生成します
+            generateDeserializer(argDirectoryTarget);
+        }
+
         for (int index = 0; index < processStructures.length; index++) {
             BlancoRestGeneratorKtTelegramProcessStructure processStructure = processStructures[index];
             // 得られた情報から kotlin コードを生成します。
             generate(processStructure, argDirectoryTarget);
         }
+    }
+
+    private void generateDeserializer(
+            final File argDirectoryTarget
+    ) {
+
+        /*
+         * 出力ディレクトリはant taskのtargetStyel引数で
+         * 指定された書式で出力されます。
+         * 従来と互換性を保つために、指定がない場合は blanco/main
+         * となります。
+         * by tueda, 2019/08/30
+         */
+        String strTarget = argDirectoryTarget
+                .getAbsolutePath(); // advanced
+        if (!this.isTargetStyleAdvanced()) {
+            strTarget += "/main"; // legacy
+        }
+        final File fileBlancoMain = new File(strTarget);
+
+        fCgFactory = BlancoCgObjectFactory.getInstance();
+        final BlancoCgTransformer transformer = BlancoCgTransformerFactory
+                .getJavaSourceTransformer();
+        transformer.transform(new  BlancoRestGeneratorKtRequestDeserializerClass(fCgFactory,
+                BlancoRestGeneratorKtUtil.runtimePackage,
+                this.fEncoding,
+                this.fTabs).expand(), fileBlancoMain);
     }
 
     private void generate(final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure, final File argDirectoryTarget) {
@@ -193,8 +230,95 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             }
         }
 
-        // 次に電文処理を生成します。
-        generateTelegramProcess(argProcessStructure, argDirectoryTarget);
+        /*
+         * 次に電文処理を生成します。
+         * 現時点では micronaut 向けの controller を生成します。
+         * 将来的には tomcat 向けの abstract クラスにも対応します。
+         */
+        generateMicronautController(argProcessStructure, argDirectoryTarget);
+
+        /*
+         * 次に、インジェクションするクラスが実装するインタフェイスを生成します。
+         */
+        if (this.isCreateServiceMethod()) {
+            generateApplicationInterface(argProcessStructure, argDirectoryTarget);
+        }
+    }
+
+    /**
+     * アプリケーション実装クラスが実装するインタフェイスを生成します。
+     * @param argProcessStructure
+     * @param argDirectoryTarget
+     */
+    private void generateApplicationInterface(
+            final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure,
+            final File argDirectoryTarget
+    ) {
+
+        /*
+         * 出力ディレクトリはant taskのtargetStyel引数で
+         * 指定された書式で出力されます。
+         * 従来と互換性を保つために、指定がない場合は blanco/main
+         * となります。
+         * by tueda, 2019/08/30
+         */
+        String strTarget = argDirectoryTarget
+                .getAbsolutePath(); // advanced
+        if (!this.isTargetStyleAdvanced()) {
+            strTarget += "/main"; // legacy
+        }
+        final File fileBlancoMain = new File(strTarget);
+
+        /* tueda DEBUG */
+//        if (this.isVerbose()) {
+//            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
+//        }
+
+        String interfacePackage = argProcessStructure
+                .getPackage() + ".interfaces";
+
+        fCgFactory = BlancoCgObjectFactory.getInstance();
+        fCgSourceFile = fCgFactory.createSourceFile(interfacePackage, "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile.setEncoding(fEncoding);
+        fCgSourceFile.setTabs(this.getTabs());
+
+        // micronaut と jackson で使用するための
+        // import分は無条件で設定します。
+        fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
+        // telegram 類を import します。
+        String runtimePkg = BlancoRestGeneratorKtUtil.runtimePackage;
+        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.HttpCommonRequest");
+        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonRequest");
+        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonResponse");
+
+        // RequestHeader, ResponseHeader はここで確定しておく
+        String requestHeaderClass = argProcessStructure.getRequestHeaderClass();
+        String responseHeaderClass = argProcessStructure.getResponseHeaderClass();
+        String requestHeaderIdSimple = null;
+        if (requestHeaderClass != null && requestHeaderClass.length() > 0) {
+            fCgSourceFile.getImportList().add(requestHeaderClass); // fullPackageで指定されている前提
+            requestHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(requestHeaderClass);
+        }
+        String responseHeaderIdSimple = null;
+        if (responseHeaderClass != null && responseHeaderClass.length() > 0) {
+            fCgSourceFile.getImportList().add(responseHeaderClass);
+            responseHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(responseHeaderClass);
+        }
+
+        // インタフェイスを作成
+        String applicationInterfaceId = "I" + argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
+        fCgInterface = fCgFactory.createInterface(applicationInterfaceId,
+                BlancoStringUtil.null2Blank(argProcessStructure
+                        .getDescription()));
+        fCgSourceFile.getInterfaceList().add(fCgInterface);
+        fCgInterface.setAccess("public");
+
+        // ServiceMethod を生成します。
+        createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true);
+
+        // 収集された情報を元に実際のソースコードを自動生成。
+        BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
+                fCgSourceFile, fileBlancoMain);
     }
 
     /**
@@ -202,7 +326,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
      * @param argProcessStructure
      * @param argDirectoryTarget
      */
-    private void generateTelegramProcess(
+    private void generateMicronautController(
             final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure,
             final File argDirectoryTarget) {
 
@@ -222,23 +346,38 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         final File fileBlancoMain = new File(strTarget);
 
         /* tueda DEBUG */
-        if (this.isVerbose()) {
-            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
-        }
+//        if (this.isVerbose()) {
+//            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
+//        }
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
         fCgSourceFile = fCgFactory.createSourceFile(argProcessStructure
                 .getPackage(), "このソースコードは blanco Frameworkによって自動生成されています。");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
+
+        // micronaut と jackson で使用するための
+        // import分は無条件で設定します。
+        fCgSourceFile.getImportList().add("io.micronaut.http.HttpRequest");
+        fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
+        fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
+        fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Controller");
+        // telegram 類を import します。
+        String runtimePkg = BlancoRestGeneratorKtUtil.runtimePackage;
+        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.HttpCommonRequest");
+        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonRequest");
+        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonResponse");
+        fCgSourceFile.getImportList().add(runtimePkg + ".util.BlancoRestGeneratorKtRequestDeserializer");
+
         // クラスを作成
-        fCgClass = fCgFactory.createClass(BlancoRestGeneratorKtConstants.PREFIX_ABSTRACT + argProcessStructure.getName(),
+        String controllerClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_CONTROLLER;
+        fCgClass = fCgFactory.createClass(controllerClassId,
                 BlancoStringUtil.null2Blank(argProcessStructure
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
-        // 電文処理クラスは常に public abstract
+        // 電文処理クラスは常に public final
         fCgClass.setAccess("public");
-        fCgClass.setAbstract(true);
+        fCgClass.setFinal(true);
         // 継承
         if (BlancoStringUtil.null2Blank(argProcessStructure.getExtends())
                 .length() > 0) {
@@ -266,26 +405,54 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             }
         }
 
-        /* TypeScript では import の代わりに header を設定します */
-        for (int index = 0; index < argProcessStructure.getHeaderList()
-                .size(); index++) {
-            final String header = (String) argProcessStructure.getHeaderList()
-                    .get(index);
-            fCgSourceFile.getHeaderList().add(header);
+        /*
+         * Controller アノテーションは常に設定します。
+         */
+        String location = BlancoStringUtil.null2Blank(argProcessStructure.getLocation());
+        String serviceId = BlancoStringUtil.null2Blank(argProcessStructure.getServiceId());
+        String controllerAnn = "Controller";
+        if (serviceId.length() > 0) {
+            controllerAnn += "(\"" + location + "/" + serviceId + "\")";
         }
+        fCgClass.getAnnotationList().add(controllerAnn);
+
+        /*
+         * APIごとの実装クラスをインジェクションします。
+         */
+        String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
+        String applicationClassPackage = argProcessStructure.getPackage() + "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+
+        String injectedParameterId = BlancoNameAdjuster.toParameterName(applicationClassId);
+
+        BlancoCgField impleClass = fCgFactory.createField(
+                injectedParameterId,
+                applicationClassPackage + "." + applicationClassId,
+                controllerClassId + "が呼び出す実装クラスです。"
+        );
+        impleClass.setNotnull(true);
+        fCgClass.getConstructorArgList().add(impleClass);
 
         // サービスメソッドを生成します。
+        // RequestHeader, ResponseHeader はここで確定しておく
+        String requestHeaderClass = argProcessStructure.getRequestHeaderClass();
+        String responseHeaderClass = argProcessStructure.getResponseHeaderClass();
+        String requestHeaderIdSimple = null;
+        if (requestHeaderClass != null && requestHeaderClass.length() > 0) {
+            fCgSourceFile.getImportList().add(requestHeaderClass); // fullPackageで指定されている前提
+            requestHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(requestHeaderClass);
+        }
+        String responseHeaderIdSimple = null;
+        if (responseHeaderClass != null && responseHeaderClass.length() > 0) {
+            fCgSourceFile.getImportList().add(responseHeaderClass);
+            responseHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(responseHeaderClass);
+        }
         if (this.isCreateServiceMethod()) {
-            createServiceMethods(argProcessStructure);
+            createServiceMethods(argProcessStructure, injectedParameterId, requestHeaderIdSimple, responseHeaderIdSimple, false);
         } else {
             if (this.isVerbose()) {
                 System.out.println("BlancoRestGeneratorKtXml2SourceFile#generateTelegramProcess: SKIP SERVICE METHOD!");
             }
         }
-
-        // isAuthenticationRequired メソッドの上書き
-        overrideAuthenticationRequired(argProcessStructure);
-
 
         // 収集された情報を元に実際のソースコードを自動生成。
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
@@ -296,9 +463,14 @@ public class BlancoRestGeneratorKtXml2SourceFile {
      * Serviceメソッドを実装します。
      *
      * @param argProcessStructure
+     * @param isInterface
      */
     private void createServiceMethods(
-            final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure
+            final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure,
+            final String argInjectedParameterId,
+            final String argRequestHeaderIdSimple,
+            final String argResponseHeaderIdSimple,
+            Boolean isInterface
     ) {
 
         List<String> httpMethods = new ArrayList<>();
@@ -314,193 +486,264 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             HashMap<String, BlancoRestGeneratorKtTelegramStructure> telegrams = argProcessStructure.getListTelegrams().get(method);
             if (telegrams == null) {
                 /* このメソッドは未対応 */
-                createExecuteMethodNotImplemented(method);
+//                createExecuteMethodNotImplemented(method);
+                /*
+                 * Micronaut対応では未対応メソッドは記述しない
+                 */
             } else {
-                createAbstractProcessMethod(telegrams);
-                createExecuteMethod(telegrams, method);
+                if (!isInterface) {
+                    createExecuteMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getMetaIdList());
+                } else {
+                    createInterfaceMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple);
+                }
             }
         }
     }
 
-    private void createAbstractProcessMethod(HashMap<String, BlancoRestGeneratorKtTelegramStructure> argTelegrams) {
+    private void createInterfaceMethod(
+            final HashMap<String, BlancoRestGeneratorKtTelegramStructure> argTelegrams,
+            final String argMethod,
+            final String argRequestHeaderIdSimple,
+            final String argResponseHeaderIdSimple
+    ) {
 
-        // Processor の定義
-        final BlancoCgMethod cgProcessorMethod = fCgFactory.createMethod(
-                BlancoRestGeneratorKtConstants.API_PROCESS_METHOD, fBundle.getXml2sourceFileProcessorDescription());
-        fCgClass.getMethodList().add(cgProcessorMethod);
-        cgProcessorMethod.setAccess("protected");
-        cgProcessorMethod.setAbstract(true);
+        String executeMethodId = "";
+        if (BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.GET_CONTROLLER_METHOD;
+        } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.POST_CONTROLLER_METHOD;
+        } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.PUT_CONTROLLER_METHOD;
+        } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_DELETE.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.DELETE_CONTROLLER_METHOD;
+        }
 
-        String requestId = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_INPUT).getName();
-        String responseId = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_OUTPUT).getName();
+        final BlancoCgMethod cgExecutorMethod = fCgFactory.createMethod(
+                executeMethodId, fBundle.getXml2sourceFileExecutorDescription());
+        fCgInterface.getMethodList().add(cgExecutorMethod);
 
-        cgProcessorMethod.getParameterList().add(
-                fCgFactory.createParameter("arg" + requestId, requestId,
-                        fBundle.getXml2sourceFileProsessorArgLangdoc()));
+        /* request */
+        String httpCommonRequestId = BlancoRestGeneratorKtUtil.runtimePackage + ".valueobject.HttpCommonRequest";
+        String commonRequestId = "CommonRequest";
 
-        cgProcessorMethod.setReturn(fCgFactory.createReturn(responseId,
-                fBundle.getXml2sourceFileProsessorReturnLangdoc()));
+        BlancoCgParameter httpRequest = fCgFactory.createParameter(
+                "httpRequest",
+                httpCommonRequestId,
+                fBundle.getXml2sourceFileExecutorArgLangdoc()
+        );
+        cgExecutorMethod.getParameterList().add(httpRequest);
+        httpRequest.setNotnull(true);
 
+        BlancoRestGeneratorKtTelegramStructure requestStructure = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_INPUT);
+        String requestIdSimple = requestStructure.getName();
+        if (this.isVerbose()) {
+            System.out.println("### requestId = " + requestIdSimple);
+        }
+        String requestIdPackage = requestStructure.getPackage();
+        String requestId = requestIdPackage + "." + requestIdSimple;
+        fCgSourceFile.getImportList().add(requestId);
+
+        String requestGenerics = "";
+        if (argRequestHeaderIdSimple == null || argRequestHeaderIdSimple.length() <= 0) {
+            requestGenerics = commonRequestId + "<" + requestIdSimple + ">";
+        } else {
+            requestGenerics = commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestIdSimple + ">";
+        }
+        httpRequest.getType().setGenerics(requestGenerics);
+
+        /* response */
+        String commonResponseId = "CommonResponse";
+
+        BlancoCgReturn cgReturn = fCgFactory.createReturn(
+                "io.micronaut.http.HttpResponse",
+                fBundle.getXml2sourceFileExecutorReturnLangdoc()
+        );
+        cgExecutorMethod.setReturn(cgReturn);
+
+        BlancoRestGeneratorKtTelegramStructure responseStructure = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_OUTPUT);
+        String responseIdSimple = responseStructure.getName();
+        if (this.isVerbose()) {
+            System.out.println("### responseId = " + responseIdSimple);
+        }
+        String responseIdPackage = responseStructure.getPackage();
+        String responseId = responseIdPackage + "." + responseIdSimple;
+        fCgSourceFile.getImportList().add(responseId);
+
+        String responseGenerics = "";
+        if (argResponseHeaderIdSimple == null || argResponseHeaderIdSimple.length() <= 0) {
+            responseGenerics = commonResponseId + "<" + responseIdSimple + ">";
+        } else {
+            responseGenerics = commonResponseId + "<" + argResponseHeaderIdSimple + ", " + responseIdSimple + ">";
+        }
+        cgReturn.getType().setGenerics(responseGenerics);
     }
 
     private void createExecuteMethod(
-            HashMap<String, BlancoRestGeneratorKtTelegramStructure> argTelegrams,
-            String method) {
+            final HashMap<String, BlancoRestGeneratorKtTelegramStructure> argTelegrams,
+            final String argMethod,
+            final String argRequestHeaderIdSimple,
+            final String argResponseHeaderIdSimple,
+            final String argInjectedParameterId,
+            final Boolean argNoAuthentication,
+            final List<String> argMetaIdList
+    ) {
+
+        String executeMethodId = "";
+        String methodAnn = "";
+        if (BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.GET_CONTROLLER_METHOD;
+            methodAnn = "Get";
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Get");
+        } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.POST_CONTROLLER_METHOD;
+            methodAnn = "Post";
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Post");
+        } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.PUT_CONTROLLER_METHOD;
+            methodAnn = "Put";
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Put");
+        } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_DELETE.equals(argMethod)) {
+            executeMethodId = BlancoRestGeneratorKtConstants.DELETE_CONTROLLER_METHOD;
+            methodAnn = "Delete";
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Delete");
+        }
 
         final BlancoCgMethod cgExecutorMethod = fCgFactory.createMethod(
-                BlancoRestGeneratorKtConstants.BASE_EXECUTOR_METHOD, fBundle.getXml2sourceFileExecutorDescription());
+                executeMethodId, fBundle.getXml2sourceFileExecutorDescription());
         fCgClass.getMethodList().add(cgExecutorMethod);
-        cgExecutorMethod.setAccess("protected");
+        cgExecutorMethod.setFinal(true);
 
         /*
-         * 型チェックを通す為にデフォルトの電文親クラスを使います
+         * アノテーションを設定します。
          */
-        String requestSuperId = BlancoRestGeneratorKtUtil.getDefaultRequestTelegramId(method);
-        String responseSuperId = BlancoRestGeneratorKtUtil.getDefaultResponseTelegramId(method);
+        cgExecutorMethod.getAnnotationList().add(methodAnn);
+
         /*
-         * 本来の電文クラス
+         * まず、HttpRequestパラメータを生成します。
+         */
+        BlancoCgParameter httpRequest = fCgFactory.createParameter(
+                "argHttpRequest",
+                "io.micronaut.http.HttpRequest",
+                fBundle.getXml2sourceFileExecutorArgLangdoc()
+        );
+        cgExecutorMethod.getParameterList().add(httpRequest);
+        httpRequest.setNotnull(true);
+
+        /*
+         * telegram 類が定義されているパッケージについては、API定義書で
+         * 明示的にimportされている前提とする。（または同一パッケージ）
          */
         String requestId = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_INPUT).getName();
+        if (this.isVerbose()) {
+            System.out.println("### requestId = " + requestId);
+        }
+
+        String commonRequestId = "CommonRequest";
+
+        /*
+         * kotlin transformer では一重目の generics の
+         * <> は自動的に追加され、パッケージは削除される。
+         */
+        String requestGenerics = "";
+        if (argRequestHeaderIdSimple == null || argRequestHeaderIdSimple.length() <= 0) {
+            requestGenerics = commonRequestId + "<" + requestId + ">";
+        } else {
+            requestGenerics = commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">";
+        }
+        httpRequest.getType().setGenerics(
+                requestGenerics
+        );
+
+        /*
+         * 次にbodyを取得するパラメータを生成します。
+         */
+        BlancoCgParameter body = fCgFactory.createParameter(
+                "argBody",
+                "java.lang.String",
+                "生JSONボディです。"
+        );
+        cgExecutorMethod.getParameterList().add(body);
+        body.setNotnull(true);
+        body.getAnnotationList().add("Body");
+
+        /*
+         * Return 型を設定します。
+         */
         String responseId = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_OUTPUT).getName();
+        if (this.isVerbose()) {
+            System.out.println("### responseId = " + responseId);
+        }
 
-        //        System.out.println("### requestId = " + requestId);
-        cgExecutorMethod.getParameterList().add(
-                fCgFactory.createParameter("arg" + requestSuperId, requestSuperId,
-                        fBundle
-                                .getXml2sourceFileExecutorArgLangdoc()));
+        BlancoCgReturn cgReturn = fCgFactory.createReturn("io.micronaut.http.HttpResponse",
+                fBundle.getXml2sourceFileExecutorReturnLangdoc());
+        cgExecutorMethod.setReturn(cgReturn);
 
-        cgExecutorMethod.setReturn(fCgFactory.createReturn(responseSuperId,
-                fBundle.getXml2sourceFileExecutorReturnLangdoc()));
+        String commonResponseId = BlancoRestGeneratorKtUtil.runtimePackage + ".valueobject.CommonResponse";
 
-        // メソッドの実装
+        String responseGenerics = "";
+        if (argResponseHeaderIdSimple == null || argResponseHeaderIdSimple.length() <= 0) {
+            responseGenerics = commonResponseId + "<" + responseId + ">";
+        } else {
+            responseGenerics = commonResponseId +  "<" + argResponseHeaderIdSimple + ", " + responseId + ">";
+        }
+        cgReturn.getType().setGenerics(
+                responseGenerics
+        );
+
+        // メソッド本体の実装
         final List<String> listLine = cgExecutorMethod.getLineList();
 
-        listLine.add(
-                responseSuperId + " " +
-                BlancoCgLineUtil.getVariablePrefix(fTargetLang) + "ret" + responseId + " = "
-                        + BlancoCgLineUtil.getVariablePrefix(fTargetLang) + "this." + BlancoRestGeneratorKtConstants.API_PROCESS_METHOD
-                        + "( "  +  "("+ requestId + ")" + BlancoCgLineUtil.getVariablePrefix(fTargetLang) + "arg" + requestSuperId + " )"
-                        + BlancoCgLineUtil.getTerminator(fTargetLang));
+        String requestDeserializerId = BlancoRestGeneratorKtUtil.runtimePackage + ".util.BlancoRestGeneratorKtRequestDeserializer";
+        fCgSourceFile.getImportList().add(requestDeserializerId);
+        String requestDeserializerIdSimple = "BlancoRestGeneratorKtRequestDeserializer";
 
-        listLine.add("\n");
-        listLine.add("return "
-                + BlancoCgLineUtil.getVariablePrefix(fTargetLang) + "ret" + responseId
-                + BlancoCgLineUtil.getTerminator(fTargetLang));
-    }
+        listLine.add("/* json 文字列から CommonRequest インスタンスを生成する */");
+        listLine.add("val deserializer = " + requestDeserializerIdSimple + "<" + argRequestHeaderIdSimple + ", " + requestId + ">(argHttpRequest.javaClass)");
+        listLine.add("deserializer.infoClazz = " + argRequestHeaderIdSimple + "::class.java");
+        listLine.add("deserializer.telegramClazz = " + requestId + "::class.java");
+        listLine.add("");
 
-    /**
-     * 非対応なメソッドが呼ばれた場合用のexecuteメソッドです。
-     *
-     * @param method
-     */
-    private void createExecuteMethodNotImplemented(String method) {
-        final BlancoCgMethod cgExecutorMethod = fCgFactory.createMethod(
-                BlancoRestGeneratorKtConstants.BASE_EXECUTOR_METHOD, fBundle.getXml2sourceFileExecutorDescription());
-        fCgClass.getMethodList().add(cgExecutorMethod);
-        cgExecutorMethod.setAccess("protected");
-        final List<String> ListLine = cgExecutorMethod.getLineList();
+        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(body, deserializer)");
+        listLine.add("");
 
-        // 電文定義がないので，デフォルトの電文名を指定しておく
-        String requestId = BlancoRestGeneratorKtUtil.getDefaultRequestTelegramId(method);
-        String responseId = BlancoRestGeneratorKtUtil.getDefaultResponseTelegramId(method);
-
-        /* Excel sheet に電文定義がない場合にここにくるので、その場合は電文処理シートの定義を使う */
-        cgExecutorMethod.getParameterList().add(
-                fCgFactory.createParameter("argRequest", requestId,
-                        fBundle
-                                .getXml2sourceFileExecutorArgLangdoc()));
-        cgExecutorMethod.setReturn(fCgFactory.createReturn(responseId,
-                fBundle.getXml2sourceFileExecutorReturnLangdoc()));
+        listLine.add("/* httpRequest を delegator とした HttpCommonRequest を作成し、ここに型を確定させた commonRequest を格納する */");
+        listLine.add("val myRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, commonRequest)");
+        listLine.add("");
 
         /*
-         * TypeScript では例外は Error を継承する必要がある。
-         * ここではそのまま Error を投げる。
+         * 認証が必要なAPIかどうか
          */
-        //throw new BlancoRestException("GetMethod is not implemented in this api");
-        // メソッドの実装
-        ListLine.add(
-                "throw new " + BlancoRestGeneratorKtConstants.DEFAULT_EXCEPTION + "( " + BlancoCgLineUtil.getStringLiteralEnclosure(fTargetLang) +
-                        fBundle.getBlancorestErrorMsg05(method) + BlancoCgLineUtil.getStringLiteralEnclosure(fTargetLang)  +")" + BlancoCgLineUtil.getTerminator(fTargetLang));
-
-    }
-
-
-
-    private void overrideAuthenticationRequired(BlancoRestGeneratorKtTelegramProcessStructure argStructure) {
-        String methodName = BlancoRestGeneratorKtConstants.API_AUTHENTICATION_REQUIRED;
-
-        final BlancoCgMethod cgAuthenticationRequiredMethod = fCgFactory.createMethod(
-                methodName, fBundle.getXml2sourceFileAuthflagDescription());
-        fCgClass.getMethodList().add(cgAuthenticationRequiredMethod);
-        cgAuthenticationRequiredMethod.setAccess("public");
-
-        cgAuthenticationRequiredMethod.setReturn(fCgFactory.createReturn("java.lang.Boolean",
-                fBundle.getXml2sourceFileAuthflagReturnLangdoc()));
-
-        // メソッドの実装
-        final List<String> listLine = cgAuthenticationRequiredMethod.getLineList();
-
-        String retval = "true";
-        if (argStructure.getNoAuthentication()) {
-            retval = "false";
-        }
-
-        listLine.add("return " + retval
-                + BlancoCgLineUtil.getTerminator(fTargetLang));
-    }
-
-    private void createRequestIdMethod(String methodName, String requestIdName, String packageName) {
-        final BlancoCgMethod cgRequestIdMethod = fCgFactory.createMethod(
-                methodName, fBundle.getXml2sourceFileRequestidDesctiption());
-        fCgClass.getMethodList().add(cgRequestIdMethod);
-
-        cgRequestIdMethod.setAccess("protected");
-
-        List<String> annotators = new ArrayList<>();
-        annotators.add("Override");
-        cgRequestIdMethod.setAnnotationList(annotators);
-
-        cgRequestIdMethod.setReturn(fCgFactory.createReturn("java.lang.String",
-                fBundle.getXml2sourceFileRequestidReturnLangdoc()));
+        listLine.add("/* 認証が不要なAPIである */");
+        listLine.add(argInjectedParameterId + ".noAuthentication = " + (argNoAuthentication ? "true" : "false"));
+        listLine.add("");
 
         /*
-         * メソッドの実装
-         * 定義されていないときはnullを返す
+         * あれば、MetaIdListを設定します。
          */
-        final List<String> listLine = cgRequestIdMethod.getLineList();
-        if(requestIdName == null) {
-            listLine.add("return null" + BlancoCgLineUtil.getTerminator(fTargetLang));
-        } else {
-            listLine.add("return " + "\"" + packageName + "." + requestIdName + "\""
-                    + BlancoCgLineUtil.getTerminator(fTargetLang));
+        if (argMetaIdList != null && argMetaIdList.size() > 0) {
+            listLine.add("/* メタIDリスト情報 */");
+            listLine.add(argInjectedParameterId + ".metaIdList = listOf(");
+            int count = 0;
+            StringBuffer sb = new StringBuffer();
+            for (String metaId : argMetaIdList) {
+                if (count > 0) {
+                    sb.append(",");
+                    listLine.add(sb.toString());
+                    sb = new StringBuffer();
+                }
+                sb.append("\"" + metaId + "\"");
+                count++;
+            }
+            listLine.add(sb.toString());
+            listLine.add(")");
+            listLine.add("");
         }
-    }
 
-    private void createResponseIdMethod(String methodName, String responseIdName, String packageName) {
-
-        final BlancoCgMethod cgResponseIdMethod = fCgFactory.createMethod(
-                methodName, fBundle.getXml2sourceFileRequestidDesctiption());
-        fCgClass.getMethodList().add(cgResponseIdMethod);
-        cgResponseIdMethod.setAccess("protected");
-
-        List<String> annotators = new ArrayList<>();
-        annotators.add("Override");
-        cgResponseIdMethod.setAnnotationList(annotators);
-
-        cgResponseIdMethod.setReturn(fCgFactory.createReturn("java.lang.String",
-                fBundle.getXml2sourceFileRequestidReturnLangdoc()));
-
-        /*
-         * メソッドの実装
-         * 定義されていないときはnullを返す
-         */
-        final List<String> listLine = cgResponseIdMethod.getLineList();
-        if(responseIdName == null) {
-            listLine.add("return null" + BlancoCgLineUtil.getTerminator(fTargetLang));
-        } else {
-            listLine.add("return " + "\"" + packageName + "." + responseIdName + "\""
-                    + BlancoCgLineUtil.getTerminator(fTargetLang));
-        }
+        listLine.add("/* 前処理を行う（validation等） */");
+        listLine.add(argInjectedParameterId + ".prepare(myRquest)");
+        listLine.add("");
+        listLine.add("/* HttpCommonRequest を渡す */");
+        listLine.add("return " + argInjectedParameterId + "." + executeMethodId);
     }
 
     /**
@@ -543,7 +786,14 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
         // 電文クラスは常に public
-        fCgClass.setAccess("public");
+        String access = "public";
+        // data クラスかどうか
+        if (argTelegramStructure.getData()) {
+            access += " data";
+        }
+        fCgClass.setAccess(access);
+        // Finalクラスかどうか。
+        fCgClass.setFinal(argTelegramStructure.getFinal());
         // 継承
         if (BlancoStringUtil.null2Blank(argTelegramStructure.getExtends())
                 .length() > 0) {
@@ -558,6 +808,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             fCgClass.getImplementInterfaceList().add(
                     fCgFactory.createType(impl));
         }
+
         // クラスのJavaDocを設定します。
         fCgClass.setDescription(argTelegramStructure.getDescription());
 
@@ -571,12 +822,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             }
         }
 
-        /* TypeScript では import の代わりに header を設定します */
-        for (int index = 0; index < argTelegramStructure.getHeaderList()
+        /* クラスのimport を設定します */
+        for (int index = 0; index < argTelegramStructure.getImportList()
                 .size(); index++) {
-            final String header = (String) argTelegramStructure.getHeaderList()
+            final String imported = (String) argTelegramStructure.getImportList()
                     .get(index);
-            fCgSourceFile.getHeaderList().add(header);
+            fCgSourceFile.getImportList().add(imported);
         }
 
         if (this.isVerbose()) {
@@ -606,20 +857,6 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
             // フィールドの生成。
             buildField(argTelegramStructure, fieldStructure);
-
-            // セッターメソッドの生成。
-            buildMethodSet(fieldStructure);
-
-            // ゲッターメソッドの生成。
-            buildMethodGet(fieldStructure);
-
-            // Type文字列を返すメソッドの生成
-            buildMethodType(fieldStructure);
-
-            // Generic文字列を返すメソッドの生成
-            buildMethodGeneric(fieldStructure);
-
-            // validation は後日実装予定
         }
 
         // 収集された情報を元に実際のソースコードを自動生成。
@@ -637,34 +874,52 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             final BlancoRestGeneratorKtTelegramStructure argClassStructure,
             final BlancoRestGeneratorKtTelegramFieldStructure argFieldStructure) {
 
-        /*
-         * フィールド名は常に変形する
-         */
-        String fieldName = "f" + this.getFieldNameAdjustered(argFieldStructure);
-        final BlancoCgField field = fCgFactory.createField(fieldName,
-                argFieldStructure.getType(), null);
+        switch (fSheetLang) {
+            case BlancoCgSupportedLang.PHP:
+                if (argFieldStructure.getType() == "kotlin.Int") argFieldStructure.setType("kotlin.Long");
+                break;
+            /* 対応言語を増やす場合はここに case を追記します */
+        }
 
-        fCgClass.getFieldList().add(field);
+        /* 型を決定します。typeKtが設定されている場合はそちらを優先します */
+        boolean isKtPreferred = true;
+        String typeRaw = argFieldStructure.getTypeKt();
+        if (typeRaw == null || typeRaw.length() == 0) {
+            typeRaw = argFieldStructure.getType();
+            isKtPreferred = false;
+        }
+
+        /*
+         * blancoValueObjectではプロパティ名の前にfをつける流儀であるが、
+         * kotlinについては暗黙のgetter/setterを使う都合上、つけない。
+         */
+        final BlancoCgField field = fCgFactory.createField(argFieldStructure.getName(),
+                typeRaw, null);
 
         /*
          * Generic に対応します。blancoCg 側では <> が付いている前提かつ
          * package部をtrimするので、ここで設定しないと正しく設定されません。
+         * genericKt が設定されている場合はそちらを優先します。
          */
-        String generic = argFieldStructure.getGeneric();
-        if (generic != null && generic.length() > 0) {
-            field.getType().setGenerics(generic);
+        String genericRaw = argFieldStructure.getGenericKt();
+        if (!isKtPreferred && (genericRaw == null || genericRaw.length() == 0)) {
+            genericRaw = argFieldStructure.getGeneric();
+        }
+        if (genericRaw != null && genericRaw.length() > 0) {
+            field.getType().setGenerics(genericRaw);
         }
 
-        if (this.isVerbose()) {
-            System.out.println("!!! type = " + argFieldStructure.getType());
-            System.out.println("!!! generic = " + field.getType().getGenerics());
-        }
+//        if (this.isVerbose()) {
+//            System.out.println("!!! type = " + argFieldStructure.getType());
+//            System.out.println("!!! generic = " + field.getType().getGenerics());
+//        }
 
-        field.setAccess("private");
         /*
-         * 当面、final には対応しません。
+         * 当面の間、blancoValueObjectKt ではprivateやgetter/setter,
+         * open には対応しません。
          */
-        field.setFinal(false);
+        field.setAccess("public");
+        field.setFinal(true);
 
         // nullable に対応します。
         Boolean isNullable = argFieldStructure.getNullable();
@@ -674,225 +929,75 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             field.setNotnull(true);
         }
 
+        // value / variable に対応します。
+        Boolean isValue = argFieldStructure.getValue();
+        if (isValue != null && isValue) {
+            field.setConst(true);
+        } else {
+            field.setConst(false);
+        }
+
+        /*
+         * field がconstructotr引数かどうをチェック
+         */
+        Boolean isConstArg = argFieldStructure.getConstArg();
+        if (isConstArg != null && isConstArg) {
+            fCgClass.getConstructorArgList().add(field);
+        } else {
+            fCgClass.getFieldList().add(field);
+        }
+
         // フィールドのJavaDocを設定します。
         field.setDescription(argFieldStructure.getDescription());
         for (String line : argFieldStructure.getDescriptionList()) {
             field.getLangDoc().getDescriptionList().add(line);
         }
 
-        /*
-         * TypeScript ではプロパティのデフォルト値は原則必須
-         */
-        String defaultRawValue = argFieldStructure.getDefault();
-        if ((defaultRawValue == null ||defaultRawValue.length() <= 0)) {
-            if (!isNullable) {
-                throw new IllegalArgumentException(fBundle
-                        .getXml2sourceFileErr009(argClassStructure.getName(), argFieldStructure.getName()));
+        // フィールドのデフォルト値を設定します。
+        if (argFieldStructure.getDefault() != null || argFieldStructure.getDefaultKt() != null) {
+            final String type = field.getType().getName();
+
+            if (type.equals("java.util.Date")) {
+                /*
+                 * java.util.Date 型ではデフォルト値を許容しません。
+                 */
+                throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg06());
             }
-        } else {
+
+            /*
+             * kotlinでは プロパティのデフォルト値は原則必須
+             * ただし、abstract クラスにおいては、プロパティに abstract 修飾子が
+             * ついている場合は省略可。
+             * とはいえ、blancoValueObjectKt では当面abstractプロパティはサポートしません。
+             */
+
+            /*
+             * defaultKt があればそちらを優先します。
+             */
+            String defaultRawValue = argFieldStructure.getDefaultKt();
+            if (!isKtPreferred && (defaultRawValue == null || defaultRawValue.length() == 0)) {
+                defaultRawValue = argFieldStructure.getDefault();
+            }
+            if (!isConstArg && (defaultRawValue == null || defaultRawValue.length() <= 0)) {
+                System.err.println("/* tueda */ フィールドにデフォルト値が設定されていません。blancoValueObjectKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。");
+                throw new IllegalArgumentException(fBundle
+                        .getBlancorestErrorMsg07());
+            }
+
             // フィールドのデフォルト値を設定します。
             field.getLangDoc().getDescriptionList().add(
-                    BlancoCgSourceUtil.escapeStringAsLangDoc(BlancoCgSupportedLang.TS, fBundle.getXml2sourceFileFieldDefault(argFieldStructure
-                            .getDefault())));
-            // 当面の間、デフォルト値の変形は常にoff。定義書上の値をそのまま採用。
-            field.setDefault(argFieldStructure.getDefault());
+                    BlancoCgSourceUtil.escapeStringAsLangDoc(BlancoCgSupportedLang.KOTLIN, fBundle.getXml2sourceFileFieldDefault(defaultRawValue)));
 
-            /* メソッドの annotation を設定します */
-            List annotationList = argFieldStructure.getAnnotationList();
-            if (annotationList != null && annotationList.size() > 0) {
-                field.getAnnotationList().addAll(annotationList);
-                if (this.isVerbose()) {
-                    System.out.println("method annotation = " + field.getAnnotationList().get(0));
-                }
-            }
-        }
-    }
-
-    /**
-     * setメソッドを生成します。
-     *
-     * @param argFieldStructure
-     *            フィールド情報。
-     */
-    private void buildMethodSet(
-            final BlancoRestGeneratorKtTelegramFieldStructure argFieldStructure) {
-        // おのおののフィールドに対するセッターメソッドを生成します。
-        final BlancoCgMethod method = fCgFactory.createMethod(argFieldStructure.getName(),
-                fBundle.getXml2sourceFileSetLangdoc01(argFieldStructure
-                        .getName()));
-        fCgClass.getMethodList().add(method);
-
-        method.setAccess("set");
-
-        // メソッドの JavaDoc設定。
-        if (argFieldStructure.getDescription() != null) {
-            method.getLangDoc().getDescriptionList().add(
-                    fBundle.getXml2sourceFileSetLangdoc02(argFieldStructure
-                            .getDescription()));
-        }
-        for (String line : argFieldStructure.getDescriptionList()) {
-            method.getLangDoc().getDescriptionList().add(line);
+            // blancoRestGenerator では、デフォルト値は定義書上の値をそのまま採用。
+            field.setDefault(defaultRawValue);
         }
 
-        BlancoCgParameter param = fCgFactory.createParameter("arg"
-                        + getFieldNameAdjustered(argFieldStructure),
-                argFieldStructure.getType(),
-                fBundle.getXml2sourceFileSetArgLangdoc(argFieldStructure
-                        .getName()));
-        if (!argFieldStructure.getNullable()) {
-            param.setNotnull(true);
+        /* メソッドの annotation を設定します */
+        List annotationList = argFieldStructure.getAnnotationList();
+        if (annotationList != null && annotationList.size() > 0) {
+            field.getAnnotationList().addAll(annotationList);
+            System.out.println("/* tueda */ method annotation = " + field.getAnnotationList().get(0));
         }
-
-        String generic = argFieldStructure.getGeneric();
-        if (generic != null && generic.length() > 0) {
-            param.getType().setGenerics(generic);
-        }
-        method.getParameterList().add(param);
-
-        // メソッドの実装
-        method.getLineList().add(
-                "this.f"
-                        + getFieldNameAdjustered(argFieldStructure)
-                        + " = "
-                        + "arg"
-                        + getFieldNameAdjustered(argFieldStructure) + ";");
-    }
-
-    /**
-     * getメソッドを生成します。
-     *
-     * @param argFieldStructure
-     *            フィールド情報。
-     */
-    private void buildMethodGet(
-            final BlancoRestGeneratorKtTelegramFieldStructure argFieldStructure) {
-        // おのおののフィールドに対するゲッターメソッドを生成します。
-        final BlancoCgMethod method = fCgFactory.createMethod(argFieldStructure.getName(),
-                fBundle.getXml2sourceFileGetLangdoc01(argFieldStructure
-                        .getName()));
-        fCgClass.getMethodList().add(method);
-
-        if (!argFieldStructure.getNullable()) {
-            method.setNotnull(true);
-        }
-
-        method.setAccess("get");
-
-        // メソッドの JavaDoc設定。
-        if (argFieldStructure.getDescription() != null) {
-            method.getLangDoc().getDescriptionList().add(
-                    fBundle.getXml2sourceFileGetLangdoc02(argFieldStructure
-                            .getDescription()));
-        }
-        for (String line : argFieldStructure.getDescriptionList()) {
-            method.getLangDoc().getDescriptionList().add(line);
-        }
-        if (argFieldStructure.getDefault() != null) {
-            method.getLangDoc().getDescriptionList().add(
-                    BlancoCgSourceUtil.escapeStringAsLangDoc(BlancoCgSupportedLang.JAVA, fBundle.getXml2sourceFileGetArgLangdoc(argFieldStructure
-                            .getDefault())));
-        }
-
-        method.setReturn(fCgFactory.createReturn(argFieldStructure.getType(),
-                fBundle.getXml2sourceFileGetReturnLangdoc(argFieldStructure.getName())));
-        String generic = argFieldStructure.getGeneric();
-        if (generic != null && generic.length() > 0) {
-            method.getReturn().getType().setGenerics(generic);
-        }
-
-        // メソッドの実装
-        method.getLineList().add(
-                "return this.f"
-                        + this.getFieldNameAdjustered(argFieldStructure) + ";");
-    }
-
-    /**
-     * typeメソッドを展開します
-     *
-     * @param argFieldStructure
-     */
-    private void buildMethodType(
-            final BlancoRestGeneratorKtTelegramFieldStructure argFieldStructure) {
-        // 常にフィールド名を調整
-        String fieldName = getFieldNameAdjustered(argFieldStructure);
-
-        final BlancoCgMethod cgMethod = fCgFactory.createMethod("type"
-                + fieldName, fBundle.getXml2sourceFileGetLangdoc01(argFieldStructure
-                .getName()));
-        fCgClass.getMethodList().add(cgMethod);
-        cgMethod.setAccess("public");
-        cgMethod.setStatic(true);
-
-        cgMethod.getLangDoc().getDescriptionList().add(
-                fBundle.getXml2sourceFileTypeLangdoc02(argFieldStructure.getType()));
-
-        cgMethod.setReturn(fCgFactory.createReturn("string", fBundle
-                .getXml2sourceFileTypeReturnLangdoc(argFieldStructure.getName())));
-
-        if (BlancoStringUtil.null2Blank(argFieldStructure.getDescription()).length() > 0) {
-            cgMethod.getLangDoc().getDescriptionList().add(
-                    argFieldStructure.getDescription());
-        }
-
-        // メソッドの実装
-        final List<String> listLine = cgMethod.getLineList();
-
-        /*
-         * TypeScript では、package が付与されている場合は外す
-         */
-        String methodType = BlancoRestGeneratorKtUtil
-                .getSimpleClassName(argFieldStructure.getType());
-
-        listLine
-                .add("return "
-                        + "\"" + methodType + "\""
-                        + BlancoCgLineUtil.getTerminator(fTargetLang));
-    }
-
-    /**
-     * Genericメソッドを展開します。
-     * @param argFieldStructure
-     */
-    private void buildMethodGeneric(
-            final BlancoRestGeneratorKtTelegramFieldStructure argFieldStructure) {
-        String fieldName = getFieldNameAdjustered(argFieldStructure);
-        String fieldGeneric = argFieldStructure.getGeneric();
-
-        if (BlancoStringUtil.null2Blank(fieldGeneric).length() == 0) {
-            return;
-        }
-
-        final BlancoCgMethod cgMethod = fCgFactory.createMethod("generic"
-                + fieldName, fBundle.getXml2sourceFileGetLangdoc01(argFieldStructure
-                .getName()));
-        fCgClass.getMethodList().add(cgMethod);
-        cgMethod.setAccess("public");
-        cgMethod.setStatic(true);
-
-        cgMethod.getLangDoc().getDescriptionList().add(
-                fBundle.getXml2sourceFileTypeLangdoc02(fieldGeneric));
-
-        cgMethod.setReturn(fCgFactory.createReturn("string", fBundle
-                .getXml2sourceFileTypeReturnLangdoc(argFieldStructure.getName())));
-
-        if (BlancoStringUtil.null2Blank(argFieldStructure.getDescription()).length() > 0) {
-            cgMethod.getLangDoc().getDescriptionList().add(
-                    argFieldStructure.getDescription());
-        }
-
-        // メソッドの実装
-        final List<String> listLine = cgMethod.getLineList();
-
-        /*
-         * TypeScript では、package が付与されている場合は外す
-         */
-        String genericType = BlancoRestGeneratorKtUtil
-                .getSimpleClassName(argFieldStructure.getGeneric());
-
-        listLine
-                .add("return "
-                        + "\"" + genericType + "\""
-                        + BlancoCgLineUtil.getTerminator(fTargetLang));
     }
 
     /**

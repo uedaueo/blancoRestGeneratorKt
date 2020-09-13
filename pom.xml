@@ -287,7 +287,7 @@
 								<taskdef name="blancorestgeneratorkt" classname="blanco.restgeneratorkt.task.BlancoRestGeneratorKtTask" classpathref="maven.runtime.classpath">
 								</taskdef>
 								<blancovalueobjectkt metadir="meta/telegrams" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" />
-								<blancorestgeneratorkt metadir="meta/api" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" />
+								<blancorestgeneratorkt metadir="meta/api" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" basepackage="blanco.restgenerator" />
 							</target>
 						</configuration>
 						<goals>
