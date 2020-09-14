@@ -210,7 +210,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
         final BlancoCgTransformer transformer = BlancoCgTransformerFactory
-                .getJavaSourceTransformer();
+                .getKotlinSourceTransformer();
         transformer.transform(new  BlancoRestGeneratorKtRequestDeserializerClass(fCgFactory,
                 BlancoRestGeneratorKtUtil.runtimePackage,
                 this.fEncoding,

@@ -46,6 +46,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
         fCgSourceFile.getClassList().add(cgClass);
 
         cgClass.setFinal(true);
+        cgClass.setAccess("");
         cgClass.setGenerics("S : RequestHeader, T : ApiTelegram"); // <> は自動でつけられる
         BlancoCgType stdDeserializer = fCgFactory.createType(
                 "com.fasterxml.jackson.databind.deser.std.StdDeserializer"
@@ -95,6 +96,8 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
             cgClass.getFieldList().add(infoClazz);
             infoClazz.getType().setGenerics("S");
             infoClazz.setConst(false); // var
+            infoClazz.setAccess("");
+            infoClazz.setFinal(true);
             infoClazz.setNotnull(false); // nullable
             infoClazz.setDefault("null");
 
@@ -102,6 +105,8 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
             cgClass.getFieldList().add(telegramClazz);
             telegramClazz.getType().setGenerics("T");
             telegramClazz.setConst(false); // var
+            telegramClazz.setAccess("");
+            telegramClazz.setFinal(true);
             telegramClazz.setNotnull(false); // nullable
             telegramClazz.setDefault("null");
         }
@@ -110,6 +115,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
             // methods
             cgClass.getMethodList().add(buildDeserializeMethod());
             cgClass.getMethodList().add(buildParseRequestHeader());
+            cgClass.getMethodList().add(buildParseTelegram());
         }
 
         return fCgSourceFile;
@@ -129,6 +135,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
         ctxt.setNotnull(false);
 
         BlancoCgReturn cgReturn = fCgFactory.createReturn(fRuntimepackage + ".valueobject.CommonRequest", "JSONをparseし、CommonRequestに詰めて返します。");
+        deserialize.setReturn(cgReturn);
         cgReturn.getType().setGenerics("S, T");
         cgReturn.setNullable(true);
 
@@ -179,6 +186,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
         node.setNotnull(true);
 
         BlancoCgReturn cgReturn = fCgFactory.createReturn("S", "JSONをparseし、S に詰めて返します。");
+        parser.setReturn(cgReturn);
         cgReturn.setNullable(false);
 
         // method の本体
@@ -202,6 +210,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
         node.setNotnull(true);
 
         BlancoCgReturn cgReturn = fCgFactory.createReturn("T", "JSONをparseし、T に詰めて返します。");
+        parser.setReturn(cgReturn);
         cgReturn.setNullable(true);
 
         // method の本体
