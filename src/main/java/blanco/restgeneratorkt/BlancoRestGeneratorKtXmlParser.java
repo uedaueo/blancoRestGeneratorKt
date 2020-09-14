@@ -423,13 +423,13 @@ public class BlancoRestGeneratorKtXmlParser {
                 ));
 
             }
-            String kotlinType = parsePhpTypes(phpType, false);
+            String kotlinType = parsePhpTypes(phpType, false, argTelegramStructure);
             fieldStructure.setType(kotlinType);
 
             /* Generic に対応 */
             String phpGeneric = BlancoXmlBindingUtil.getTextContent(elementList, "fieldGeneric");
             if (BlancoStringUtil.null2Blank(phpGeneric).length() != 0) {
-                String kotlinGeneric = parsePhpTypes(phpGeneric, true);
+                String kotlinGeneric = parsePhpTypes(phpGeneric, true, argTelegramStructure);
                 fieldStructure.setGeneric(kotlinGeneric);
             }
 
@@ -443,13 +443,13 @@ public class BlancoRestGeneratorKtXmlParser {
              * Kotlin型の取得．型名は Kotlin 風に定義されている前提。
              */
             String phpTypeKt = BlancoXmlBindingUtil.getTextContent(elementList, "fieldTypeKt");
-            String kotlinTypeKt = parsePhpTypes(phpTypeKt, false);
+            String kotlinTypeKt = parsePhpTypes(phpTypeKt, false, argTelegramStructure);
             fieldStructure.setTypeKt(kotlinTypeKt);
 
             /* Kotlin の Generic に対応 */
             String phpGenericKt = BlancoXmlBindingUtil.getTextContent(elementList, "fieldGeneric");
             if (BlancoStringUtil.null2Blank(phpGenericKt).length() != 0) {
-                String kotlinGenericKt = parsePhpTypes(phpGenericKt, true);
+                String kotlinGenericKt = parsePhpTypes(phpGenericKt, true, argTelegramStructure);
                 fieldStructure.setGenericKt(kotlinGenericKt);
             }
 
@@ -1027,9 +1027,10 @@ public class BlancoRestGeneratorKtXmlParser {
      * php風の型定義をkotlin風に置換します。
      * @param phpType
      * @param isGeneric
+     * @param argTelegramStructure
      * @return
      */
-    private String parsePhpTypes(String phpType, boolean isGeneric) {
+    private String parsePhpTypes(String phpType, boolean isGeneric, BlancoRestGeneratorKtTelegramStructure argTelegramStructure) {
         String kotlinType = phpType;
         if (BlancoStringUtil.null2Blank(phpType).length() != 0) {
             if ("boolean".equalsIgnoreCase(phpType)) {
@@ -1064,10 +1065,13 @@ public class BlancoRestGeneratorKtXmlParser {
                 String packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(phpType);
                 if (packageName != null) {
                     kotlinType = packageName + "." + phpType;
+                    argTelegramStructure.getImportList().add(kotlinType);
                 }
 
                 /* その他はそのまま記述する */
-//                System.out.println("/* tueda */ Unknown php type: " + kotlinType);
+                if (this.isVerbose()) {
+                    System.out.println("blancoRestGeneratorKt : Unknown php type: " + kotlinType);
+                }
             }
         }
         return kotlinType;

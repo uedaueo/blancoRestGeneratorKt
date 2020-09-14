@@ -87,7 +87,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
 
         {
             // fields
-            BlancoCgField vc = fCgFactory.createField("vc", "java.lang.Class", null);
+            BlancoCgField vc = fCgFactory.createField("vc", "java.lang.Class", "標準デシリアライザから渡されるvalueClassです。");
             cgClass.getConstructorArgList().add(vc);
             vc.getType().setGenerics("*"); // <> は自動的につけられる
             vc.setConst(true); // val

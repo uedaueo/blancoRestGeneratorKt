@@ -703,11 +703,11 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         listLine.add("deserializer.telegramClazz = " + requestId + "::class.java");
         listLine.add("");
 
-        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(body, deserializer)");
+        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(argBody, deserializer)");
         listLine.add("");
 
         listLine.add("/* httpRequest を delegator とした HttpCommonRequest を作成し、ここに型を確定させた commonRequest を格納する */");
-        listLine.add("val myRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, commonRequest)");
+        listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, commonRequest)");
         listLine.add("");
 
         /*
@@ -740,10 +740,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         listLine.add("/* 前処理を行う（validation等） */");
-        listLine.add(argInjectedParameterId + ".prepare(myRquest)");
+        listLine.add(argInjectedParameterId + ".prepare(httpCommonRequest)");
         listLine.add("");
         listLine.add("/* HttpCommonRequest を渡す */");
-        listLine.add("return " + argInjectedParameterId + "." + executeMethodId);
+        listLine.add("return " + argInjectedParameterId + "." + executeMethodId + "(httpCommonRequest)");
     }
 
     /**
