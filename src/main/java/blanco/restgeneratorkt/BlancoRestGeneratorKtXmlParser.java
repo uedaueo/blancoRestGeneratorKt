@@ -1036,7 +1036,7 @@ public class BlancoRestGeneratorKtXmlParser {
                 kotlinType = "kotlin.Boolean";
             } else
             if ("integer".equalsIgnoreCase(phpType)) {
-                kotlinType = "kotlin.Int";
+                kotlinType = "kotlin.Long";
             } else
             if ("double".equalsIgnoreCase(phpType)) {
                 kotlinType = "kotlin.Double";

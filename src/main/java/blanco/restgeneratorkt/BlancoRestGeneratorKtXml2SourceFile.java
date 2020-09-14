@@ -785,15 +785,19 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 BlancoStringUtil.null2Blank(argTelegramStructure
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
-        // 電文クラスは常に public
-        String access = "public";
+        // 電文クラスは常に public, kotlin では省略可。
+        String access = "";
         // data クラスかどうか
         if (argTelegramStructure.getData()) {
-            access += " data";
+            access += "data";
         }
         fCgClass.setAccess(access);
-        // Finalクラスかどうか。
-        fCgClass.setFinal(argTelegramStructure.getFinal());
+        // Finalクラスかどうか。dataクラスは強制的にfinal。
+        if (argTelegramStructure.getData() && !argTelegramStructure.getFinal()) {
+            fCgClass.setFinal(true);
+        } else {
+            fCgClass.setFinal(argTelegramStructure.getFinal());
+        }
         // 継承
         if (BlancoStringUtil.null2Blank(argTelegramStructure.getExtends())
                 .length() > 0) {
