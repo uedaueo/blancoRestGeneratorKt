@@ -797,8 +797,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgSourceFile.getClassList().add(fCgClass);
         // 電文クラスは常に public, kotlin では省略可。
         String access = "";
-        // data クラスかどうか
-        if (argTelegramStructure.getData()) {
+        // data クラスかどうか、かつコンストラクタ引数がひとつでもあるか。
+        if (argTelegramStructure.getData() && this.hasConstructorArgs(argTelegramStructure)) {
             access += "data";
         }
         fCgClass.setAccess(access);
@@ -1024,5 +1024,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     private String getFieldNameAdjustered(
             final BlancoRestGeneratorKtTelegramFieldStructure argFieldStructure) {
         return BlancoNameAdjuster.toClassName(argFieldStructure.getName());
+    }
+
+    private boolean hasConstructorArgs(final BlancoRestGeneratorKtTelegramStructure argTelegramStructure) {
+        boolean found = false;
+
+        for (BlancoRestGeneratorKtTelegramFieldStructure fieldStructure : argTelegramStructure.getListField()) {
+            if (fieldStructure.getConstArg()) {
+                found = true;
+                break;
+            }
+        }
+        return  found;
     }
 }
