@@ -47,6 +47,14 @@ public class BlancoRestGeneratorKtXmlParser {
         this.fServerType = serverType;
     }
 
+    private String fTelegramPackage = "";
+    public String getTelegramPackage() {
+        return this.fTelegramPackage;
+    }
+    public void setTelegramPackage(final String argTelegramPackage) {
+        this.fTelegramPackage = argTelegramPackage;
+    }
+
     /**
      * 中間XMLファイルのXMLドキュメントをパースして、バリューオブジェクト情報の配列を取得します。
      *
@@ -290,9 +298,13 @@ public class BlancoRestGeneratorKtXmlParser {
          * このクラスのパッケージ名を探す
          */
         String packageName = null;
-        BlancoValueObjectKtClassStructure voStructure = BlancoRestGeneratorKtUtil.objects.get(superClassId);
-        if (voStructure != null) {
-            packageName = voStructure.getPackage();
+        if (this.fTelegramPackage != null && this.fTelegramPackage.length() > 0) {
+            packageName = this.fTelegramPackage;
+        } else {
+            BlancoValueObjectKtClassStructure voStructure = BlancoRestGeneratorKtUtil.objects.get(superClassId);
+            if (voStructure != null) {
+                packageName = voStructure.getPackage();
+            }
         }
         String superClassIdCanon = superClassId;
         if (packageName != null) {

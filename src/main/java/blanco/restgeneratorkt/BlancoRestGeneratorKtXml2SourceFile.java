@@ -72,6 +72,14 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         this.fServerType = serverType;
     }
 
+    private String fTelegramPackage = "";
+    public String getTelegramPackage() {
+        return this.fTelegramPackage;
+    }
+    public void setTelegramPackage(final String argTelegramPackage) {
+        this.fTelegramPackage = argTelegramPackage;
+    }
+
     /**
      * このプロダクトのリソースバンドルへのアクセスオブジェクト。
      */
@@ -170,6 +178,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         parser.setVerbose(this.isVerbose());
         parser.setCreateServiceMethod(this.isCreateServiceMethod());
         parser.setServerType(this.getServerType());
+        parser.setTelegramPackage(this.getTelegramPackage());
         BlancoRestGeneratorKtTelegramProcessStructure[] processStructures =
                 parser.parse(argMetaXmlSourceFile);
 
@@ -286,10 +295,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         // import分は無条件で設定します。
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
         // telegram 類を import します。
-        String runtimePkg = BlancoRestGeneratorKtUtil.runtimePackage;
-        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.HttpCommonRequest");
-        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonRequest");
-        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonResponse");
+        String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
+        fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
+        fCgSourceFile.getImportList().add(telegramPkg + ".CommonRequest");
+        fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
 
         // RequestHeader, ResponseHeader はここで確定しておく
         String requestHeaderClass = argProcessStructure.getRequestHeaderClass();
@@ -363,10 +372,11 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Controller");
         // telegram 類を import します。
+        String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         String runtimePkg = BlancoRestGeneratorKtUtil.runtimePackage;
-        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.HttpCommonRequest");
-        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonRequest");
-        fCgSourceFile.getImportList().add(runtimePkg + ".valueobject.CommonResponse");
+        fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
+        fCgSourceFile.getImportList().add(telegramPkg + ".CommonRequest");
+        fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
         fCgSourceFile.getImportList().add(runtimePkg + ".util.BlancoRestGeneratorKtRequestDeserializer");
 
         // クラスを作成
@@ -523,7 +533,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgInterface.getMethodList().add(cgExecutorMethod);
 
         /* request */
-        String httpCommonRequestId = BlancoRestGeneratorKtUtil.runtimePackage + ".valueobject.HttpCommonRequest";
+        String httpCommonRequestId = BlancoRestGeneratorKtUtil.telegramPackage + ".HttpCommonRequest";
         String commonRequestId = "CommonRequest";
 
         BlancoCgParameter httpRequest = fCgFactory.createParameter(
@@ -678,7 +688,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 fBundle.getXml2sourceFileExecutorReturnLangdoc());
         cgExecutorMethod.setReturn(cgReturn);
 
-        String commonResponseId = BlancoRestGeneratorKtUtil.runtimePackage + ".valueobject.CommonResponse";
+        String commonResponseId = BlancoRestGeneratorKtUtil.telegramPackage + ".CommonResponse";
 
         String responseGenerics = "";
         if (argResponseHeaderIdSimple == null || argResponseHeaderIdSimple.length() <= 0) {

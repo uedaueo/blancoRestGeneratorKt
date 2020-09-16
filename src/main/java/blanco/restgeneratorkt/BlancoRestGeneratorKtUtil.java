@@ -48,6 +48,7 @@ public class BlancoRestGeneratorKtUtil {
 
     public static String basePackage = null;
     public static String runtimePackage = null;
+    public static String telegramPackage = null;
     public static boolean genUtils = true;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {

@@ -128,6 +128,13 @@ public class BlancoRestGeneratorKtProcessInput {
     private boolean fGenUtils = true;
 
     /**
+     * 電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。
+     *
+     * フィールド: [telegrampackage]。
+     */
+    private String fTelegrampackage;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [verboseモードで動作させるかどうか。]。
@@ -491,6 +498,28 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [telegrampackage] の値を設定します。
+     *
+     * フィールドの説明: [電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。]。
+     *
+     * @param argTelegrampackage フィールド[telegrampackage]に設定する値。
+     */
+    public void setTelegrampackage(final String argTelegrampackage) {
+        fTelegrampackage = argTelegrampackage;
+    }
+
+    /**
+     * フィールド [telegrampackage] の値を取得します。
+     *
+     * フィールドの説明: [電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。]。
+     *
+     * @return フィールド[telegrampackage]から取得した値。
+     */
+    public String getTelegrampackage() {
+        return fTelegrampackage;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -521,6 +550,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",basepackage=" + fBasepackage);
         buf.append(",runtimepackage=" + fRuntimepackage);
         buf.append(",genUtils=" + fGenUtils);
+        buf.append(",telegrampackage=" + fTelegrampackage);
         buf.append("]");
         return buf.toString();
     }
@@ -591,5 +621,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fGenUtils
         // Type: boolean
         target.fGenUtils = this.fGenUtils;
+        // Name: fTelegrampackage
+        // Type: java.lang.String
+        target.fTelegrampackage = this.fTelegrampackage;
     }
 }

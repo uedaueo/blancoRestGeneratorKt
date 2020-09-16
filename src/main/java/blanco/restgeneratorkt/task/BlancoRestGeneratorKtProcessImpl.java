@@ -81,6 +81,11 @@ public class BlancoRestGeneratorKtProcessImpl implements
             } else {
                 BlancoRestGeneratorKtUtil.runtimePackage = BlancoRestGeneratorKtUtil.basePackage;
             }
+            if (input.getTelegrampackage() != null && input.getTelegrampackage().length() > 0) {
+                BlancoRestGeneratorKtUtil.telegramPackage = input.getTelegrampackage();
+            } else {
+                BlancoRestGeneratorKtUtil.telegramPackage = BlancoRestGeneratorKtUtil.basePackage + ".valueobject";
+            }
             BlancoRestGeneratorKtUtil.genUtils = input.getGenUtils();
 
             /*
@@ -116,6 +121,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
                 xml2source.setCreateServiceMethod(!input.getClient());
                 xml2source.setTabs(input.getTabs());
                 xml2source.setServerType(input.getServerType());
+                xml2source.setTelegramPackage(input.getTelegrampackage());
                 xml2source.process(fileMeta2[index], new File(strTarget));
             }
         } catch (IOException ex) {

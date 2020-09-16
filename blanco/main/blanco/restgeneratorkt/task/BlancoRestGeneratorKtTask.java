@@ -104,6 +104,11 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldGenUtilsProcessed = false;
 
     /**
+     * フィールド [telegrampackage] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldTelegrampackageProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -513,6 +518,31 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[telegrampackage]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 16<br>
+     * 電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setTelegrampackage(final String arg) {
+        fInput.setTelegrampackage(arg);
+        fIsFieldTelegrampackageProcessed = true;
+    }
+
+    /**
+     * Antタスクの[telegrampackage]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 16<br>
+     * 電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getTelegrampackage() {
+        return fInput.getTelegrampackage();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -547,6 +577,7 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- basepackage:[" + getBasepackage() + "]");
             System.out.println("- runtimepackage:[" + getRuntimepackage() + "]");
             System.out.println("- genUtils:[" + getGenUtils() + "]");
+            System.out.println("- telegrampackage:[" + getTelegrampackage() + "]");
         }
 
         try {

@@ -61,6 +61,7 @@ public class BlancoRestGeneratorKtTest {
         inputRestGenerator.setVerbose(true);
         inputRestGenerator.setServerType("micronaut");
         inputRestGenerator.setBasepackage("blanco.restgenerator");
+        inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject2");
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);
@@ -86,5 +87,28 @@ public class BlancoRestGeneratorKtTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testGeneratorProcesses() {
+        /*
+         * その後、電文と電文処理を生成します。
+         */
+        BlancoRestGeneratorKtProcessInput inputRestGenerator = new BlancoRestGeneratorKtProcessInput();
+        inputRestGenerator.setMetadir("meta/api");
+        inputRestGenerator.setEncoding("UTF-8");
+        inputRestGenerator.setSheetType("php");
+        inputRestGenerator.setTmpdir("tmpTest");
+        inputRestGenerator.setTargetdir("sample/blanco");
+        inputRestGenerator.setTargetStyle("maven");
+        inputRestGenerator.setNameAdjust(true);
+        inputRestGenerator.setClient(false);
+        inputRestGenerator.setVerbose(true);
+        inputRestGenerator.setServerType("micronaut");
+        inputRestGenerator.setBasepackage("blanco.restgenerator");
+        inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject2");
+
+        BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
+        imple.execute(inputRestGenerator);
     }
 }
