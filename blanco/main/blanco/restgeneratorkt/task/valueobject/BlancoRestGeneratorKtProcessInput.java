@@ -135,6 +135,35 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fTelegrampackage;
 
     /**
+     * 実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。
+     *
+     * フィールド: [impledir]。
+     */
+    private String fImpledir;
+
+    /**
+     * controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。
+     *
+     * フィールド: [genSkeleton]。
+     * デフォルト: [false]。
+     */
+    private boolean fGenSkeleton = false;
+
+    /**
+     * 実装クラスが処理を委譲するクラスのCanonical名です。
+     *
+     * フィールド: [skeletonDelegateClass]。
+     */
+    private String fSkeletonDelegateClass;
+
+    /**
+     * 実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。
+     *
+     * フィールド: [skeletonDelegateInterface]。
+     */
+    private String fSkeletonDelegateInterface;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [verboseモードで動作させるかどうか。]。
@@ -520,6 +549,95 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [impledir] の値を設定します。
+     *
+     * フィールドの説明: [実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。]。
+     *
+     * @param argImpledir フィールド[impledir]に設定する値。
+     */
+    public void setImpledir(final String argImpledir) {
+        fImpledir = argImpledir;
+    }
+
+    /**
+     * フィールド [impledir] の値を取得します。
+     *
+     * フィールドの説明: [実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。]。
+     *
+     * @return フィールド[impledir]から取得した値。
+     */
+    public String getImpledir() {
+        return fImpledir;
+    }
+
+    /**
+     * フィールド [genSkeleton] の値を設定します。
+     *
+     * フィールドの説明: [controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。]。
+     *
+     * @param argGenSkeleton フィールド[genSkeleton]に設定する値。
+     */
+    public void setGenSkeleton(final boolean argGenSkeleton) {
+        fGenSkeleton = argGenSkeleton;
+    }
+
+    /**
+     * フィールド [genSkeleton] の値を取得します。
+     *
+     * フィールドの説明: [controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[genSkeleton]から取得した値。
+     */
+    public boolean getGenSkeleton() {
+        return fGenSkeleton;
+    }
+
+    /**
+     * フィールド [skeletonDelegateClass] の値を設定します。
+     *
+     * フィールドの説明: [実装クラスが処理を委譲するクラスのCanonical名です。]。
+     *
+     * @param argSkeletonDelegateClass フィールド[skeletonDelegateClass]に設定する値。
+     */
+    public void setSkeletonDelegateClass(final String argSkeletonDelegateClass) {
+        fSkeletonDelegateClass = argSkeletonDelegateClass;
+    }
+
+    /**
+     * フィールド [skeletonDelegateClass] の値を取得します。
+     *
+     * フィールドの説明: [実装クラスが処理を委譲するクラスのCanonical名です。]。
+     *
+     * @return フィールド[skeletonDelegateClass]から取得した値。
+     */
+    public String getSkeletonDelegateClass() {
+        return fSkeletonDelegateClass;
+    }
+
+    /**
+     * フィールド [skeletonDelegateInterface] の値を設定します。
+     *
+     * フィールドの説明: [実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。]。
+     *
+     * @param argSkeletonDelegateInterface フィールド[skeletonDelegateInterface]に設定する値。
+     */
+    public void setSkeletonDelegateInterface(final String argSkeletonDelegateInterface) {
+        fSkeletonDelegateInterface = argSkeletonDelegateInterface;
+    }
+
+    /**
+     * フィールド [skeletonDelegateInterface] の値を取得します。
+     *
+     * フィールドの説明: [実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。]。
+     *
+     * @return フィールド[skeletonDelegateInterface]から取得した値。
+     */
+    public String getSkeletonDelegateInterface() {
+        return fSkeletonDelegateInterface;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -551,6 +669,10 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",runtimepackage=" + fRuntimepackage);
         buf.append(",genUtils=" + fGenUtils);
         buf.append(",telegrampackage=" + fTelegrampackage);
+        buf.append(",impledir=" + fImpledir);
+        buf.append(",genSkeleton=" + fGenSkeleton);
+        buf.append(",skeletonDelegateClass=" + fSkeletonDelegateClass);
+        buf.append(",skeletonDelegateInterface=" + fSkeletonDelegateInterface);
         buf.append("]");
         return buf.toString();
     }
@@ -624,5 +746,17 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fTelegrampackage
         // Type: java.lang.String
         target.fTelegrampackage = this.fTelegrampackage;
+        // Name: fImpledir
+        // Type: java.lang.String
+        target.fImpledir = this.fImpledir;
+        // Name: fGenSkeleton
+        // Type: boolean
+        target.fGenSkeleton = this.fGenSkeleton;
+        // Name: fSkeletonDelegateClass
+        // Type: java.lang.String
+        target.fSkeletonDelegateClass = this.fSkeletonDelegateClass;
+        // Name: fSkeletonDelegateInterface
+        // Type: java.lang.String
+        target.fSkeletonDelegateInterface = this.fSkeletonDelegateInterface;
     }
 }

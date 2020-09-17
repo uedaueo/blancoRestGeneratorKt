@@ -109,6 +109,26 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldTelegrampackageProcessed = false;
 
     /**
+     * フィールド [impledir] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldImpledirProcessed = false;
+
+    /**
+     * フィールド [genSkeleton] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldGenSkeletonProcessed = false;
+
+    /**
+     * フィールド [skeletonDelegateClass] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldSkeletonDelegateClassProcessed = false;
+
+    /**
+     * フィールド [skeletonDelegateInterface] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldSkeletonDelegateInterfaceProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -543,6 +563,107 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[impledir]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 17<br>
+     * 実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setImpledir(final String arg) {
+        fInput.setImpledir(arg);
+        fIsFieldImpledirProcessed = true;
+    }
+
+    /**
+     * Antタスクの[impledir]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 17<br>
+     * 実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getImpledir() {
+        return fInput.getImpledir();
+    }
+
+    /**
+     * Antタスクの[genSkeleton]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 18<br>
+     * controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setGenSkeleton(final boolean arg) {
+        fInput.setGenSkeleton(arg);
+        fIsFieldGenSkeletonProcessed = true;
+    }
+
+    /**
+     * Antタスクの[genSkeleton]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 18<br>
+     * controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。<br>
+     * デフォルト値[false]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public boolean getGenSkeleton() {
+        return fInput.getGenSkeleton();
+    }
+
+    /**
+     * Antタスクの[skeletonDelegateClass]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 19<br>
+     * 実装クラスが処理を委譲するクラスのCanonical名です。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setSkeletonDelegateClass(final String arg) {
+        fInput.setSkeletonDelegateClass(arg);
+        fIsFieldSkeletonDelegateClassProcessed = true;
+    }
+
+    /**
+     * Antタスクの[skeletonDelegateClass]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 19<br>
+     * 実装クラスが処理を委譲するクラスのCanonical名です。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getSkeletonDelegateClass() {
+        return fInput.getSkeletonDelegateClass();
+    }
+
+    /**
+     * Antタスクの[skeletonDelegateInterface]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 20<br>
+     * 実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setSkeletonDelegateInterface(final String arg) {
+        fInput.setSkeletonDelegateInterface(arg);
+        fIsFieldSkeletonDelegateInterfaceProcessed = true;
+    }
+
+    /**
+     * Antタスクの[skeletonDelegateInterface]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 20<br>
+     * 実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getSkeletonDelegateInterface() {
+        return fInput.getSkeletonDelegateInterface();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -578,6 +699,10 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- runtimepackage:[" + getRuntimepackage() + "]");
             System.out.println("- genUtils:[" + getGenUtils() + "]");
             System.out.println("- telegrampackage:[" + getTelegrampackage() + "]");
+            System.out.println("- impledir:[" + getImpledir() + "]");
+            System.out.println("- genSkeleton:[" + getGenSkeleton() + "]");
+            System.out.println("- skeletonDelegateClass:[" + getSkeletonDelegateClass() + "]");
+            System.out.println("- skeletonDelegateInterface:[" + getSkeletonDelegateInterface() + "]");
         }
 
         try {

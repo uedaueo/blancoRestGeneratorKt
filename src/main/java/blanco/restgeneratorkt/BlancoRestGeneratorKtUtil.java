@@ -50,6 +50,10 @@ public class BlancoRestGeneratorKtUtil {
     public static String runtimePackage = null;
     public static String telegramPackage = null;
     public static boolean genUtils = true;
+    public static boolean genSkeleton = false;
+    public static String impleDir = null;
+    public static String skeletonDelegateClass = null;
+    public static String skeletonDelegateInterface = null;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {

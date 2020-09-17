@@ -92,6 +92,14 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setGenUtils(Boolean.valueOf(arg.substring(10)).booleanValue());
             } else if (arg.startsWith("-telegrampackage=")) {
                 input.setTelegrampackage(arg.substring(17));
+            } else if (arg.startsWith("-impledir=")) {
+                input.setImpledir(arg.substring(10));
+            } else if (arg.startsWith("-genSkeleton=")) {
+                input.setGenSkeleton(Boolean.valueOf(arg.substring(13)).booleanValue());
+            } else if (arg.startsWith("-skeletonDelegateClass=")) {
+                input.setSkeletonDelegateClass(arg.substring(23));
+            } else if (arg.startsWith("-skeletonDelegateInterface=")) {
+                input.setSkeletonDelegateInterface(arg.substring(27));
             } else if (arg.equals("-?") || arg.equals("-help")) {
                 usage();
                 System.exit(END_SUCCESS);
@@ -189,7 +197,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -serverType=値13 -basepackage=値14 -runtimepackage=値15 -genUtils=値16 -telegrampackage=値17");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -serverType=値13 -basepackage=値14 -runtimepackage=値15 -genUtils=値16 -telegrampackage=値17 -impledir=値18 -genSkeleton=値19 -skeletonDelegateClass=値20 -skeletonDelegateInterface=値21");
         System.out.println("    -verbose");
         System.out.println("      説明[verboseモードで動作させるかどうか。]");
         System.out.println("      型[真偽]");
@@ -253,6 +261,19 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("      デフォルト値[true]");
         System.out.println("    -telegrampackage");
         System.out.println("      説明[電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。]");
+        System.out.println("      型[文字列]");
+        System.out.println("    -impledir");
+        System.out.println("      説明[実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。]");
+        System.out.println("      型[文字列]");
+        System.out.println("    -genSkeleton");
+        System.out.println("      説明[controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。]");
+        System.out.println("      型[真偽]");
+        System.out.println("      デフォルト値[false]");
+        System.out.println("    -skeletonDelegateClass");
+        System.out.println("      説明[実装クラスが処理を委譲するクラスのCanonical名です。]");
+        System.out.println("      型[文字列]");
+        System.out.println("    -skeletonDelegateInterface");
+        System.out.println("      説明[実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。]");
         System.out.println("      型[文字列]");
         System.out.println("    -? , -help");
         System.out.println("      説明[使い方を表示します。]");

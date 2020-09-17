@@ -30,41 +30,12 @@ public class BlancoRestGeneratorKtTest {
         /*
          * まず ValueObject を生成します。
          */
-        BlancoValueObjectKtProcessInput inputValueObject = new BlancoValueObjectKtProcessInput();
-        inputValueObject.setMetadir("meta/telegrams");
-        inputValueObject.setEncoding("UTF-8");
-        inputValueObject.setSheetType("php");
-        inputValueObject.setTmpdir("tmpTest");
-        inputValueObject.setTargetdir("sample/blanco");
-        inputValueObject.setTargetStyle("maven");
-        inputValueObject.setVerbose(true);
-
-        BlancoValueObjectKtProcessImpl impleValueObject = new BlancoValueObjectKtProcessImpl();
-        try {
-            impleValueObject.execute(inputValueObject);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.testGenerateValueObjects();
 
         /*
          * その後、電文と電文処理を生成します。
          */
-        BlancoRestGeneratorKtProcessInput inputRestGenerator = new BlancoRestGeneratorKtProcessInput();
-        inputRestGenerator.setMetadir("meta/api");
-        inputRestGenerator.setEncoding("UTF-8");
-        inputRestGenerator.setSheetType("php");
-        inputRestGenerator.setTmpdir("tmpTest");
-        inputRestGenerator.setTargetdir("sample/blanco");
-        inputRestGenerator.setTargetStyle("maven");
-        inputRestGenerator.setNameAdjust(true);
-        inputRestGenerator.setClient(false);
-        inputRestGenerator.setVerbose(true);
-        inputRestGenerator.setServerType("micronaut");
-        inputRestGenerator.setBasepackage("blanco.restgenerator");
-        inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject");
-
-        BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
-        imple.execute(inputRestGenerator);
+        this.testGeneratorProcesses();
     }
 
     @Test
@@ -107,6 +78,10 @@ public class BlancoRestGeneratorKtTest {
         inputRestGenerator.setServerType("micronaut");
         inputRestGenerator.setBasepackage("blanco.restgenerator");
         inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject");
+        inputRestGenerator.setGenSkeleton(true);
+        inputRestGenerator.setImpledir("sample/blanco/main/kotlin");
+        inputRestGenerator.setSkeletonDelegateClass("blanco.restgenerator.application.ApiBase");
+        inputRestGenerator.setSkeletonDelegateInterface("blanco.restgenerator.application.IApiBase");
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);

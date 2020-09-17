@@ -87,6 +87,10 @@ public class BlancoRestGeneratorKtProcessImpl implements
                 BlancoRestGeneratorKtUtil.telegramPackage = BlancoRestGeneratorKtUtil.basePackage + ".valueobject";
             }
             BlancoRestGeneratorKtUtil.genUtils = input.getGenUtils();
+            BlancoRestGeneratorKtUtil.genSkeleton = input.getGenSkeleton();
+            BlancoRestGeneratorKtUtil.impleDir = input.getImpledir();
+            BlancoRestGeneratorKtUtil.skeletonDelegateClass = input.getSkeletonDelegateClass();
+            BlancoRestGeneratorKtUtil.skeletonDelegateInterface = input.getSkeletonDelegateInterface();
 
             /*
              * validator を作る時に使うために，
