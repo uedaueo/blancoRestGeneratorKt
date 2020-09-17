@@ -752,7 +752,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         listLine.add("val httpResponse = " + argInjectedParameterId + "." + executeMethodId + "(httpCommonRequest)");
         listLine.add("");
         listLine.add("/* 後処理 */");
-        listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest.getStartTime())");
+        listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
         listLine.add("");
         listLine.add("return httpResponse");
     }
