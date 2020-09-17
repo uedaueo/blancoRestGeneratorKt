@@ -61,7 +61,7 @@ public class BlancoRestGeneratorKtTest {
         inputRestGenerator.setVerbose(true);
         inputRestGenerator.setServerType("micronaut");
         inputRestGenerator.setBasepackage("blanco.restgenerator");
-        inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject2");
+        inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject");
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);
@@ -106,7 +106,7 @@ public class BlancoRestGeneratorKtTest {
         inputRestGenerator.setVerbose(true);
         inputRestGenerator.setServerType("micronaut");
         inputRestGenerator.setBasepackage("blanco.restgenerator");
-        inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject2");
+        inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject");
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);

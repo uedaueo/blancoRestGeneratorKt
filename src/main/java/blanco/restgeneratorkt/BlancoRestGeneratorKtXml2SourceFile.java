@@ -717,22 +717,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         listLine.add("");
 
         listLine.add("/* httpRequest を delegator とした HttpCommonRequest を作成し、ここに型を確定させた commonRequest を格納する */");
-        listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, commonRequest)");
-        listLine.add("");
 
         /*
          * 認証が必要なAPIかどうか
          */
-        listLine.add("/* 認証が不要なAPIである */");
-        listLine.add(argInjectedParameterId + ".noAuthentication = " + (argNoAuthentication ? "true" : "false"));
-        listLine.add("");
+        String noAuthentication = argNoAuthentication ? "true" : "false";
 
         /*
          * あれば、MetaIdListを設定します。
          */
+        String metaIdList = "";
         if (argMetaIdList != null && argMetaIdList.size() > 0) {
-            listLine.add("/* メタIDリスト情報 */");
-            listLine.add(argInjectedParameterId + ".metaIdList = listOf(");
             int count = 0;
             StringBuffer sb = new StringBuffer();
             for (String metaId : argMetaIdList) {
@@ -744,16 +739,22 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 sb.append("\"" + metaId + "\"");
                 count++;
             }
-            listLine.add(sb.toString());
-            listLine.add(")");
-            listLine.add("");
+            metaIdList = sb.toString();
         }
+
+        listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), commonRequest)");
+        listLine.add("");
 
         listLine.add("/* 前処理を行う（validation等） */");
         listLine.add(argInjectedParameterId + ".prepare(httpCommonRequest)");
         listLine.add("");
         listLine.add("/* HttpCommonRequest を渡す */");
-        listLine.add("return " + argInjectedParameterId + "." + executeMethodId + "(httpCommonRequest)");
+        listLine.add("val httpResponse = " + argInjectedParameterId + "." + executeMethodId + "(httpCommonRequest)");
+        listLine.add("");
+        listLine.add("/* 後処理 */");
+        listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest.getStartTime())");
+        listLine.add("");
+        listLine.add("return httpResponse");
     }
 
     /**
