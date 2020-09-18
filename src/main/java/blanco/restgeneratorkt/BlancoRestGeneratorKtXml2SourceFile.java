@@ -1071,6 +1071,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         if (classFile.exists()) {
             System.out.println(applicationClassId + " は存在します。スキップします。");
             return;
+        } else {
+            if (this.isVerbose()) {
+                System.out.println(applicationClassId + " を作成します。");
+            }
         }
 
         final File fileBlancoMain = new File(BlancoRestGeneratorKtUtil.impleDir);
@@ -1135,6 +1139,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         // ServiceMethod を生成します。
         createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true, true);
 
+        if (this.isVerbose()) {
+            System.out.println("スケルトンを生成します。");
+            System.out.println("Settled  : " + fileBlancoMain.getAbsolutePath());
+            System.out.println("package  : " + fCgSourceFile.getPackage());
+            System.out.println("ClassName: " + fCgSourceFile.getClassList().get(0).getName());
+        }
         // 収集された情報を元に実際のソースコードを自動生成。
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
