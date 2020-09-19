@@ -1044,8 +1044,11 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             field.setDefault(defaultRawValue);
         }
 
-        /* メソッドの annotation を設定します */
-        List annotationList = argFieldStructure.getAnnotationList();
+        /* メソッドの annotation を設定します。アノテーション(kt) があればそちらを優先します。 */
+        List annotationList = argFieldStructure.getAnnotationListKt();
+        if (annotationList == null || annotationList.size() == 0) {
+            annotationList = argFieldStructure.getAnnotationList();
+        }
         if (annotationList != null && annotationList.size() > 0) {
             field.getAnnotationList().addAll(annotationList);
             System.out.println("/* tueda */ method annotation = " + field.getAnnotationList().get(0));

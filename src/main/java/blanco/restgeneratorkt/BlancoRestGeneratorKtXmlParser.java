@@ -459,14 +459,14 @@ public class BlancoRestGeneratorKtXmlParser {
             fieldStructure.setTypeKt(kotlinTypeKt);
 
             /* Kotlin の Generic に対応 */
-            String phpGenericKt = BlancoXmlBindingUtil.getTextContent(elementList, "fieldGeneric");
+            String phpGenericKt = BlancoXmlBindingUtil.getTextContent(elementList, "fieldGenericKt");
             if (BlancoStringUtil.null2Blank(phpGenericKt).length() != 0) {
                 String kotlinGenericKt = parsePhpTypes(phpGenericKt, true, argTelegramStructure);
                 fieldStructure.setGenericKt(kotlinGenericKt);
             }
 
             /* Kotlin の annnotation に対応 */
-            String methodAnnotationKt = BlancoXmlBindingUtil.getTextContent(elementList, "annotation");
+            String methodAnnotationKt = BlancoXmlBindingUtil.getTextContent(elementList, "annotationKt");
             if (BlancoStringUtil.null2Blank(methodAnnotationKt).length() != 0) {
                 fieldStructure.setAnnotationListKt(createAnnotaionList(methodAnnotationKt));
             }
