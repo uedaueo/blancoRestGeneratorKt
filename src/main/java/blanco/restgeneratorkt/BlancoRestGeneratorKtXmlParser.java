@@ -699,7 +699,7 @@ public class BlancoRestGeneratorKtXmlParser {
         // 電文処理定義・継承
         final List<BlancoXmlElement> extendsList = BlancoXmlBindingUtil
                 .getElementsByTagName(argElementSheet, fBundle.getMeta2xmlProcessExtends());
-        if (extendsList != null && extendsList.size() != 0) {
+        if (!this.fServerType.equalsIgnoreCase("micronaut") && extendsList != null && extendsList.size() != 0) {
             final BlancoXmlElement elementExtendsRoot = extendsList.get(0);
             parseProcessExtends(elementExtendsRoot, processStructure);
         }
