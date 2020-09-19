@@ -100,6 +100,8 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setSkeletonDelegateClass(arg.substring(23));
             } else if (arg.startsWith("-skeletonDelegateInterface=")) {
                 input.setSkeletonDelegateInterface(arg.substring(27));
+            } else if (arg.startsWith("-lineSeparator=")) {
+                input.setLineSeparator(arg.substring(15));
             } else if (arg.equals("-?") || arg.equals("-help")) {
                 usage();
                 System.exit(END_SUCCESS);
@@ -197,7 +199,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -serverType=値13 -basepackage=値14 -runtimepackage=値15 -genUtils=値16 -telegrampackage=値17 -impledir=値18 -genSkeleton=値19 -skeletonDelegateClass=値20 -skeletonDelegateInterface=値21");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -serverType=値13 -basepackage=値14 -runtimepackage=値15 -genUtils=値16 -telegrampackage=値17 -impledir=値18 -genSkeleton=値19 -skeletonDelegateClass=値20 -skeletonDelegateInterface=値21 -lineSeparator=値22");
         System.out.println("    -verbose");
         System.out.println("      説明[verboseモードで動作させるかどうか。]");
         System.out.println("      型[真偽]");
@@ -275,6 +277,10 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("    -skeletonDelegateInterface");
         System.out.println("      説明[実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。]");
         System.out.println("      型[文字列]");
+        System.out.println("    -lineSeparator");
+        System.out.println("      説明[行末記号をしていします。LF=0x0a, CR=0x0d, CFLF=0x0d0x0a とします。LFがデフォルトです。]");
+        System.out.println("      型[文字列]");
+        System.out.println("      デフォルト値[LF]");
         System.out.println("    -? , -help");
         System.out.println("      説明[使い方を表示します。]");
     }

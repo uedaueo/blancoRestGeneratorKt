@@ -75,6 +75,7 @@ public class BlancoRestGeneratorKtTest {
         inputRestGenerator.setNameAdjust(true);
         inputRestGenerator.setClient(false);
         inputRestGenerator.setVerbose(true);
+        inputRestGenerator.setLineSeparator("LF");
         inputRestGenerator.setServerType("micronaut");
         inputRestGenerator.setBasepackage("blanco.restgenerator");
         inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject");

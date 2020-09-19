@@ -164,6 +164,14 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fSkeletonDelegateInterface;
 
     /**
+     * 行末記号をしていします。LF=0x0a, CR=0x0d, CFLF=0x0d0x0a とします。LFがデフォルトです。
+     *
+     * フィールド: [lineSeparator]。
+     * デフォルト: [LF]。
+     */
+    private String fLineSeparator = "LF";
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [verboseモードで動作させるかどうか。]。
@@ -638,6 +646,29 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [lineSeparator] の値を設定します。
+     *
+     * フィールドの説明: [行末記号をしていします。LF=0x0a, CR=0x0d, CFLF=0x0d0x0a とします。LFがデフォルトです。]。
+     *
+     * @param argLineSeparator フィールド[lineSeparator]に設定する値。
+     */
+    public void setLineSeparator(final String argLineSeparator) {
+        fLineSeparator = argLineSeparator;
+    }
+
+    /**
+     * フィールド [lineSeparator] の値を取得します。
+     *
+     * フィールドの説明: [行末記号をしていします。LF=0x0a, CR=0x0d, CFLF=0x0d0x0a とします。LFがデフォルトです。]。
+     * デフォルト: [LF]。
+     *
+     * @return フィールド[lineSeparator]から取得した値。
+     */
+    public String getLineSeparator() {
+        return fLineSeparator;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -673,6 +704,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",genSkeleton=" + fGenSkeleton);
         buf.append(",skeletonDelegateClass=" + fSkeletonDelegateClass);
         buf.append(",skeletonDelegateInterface=" + fSkeletonDelegateInterface);
+        buf.append(",lineSeparator=" + fLineSeparator);
         buf.append("]");
         return buf.toString();
     }
@@ -758,5 +790,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fSkeletonDelegateInterface
         // Type: java.lang.String
         target.fSkeletonDelegateInterface = this.fSkeletonDelegateInterface;
+        // Name: fLineSeparator
+        // Type: java.lang.String
+        target.fLineSeparator = this.fLineSeparator;
     }
 }

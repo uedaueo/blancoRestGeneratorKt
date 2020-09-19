@@ -5,7 +5,7 @@
 	<groupId>blanco.restgeneratorkt</groupId>
 	<artifactId>blanco-restgeneratorkt</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.13</version>
+	<version>0.0.14</version>
 	<name>blanco-restgeneratorkt</name>
 	<url>https://igapyon.github.io/blancofw-maven2</url>
 
@@ -286,8 +286,8 @@
 								</taskdef>
 								<taskdef name="blancorestgeneratorkt" classname="blanco.restgeneratorkt.task.BlancoRestGeneratorKtTask" classpathref="maven.runtime.classpath">
 								</taskdef>
-								<blancovalueobjectkt metadir="meta/telegrams" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" />
-								<blancorestgeneratorkt metadir="meta/api" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" basepackage="blanco.restgenerator" />
+								<blancovalueobjectkt metadir="meta/telegrams" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" lineSeparator="LF" />
+								<blancorestgeneratorkt metadir="meta/api" encoding="${project.build.sourceEncoding}" sheetType="php" tmpdir="tmpTest" targetdir="sample/blanco" targetStyle="maven" verbose="true" basepackage="blanco.restgenerator"  lineSeparator="LF" />
 							</target>
 						</configuration>
 						<goals>
