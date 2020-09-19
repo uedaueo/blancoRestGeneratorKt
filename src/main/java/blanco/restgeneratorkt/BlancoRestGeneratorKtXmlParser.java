@@ -195,7 +195,7 @@ public class BlancoRestGeneratorKtXmlParser {
                 .getElementsByTagName(argElementSheet,
                         fBundle.getMeta2xmlTelegramImport());
         if (importList != null && importList.size() != 0) {
-            final BlancoXmlElement elementImportRoot = interfaceList.get(0);
+            final BlancoXmlElement elementImportRoot = importList.get(0);
             this.parseTelegramImport(elementImportRoot, telegramStructure);
         }
 
