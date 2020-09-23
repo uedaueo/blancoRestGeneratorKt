@@ -1138,6 +1138,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         BlancoCgType cgDeleClass = fCgFactory.createType(delegateClass);
         BlancoCgField cgField = fCgFactory.createField("apiBase", delegateClass, "Application クラスの共通処理を定義するデリゲートクラスです。");
         fCgClass.getConstructorArgList().add(cgField);
+        cgField.setNotnull(true);
 
         // ServiceMethod を生成します。
         createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true, true);
