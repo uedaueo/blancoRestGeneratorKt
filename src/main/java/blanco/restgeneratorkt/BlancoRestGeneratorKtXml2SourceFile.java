@@ -1114,6 +1114,9 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
         fCgClass.setAccess("public");
+        // 必ず @Singleton にします。
+        fCgClass.getAnnotationList().add("Singleton");
+        fCgSourceFile.getImportList().add("javax.inject.Singleton");
 
         // まず interface を実装します。
         String interfacePackage = argProcessStructure
