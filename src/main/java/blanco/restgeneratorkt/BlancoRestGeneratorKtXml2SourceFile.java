@@ -759,7 +759,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         if (this.isVerbose()) {
             System.out.println("### requestId = " + requestIdSimple);
         }
-        String requestIdPackage = requestStructure.getPackage();
+
+        // パッケージ名の置き換えオプションが指定されていれば置き換え
+        // Suffix があればそちらが優先です。
+        String overridePackage = requestStructure.getPackage();
+        if (requestStructure.getPackageSuffix() != null && requestStructure.getPackageSuffix().length() > 0) {
+            overridePackage = overridePackage + "." + requestStructure.getPackageSuffix();
+        } else if (requestStructure.getOverridePackage() != null && requestStructure.getOverridePackage().length() > 0) {
+            overridePackage = requestStructure.getOverridePackage();
+        }
+
+        String requestIdPackage = overridePackage;
         String requestId = requestIdPackage + "." + requestIdSimple;
         fCgSourceFile.getImportList().add(requestId);
 
@@ -785,7 +795,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         if (this.isVerbose()) {
             System.out.println("### responseId = " + responseIdSimple);
         }
-        String responseIdPackage = responseStructure.getPackage();
+        String responseIdPackage = overridePackage;
         String responseId = responseIdPackage + "." + responseIdSimple;
         fCgSourceFile.getImportList().add(responseId);
 
@@ -1152,9 +1162,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgClass.getAnnotationList().add("Singleton");
         fCgSourceFile.getImportList().add("javax.inject.Singleton");
 
+        // パッケージ名の置き換えオプションが指定されていれば置き換え
+        // Suffix があればそちらが優先です。
+        String overridePackage = argProcessStructure.getPackage();
+        if (argProcessStructure.getPackageSuffix() != null && argProcessStructure.getPackageSuffix().length() > 0) {
+            overridePackage = overridePackage + "." + argProcessStructure.getPackageSuffix();
+        } else if (argProcessStructure.getOverridePackage() != null && argProcessStructure.getOverridePackage().length() > 0) {
+            overridePackage = argProcessStructure.getOverridePackage();
+        }
+
         // まず interface を実装します。
-        String interfacePackage = argProcessStructure
-                .getPackage() + ".interfaces";
+        String interfacePackage = overridePackage + ".interfaces";
         // インタフェイスを作成します
         String applicationInterfaceId = "I" + argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
         BlancoCgType interfaceType = fCgFactory.createType(
