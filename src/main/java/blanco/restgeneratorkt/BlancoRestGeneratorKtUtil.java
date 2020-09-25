@@ -57,6 +57,8 @@ public class BlancoRestGeneratorKtUtil {
     public static String packageSuffix = null;
     public static String overridePackage = null;
     public static String overrideLocation = null;
+    public static String voPackageSuffix = null;
+    public static String voOverridePackage = null;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {
@@ -226,10 +228,17 @@ public class BlancoRestGeneratorKtUtil {
     }
 
     static public String searchPackageBySimpleName(String simpleName) {
+        // パッケージ名の置き換えオプションが指定されていれば置き換え
+        // Suffix があればそちらが優先です。
         String packageName = null;
         BlancoValueObjectKtClassStructure voStructure = objects.get(simpleName);
         if (voStructure != null) {
             packageName = voStructure.getPackage();
+            if (BlancoRestGeneratorKtUtil.voPackageSuffix != null && BlancoRestGeneratorKtUtil.voPackageSuffix.length() > 0) {
+                packageName = packageName + "." + BlancoRestGeneratorKtUtil.voPackageSuffix;
+            } else if (BlancoRestGeneratorKtUtil.voOverridePackage != null && BlancoRestGeneratorKtUtil.voOverridePackage.length() > 0) {
+                packageName = BlancoRestGeneratorKtUtil.voOverridePackage;
+            }
         }
         return packageName;
     }

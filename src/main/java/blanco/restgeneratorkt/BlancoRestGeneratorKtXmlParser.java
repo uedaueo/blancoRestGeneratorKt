@@ -306,10 +306,7 @@ public class BlancoRestGeneratorKtXmlParser {
         if (this.fTelegramPackage != null && this.fTelegramPackage.length() > 0) {
             packageName = this.fTelegramPackage;
         } else {
-            BlancoValueObjectKtClassStructure voStructure = BlancoRestGeneratorKtUtil.objects.get(superClassId);
-            if (voStructure != null) {
-                packageName = voStructure.getPackage();
-            }
+            packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(superClassId);
         }
         String superClassIdCanon = superClassId;
         if (packageName != null) {
@@ -355,15 +352,11 @@ public class BlancoRestGeneratorKtXmlParser {
                     /*
                      * このクラスのパッケージ名を探す
                      */
-                    BlancoValueObjectKtClassStructure voStructure = BlancoRestGeneratorKtUtil.objects.get(className);
-                    if (voStructure != null) {
-                        packageName = voStructure.getPackage();
-                        if (packageName != null & packageName.length() > 0) {
-                            fqInterface = packageName + "." + className;
-                        }
+                    packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(className);
+                    if (packageName != null & packageName.length() > 0) {
+                        fqInterface = packageName + "." + className;
                     }
                 }
-
                 argTelegramStructure.getImplementsList().add(fqInterface);
             }
         }
@@ -845,10 +838,7 @@ public class BlancoRestGeneratorKtXmlParser {
                 /*
                  * このクラスのパッケージ名を探す
                  */
-                BlancoValueObjectKtClassStructure voStructure = BlancoRestGeneratorKtUtil.objects.get(className);
-                if (voStructure != null) {
-                    packageName = voStructure.getPackage();
-                }
+                packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(className);
             }
             if (packageName != null) {
                 classNameCanon = packageName + "." + className;
@@ -897,12 +887,9 @@ public class BlancoRestGeneratorKtXmlParser {
                     /*
                      * このクラスのパッケージ名を探す
                      */
-                    BlancoValueObjectKtClassStructure voStructure = BlancoRestGeneratorKtUtil.objects.get(className);
-                    if (voStructure != null) {
-                        packageName = voStructure.getPackage();
-                        if (packageName != null & packageName.length() > 0) {
-                            fqInterface = packageName + "." + className;
-                        }
+                    packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(className);
+                    if (packageName != null & packageName.length() > 0) {
+                        fqInterface = packageName + "." + className;
                     }
                 }
             }
@@ -940,7 +927,7 @@ public class BlancoRestGeneratorKtXmlParser {
     }
 
     /**
-     * 電文書IDから電文IDを決定し、定義されているもののみをprocessStructureに設定します。
+     * 電文処理IDから電文IDを決定し、定義されているもののみをprocessStructureに設定します。
      * 電文IDは以下のルールで決定されます。
      * <電文処理ID> + <Method> + <Request|Response>
      *
@@ -985,20 +972,13 @@ public class BlancoRestGeneratorKtXmlParser {
                 /*
                  * デフォルト電文クラスのimport情報を生成する
                  */
-                // 要求
-                String defaultTelegramId = BlancoRestGeneratorKtUtil.getDefaultRequestTelegramId(method);
-                String defaultTelegramPackage = null;
-                BlancoValueObjectKtClassStructure voStructure = BlancoRestGeneratorKtUtil.objects.get(defaultTelegramId);
-                if (voStructure != null) {
-                    defaultTelegramPackage = voStructure.getPackage();
-                }
-                // 応答
-                defaultTelegramId = BlancoRestGeneratorKtUtil.getDefaultResponseTelegramId(method);
-                defaultTelegramPackage = null;
-                voStructure = BlancoRestGeneratorKtUtil.objects.get(defaultTelegramId);
-                if (voStructure != null) {
-                    defaultTelegramPackage = voStructure.getPackage();
-                }
+                // obsolete?
+//                // 要求
+//                String defaultTelegramId = BlancoRestGeneratorKtUtil.getDefaultRequestTelegramId(method);
+//                String defaultTelegramPackage = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(defaultTelegramId);
+//                // 応答
+//                defaultTelegramId = BlancoRestGeneratorKtUtil.getDefaultResponseTelegramId(method);
+//                defaultTelegramPackage = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(defaultTelegramId);
             }
 
             if (telegrams.size() == 0) {

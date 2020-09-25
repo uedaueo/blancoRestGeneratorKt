@@ -149,6 +149,16 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldOverrideLocationProcessed = false;
 
     /**
+     * フィールド [voPackageSuffix] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldVoPackageSuffixProcessed = false;
+
+    /**
+     * フィールド [voOverridePackage] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldVoOverridePackageProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -785,6 +795,56 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[voPackageSuffix]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 25<br>
+     * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの packageSuffix を指定します。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setVoPackageSuffix(final String arg) {
+        fInput.setVoPackageSuffix(arg);
+        fIsFieldVoPackageSuffixProcessed = true;
+    }
+
+    /**
+     * Antタスクの[voPackageSuffix]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 25<br>
+     * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの packageSuffix を指定します。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getVoPackageSuffix() {
+        return fInput.getVoPackageSuffix();
+    }
+
+    /**
+     * Antタスクの[voOverridePackage]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 26<br>
+     * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの overridePackage を指定します。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setVoOverridePackage(final String arg) {
+        fInput.setVoOverridePackage(arg);
+        fIsFieldVoOverridePackageProcessed = true;
+    }
+
+    /**
+     * Antタスクの[voOverridePackage]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 26<br>
+     * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの overridePackage を指定します。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getVoOverridePackage() {
+        return fInput.getVoOverridePackage();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -828,6 +888,8 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- packageSuffix:[" + getPackageSuffix() + "]");
             System.out.println("- overridePackage:[" + getOverridePackage() + "]");
             System.out.println("- overrideLocation:[" + getOverrideLocation() + "]");
+            System.out.println("- voPackageSuffix:[" + getVoPackageSuffix() + "]");
+            System.out.println("- voOverridePackage:[" + getVoOverridePackage() + "]");
         }
 
         try {

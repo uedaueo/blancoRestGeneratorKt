@@ -126,6 +126,8 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.packageSuffix = input.getPackageSuffix();
             BlancoRestGeneratorKtUtil.overridePackage = input.getOverridePackage();
             BlancoRestGeneratorKtUtil.overrideLocation = input.getOverrideLocation();
+            BlancoRestGeneratorKtUtil.voPackageSuffix = input.getVoPackageSuffix();
+            BlancoRestGeneratorKtUtil.voOverridePackage = input.getVoOverridePackage();
 
             /*
              * validator を作る時に使うために，

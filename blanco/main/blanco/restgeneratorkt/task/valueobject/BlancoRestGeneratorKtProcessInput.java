@@ -193,6 +193,20 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fOverrideLocation;
 
     /**
+     * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの packageSuffix を指定します。
+     *
+     * フィールド: [voPackageSuffix]。
+     */
+    private String fVoPackageSuffix;
+
+    /**
+     * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの overridePackage を指定します。
+     *
+     * フィールド: [voOverridePackage]。
+     */
+    private String fVoOverridePackage;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [verboseモードで動作させるかどうか。]。
@@ -756,6 +770,50 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [voPackageSuffix] の値を設定します。
+     *
+     * フィールドの説明: [packageを探しにいくValueObject定義書を処理する際に指定されていたはずの packageSuffix を指定します。]。
+     *
+     * @param argVoPackageSuffix フィールド[voPackageSuffix]に設定する値。
+     */
+    public void setVoPackageSuffix(final String argVoPackageSuffix) {
+        fVoPackageSuffix = argVoPackageSuffix;
+    }
+
+    /**
+     * フィールド [voPackageSuffix] の値を取得します。
+     *
+     * フィールドの説明: [packageを探しにいくValueObject定義書を処理する際に指定されていたはずの packageSuffix を指定します。]。
+     *
+     * @return フィールド[voPackageSuffix]から取得した値。
+     */
+    public String getVoPackageSuffix() {
+        return fVoPackageSuffix;
+    }
+
+    /**
+     * フィールド [voOverridePackage] の値を設定します。
+     *
+     * フィールドの説明: [packageを探しにいくValueObject定義書を処理する際に指定されていたはずの overridePackage を指定します。]。
+     *
+     * @param argVoOverridePackage フィールド[voOverridePackage]に設定する値。
+     */
+    public void setVoOverridePackage(final String argVoOverridePackage) {
+        fVoOverridePackage = argVoOverridePackage;
+    }
+
+    /**
+     * フィールド [voOverridePackage] の値を取得します。
+     *
+     * フィールドの説明: [packageを探しにいくValueObject定義書を処理する際に指定されていたはずの overridePackage を指定します。]。
+     *
+     * @return フィールド[voOverridePackage]から取得した値。
+     */
+    public String getVoOverridePackage() {
+        return fVoOverridePackage;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -795,6 +853,8 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",packageSuffix=" + fPackageSuffix);
         buf.append(",overridePackage=" + fOverridePackage);
         buf.append(",overrideLocation=" + fOverrideLocation);
+        buf.append(",voPackageSuffix=" + fVoPackageSuffix);
+        buf.append(",voOverridePackage=" + fVoOverridePackage);
         buf.append("]");
         return buf.toString();
     }
@@ -892,5 +952,11 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fOverrideLocation
         // Type: java.lang.String
         target.fOverrideLocation = this.fOverrideLocation;
+        // Name: fVoPackageSuffix
+        // Type: java.lang.String
+        target.fVoPackageSuffix = this.fVoPackageSuffix;
+        // Name: fVoOverridePackage
+        // Type: java.lang.String
+        target.fVoOverridePackage = this.fVoOverridePackage;
     }
 }
