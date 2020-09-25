@@ -123,6 +123,9 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.impleDir = input.getImpledir();
             BlancoRestGeneratorKtUtil.skeletonDelegateClass = input.getSkeletonDelegateClass();
             BlancoRestGeneratorKtUtil.skeletonDelegateInterface = input.getSkeletonDelegateInterface();
+            BlancoRestGeneratorKtUtil.packageSuffix = input.getPackageSuffix();
+            BlancoRestGeneratorKtUtil.overridePackage = input.getOverridePackage();
+            BlancoRestGeneratorKtUtil.overrideLocation = input.getOverrideLocation();
 
             /*
              * validator を作る時に使うために，

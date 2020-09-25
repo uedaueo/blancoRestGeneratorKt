@@ -255,6 +255,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
         /*
          * 次に実装クラスのスケルトンを生成します。
+         * スケルトンのパッケージ名はoverrideしません。
          */
         if (BlancoRestGeneratorKtUtil.genSkeleton &&
                 BlancoRestGeneratorKtUtil.impleDir != null &&
@@ -297,8 +298,16 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 //            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
 //        }
 
-        String interfacePackage = argProcessStructure
-                .getPackage() + ".interfaces";
+        // パッケージ名の置き換えオプションが指定されていれば置き換え
+        // Suffix があればそちらが優先です。
+        String myPackage = argProcessStructure.getPackage();
+        if (argProcessStructure.getPackageSuffix() != null && argProcessStructure.getPackageSuffix().length() > 0) {
+            myPackage = myPackage + "." + argProcessStructure.getPackageSuffix();
+        } else if (argProcessStructure.getOverridePackage() != null && argProcessStructure.getOverridePackage().length() > 0) {
+            myPackage = argProcessStructure.getOverridePackage();
+        }
+
+        String interfacePackage = myPackage + ".interfaces";
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
         fCgSourceFile = fCgFactory.createSourceFile(interfacePackage, "このソースコードは blanco Frameworkによって自動生成されています。");
@@ -373,9 +382,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 //            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
 //        }
 
+        // パッケージ名の置き換えオプションが指定されていれば置き換え
+        // Suffix があればそちらが優先です。
+        String myPackage = argProcessStructure.getPackage();
+        if (argProcessStructure.getPackageSuffix() != null && argProcessStructure.getPackageSuffix().length() > 0) {
+            myPackage = myPackage + "." + argProcessStructure.getPackageSuffix();
+        } else if (argProcessStructure.getOverridePackage() != null && argProcessStructure.getOverridePackage().length() > 0) {
+            myPackage = argProcessStructure.getOverridePackage();
+        }
+
         fCgFactory = BlancoCgObjectFactory.getInstance();
-        fCgSourceFile = fCgFactory.createSourceFile(argProcessStructure
-                .getPackage(), "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile = fCgFactory.createSourceFile(myPackage, "このソースコードは blanco Frameworkによって自動生成されています。");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
 
@@ -433,6 +450,15 @@ public class BlancoRestGeneratorKtXml2SourceFile {
          * Controller アノテーションは常に設定します。
          */
         String location = BlancoStringUtil.null2Blank(argProcessStructure.getLocation());
+
+        /*
+         * overrideLocation が指定されていた場合はそちらが優先
+         */
+        String overrideLocation = argProcessStructure.getOverrideLocation();
+        if (overrideLocation != null && overrideLocation.length() > 0) {
+            location = overrideLocation;
+        }
+
         String serviceId = BlancoStringUtil.null2Blank(argProcessStructure.getServiceId());
         String controllerAnn = "Controller";
         if (serviceId.length() > 0) {
@@ -823,9 +849,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             System.out.println("BlancoRestGeneratorKtXml2SourceFile#generateTelegram START with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
         }
 
+        // パッケージ名の置き換えオプションが指定されていれば置き換え
+        // Suffix があればそちらが優先です。
+        String myPackage = argTelegramStructure.getPackage();
+        if (argTelegramStructure.getPackageSuffix() != null && argTelegramStructure.getPackageSuffix().length() > 0) {
+            myPackage = myPackage + "." + argTelegramStructure.getPackageSuffix();
+        } else if (argTelegramStructure.getOverridePackage() != null && argTelegramStructure.getOverridePackage().length() > 0) {
+            myPackage = argTelegramStructure.getOverridePackage();
+        }
+
         fCgFactory = BlancoCgObjectFactory.getInstance();
-        fCgSourceFile = fCgFactory.createSourceFile(argTelegramStructure
-                .getPackage(), "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile = fCgFactory.createSourceFile(myPackage, "このソースコードは blanco Frameworkによって自動生成されています。");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
         // クラスを作成

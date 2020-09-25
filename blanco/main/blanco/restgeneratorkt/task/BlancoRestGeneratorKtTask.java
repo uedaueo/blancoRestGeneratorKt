@@ -134,6 +134,21 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldLineSeparatorProcessed = false;
 
     /**
+     * フィールド [packageSuffix] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldPackageSuffixProcessed = false;
+
+    /**
+     * フィールド [overridePackage] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldOverridePackageProcessed = false;
+
+    /**
+     * フィールド [overrideLocation] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldOverrideLocationProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -695,6 +710,81 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[packageSuffix]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 22<br>
+     * 定義書で指定されたパッケージ名の後ろに追加するパッケージ文字列を指定します。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setPackageSuffix(final String arg) {
+        fInput.setPackageSuffix(arg);
+        fIsFieldPackageSuffixProcessed = true;
+    }
+
+    /**
+     * Antタスクの[packageSuffix]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 22<br>
+     * 定義書で指定されたパッケージ名の後ろに追加するパッケージ文字列を指定します。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getPackageSuffix() {
+        return fInput.getPackageSuffix();
+    }
+
+    /**
+     * Antタスクの[overridePackage]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 23<br>
+     * 定義書で指定されたパッケージ名を上書きします。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setOverridePackage(final String arg) {
+        fInput.setOverridePackage(arg);
+        fIsFieldOverridePackageProcessed = true;
+    }
+
+    /**
+     * Antタスクの[overridePackage]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 23<br>
+     * 定義書で指定されたパッケージ名を上書きします。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getOverridePackage() {
+        return fInput.getOverridePackage();
+    }
+
+    /**
+     * Antタスクの[overrideLocation]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 24<br>
+     * 定義書で指定されたロケーション名を上書きします。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setOverrideLocation(final String arg) {
+        fInput.setOverrideLocation(arg);
+        fIsFieldOverrideLocationProcessed = true;
+    }
+
+    /**
+     * Antタスクの[overrideLocation]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 24<br>
+     * 定義書で指定されたロケーション名を上書きします。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getOverrideLocation() {
+        return fInput.getOverrideLocation();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -735,6 +825,9 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- skeletonDelegateClass:[" + getSkeletonDelegateClass() + "]");
             System.out.println("- skeletonDelegateInterface:[" + getSkeletonDelegateInterface() + "]");
             System.out.println("- lineSeparator:[" + getLineSeparator() + "]");
+            System.out.println("- packageSuffix:[" + getPackageSuffix() + "]");
+            System.out.println("- overridePackage:[" + getOverridePackage() + "]");
+            System.out.println("- overrideLocation:[" + getOverrideLocation() + "]");
         }
 
         try {

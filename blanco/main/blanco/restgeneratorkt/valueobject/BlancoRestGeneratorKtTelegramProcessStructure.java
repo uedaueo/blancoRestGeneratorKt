@@ -149,6 +149,27 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private String fResponseHeaderClass;
 
     /**
+     * パッケージ名の後ろに付加する文字列をしていします。
+     *
+     * フィールド: [packageSuffix]。
+     */
+    private String fPackageSuffix;
+
+    /**
+     * 定義書で指定されたパッケージ名を上書きします。
+     *
+     * フィールド: [overridePackage]。
+     */
+    private String fOverridePackage;
+
+    /**
+     * 定義書で指定されたロケーション名を上書きします。
+     *
+     * フィールド: [overrideLocation]。
+     */
+    private String fOverrideLocation;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -575,6 +596,72 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [packageSuffix] の値を設定します。
+     *
+     * フィールドの説明: [パッケージ名の後ろに付加する文字列をしていします。]。
+     *
+     * @param argPackageSuffix フィールド[packageSuffix]に設定する値。
+     */
+    public void setPackageSuffix(final String argPackageSuffix) {
+        fPackageSuffix = argPackageSuffix;
+    }
+
+    /**
+     * フィールド [packageSuffix] の値を取得します。
+     *
+     * フィールドの説明: [パッケージ名の後ろに付加する文字列をしていします。]。
+     *
+     * @return フィールド[packageSuffix]から取得した値。
+     */
+    public String getPackageSuffix() {
+        return fPackageSuffix;
+    }
+
+    /**
+     * フィールド [overridePackage] の値を設定します。
+     *
+     * フィールドの説明: [定義書で指定されたパッケージ名を上書きします。]。
+     *
+     * @param argOverridePackage フィールド[overridePackage]に設定する値。
+     */
+    public void setOverridePackage(final String argOverridePackage) {
+        fOverridePackage = argOverridePackage;
+    }
+
+    /**
+     * フィールド [overridePackage] の値を取得します。
+     *
+     * フィールドの説明: [定義書で指定されたパッケージ名を上書きします。]。
+     *
+     * @return フィールド[overridePackage]から取得した値。
+     */
+    public String getOverridePackage() {
+        return fOverridePackage;
+    }
+
+    /**
+     * フィールド [overrideLocation] の値を設定します。
+     *
+     * フィールドの説明: [定義書で指定されたロケーション名を上書きします。]。
+     *
+     * @param argOverrideLocation フィールド[overrideLocation]に設定する値。
+     */
+    public void setOverrideLocation(final String argOverrideLocation) {
+        fOverrideLocation = argOverrideLocation;
+    }
+
+    /**
+     * フィールド [overrideLocation] の値を取得します。
+     *
+     * フィールドの説明: [定義書で指定されたロケーション名を上書きします。]。
+     *
+     * @return フィールド[overrideLocation]から取得した値。
+     */
+    public String getOverrideLocation() {
+        return fOverrideLocation;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -608,6 +695,9 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",listTelegrams=" + fListTelegrams);
         buf.append(",requestHeaderClass=" + fRequestHeaderClass);
         buf.append(",responseHeaderClass=" + fResponseHeaderClass);
+        buf.append(",packageSuffix=" + fPackageSuffix);
+        buf.append(",overridePackage=" + fOverridePackage);
+        buf.append(",overrideLocation=" + fOverrideLocation);
         buf.append("]");
         return buf.toString();
     }
@@ -727,5 +817,14 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fResponseHeaderClass
         // Type: java.lang.String
         target.fResponseHeaderClass = this.fResponseHeaderClass;
+        // Name: fPackageSuffix
+        // Type: java.lang.String
+        target.fPackageSuffix = this.fPackageSuffix;
+        // Name: fOverridePackage
+        // Type: java.lang.String
+        target.fOverridePackage = this.fOverridePackage;
+        // Name: fOverrideLocation
+        // Type: java.lang.String
+        target.fOverrideLocation = this.fOverrideLocation;
     }
 }

@@ -175,6 +175,11 @@ public class BlancoRestGeneratorKtXmlParser {
             System.out.println("BlancoRestGeneratorKtXmlParser#parseTelegramSheet name = " + name);
         }
 
+        // はじめにPackage上書き系オプションを設定します。
+        telegramStructure.setPackageSuffix(BlancoRestGeneratorKtUtil.packageSuffix);
+        telegramStructure.setOverridePackage(BlancoRestGeneratorKtUtil.overridePackage);
+        // telegram には location はありません。
+
         // 電文定義・共通
         this.parseTelegramCommon(elementCommon, telegramStructure);
 
@@ -692,6 +697,11 @@ public class BlancoRestGeneratorKtXmlParser {
         if (this.isVerbose()) {
             System.out.println("BlancoRestGeneratorKtXmlParser#parseProcessSheet name = " + name);
         }
+
+        // パッケージ上書き系の設定をします。
+        processStructure.setPackageSuffix(BlancoRestGeneratorKtUtil.packageSuffix);
+        processStructure.setOverridePackage(BlancoRestGeneratorKtUtil.overridePackage);
+        processStructure.setOverrideLocation(BlancoRestGeneratorKtUtil.overrideLocation);
 
         // 電文処理定義・共通
         parseProcessCommon(elementCommon, processStructure);

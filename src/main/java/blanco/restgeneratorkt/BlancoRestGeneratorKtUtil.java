@@ -54,6 +54,9 @@ public class BlancoRestGeneratorKtUtil {
     public static String impleDir = null;
     public static String skeletonDelegateClass = null;
     public static String skeletonDelegateInterface = null;
+    public static String packageSuffix = null;
+    public static String overridePackage = null;
+    public static String overrideLocation = null;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {
