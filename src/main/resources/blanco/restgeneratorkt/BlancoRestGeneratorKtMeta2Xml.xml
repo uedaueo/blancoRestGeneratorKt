@@ -34,6 +34,9 @@
                 <propertykey name="annotation" waitX="2">
                     <value>アノテーション</value>
                 </propertykey>
+                <propertykey name="annotationKt" waitX="2">
+                    <value>アノテーション(Kt)</value>
+                </propertykey>
 <!--                <propertykey name="createImportList" waitX="2">-->
 <!--                    <value>import文の自動生成</value>-->
 <!--                </propertykey>-->

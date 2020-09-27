@@ -238,9 +238,12 @@ public class BlancoRestGeneratorKtXmlParser {
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));
 
         /* クラスの annotation に対応 */
-        String classAnnotation = "";
-        BlancoXmlBindingUtil.getTextContent(
-                argElementCommon, "annotation");
+        String classAnnotation = BlancoXmlBindingUtil.getTextContent(
+                argElementCommon, "annotationKt");
+        if (classAnnotation == null || classAnnotation.length() == 0) {
+            classAnnotation = BlancoXmlBindingUtil.getTextContent(
+                    argElementCommon, "annotation");
+        }
         if (BlancoStringUtil.null2Blank(classAnnotation).length() > 0) {
             argTelegramStructure.setAnnotationList(createAnnotaionList(classAnnotation));
         }
@@ -785,7 +788,11 @@ public class BlancoRestGeneratorKtXmlParser {
 
         // アノテーション
         String classAnnotation = BlancoXmlBindingUtil.getTextContent(
-                argElementCommon, "annotation");
+                argElementCommon, "annotationKt");
+        if (classAnnotation == null || classAnnotation.length() == 0) {
+            classAnnotation = BlancoXmlBindingUtil.getTextContent(
+                    argElementCommon, "annotation");
+        }
         if (BlancoStringUtil.null2Blank(classAnnotation).length() > 0) {
             argProcessStructure.setAnnotationList(createAnnotaionList(classAnnotation));
         }
