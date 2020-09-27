@@ -674,16 +674,21 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgSourceFile.getImportList().add(requestDeserializerId);
         String requestDeserializerIdSimple = "BlancoRestGeneratorKtRequestDeserializer";
 
+        /*
+         * deserializer の生成
+         */
         listLine.add("/* json 文字列から CommonRequest インスタンスを生成する */");
         listLine.add("val deserializer = " + requestDeserializerIdSimple + "<" + argRequestHeaderIdSimple + ", " + requestId + ">(argHttpRequest.javaClass)");
         listLine.add("deserializer.infoClazz = " + argRequestHeaderIdSimple + "::class.java");
         listLine.add("deserializer.telegramClazz = " + requestId + "::class.java");
         listLine.add("");
 
-        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(argBody, deserializer)");
-        listLine.add("");
+        /*
+         * HttpCommonRequest の生成
+         */
 
-        listLine.add("/* httpRequest を delegator とした HttpCommonRequest を作成し、ここに型を確定させた commonRequest を格納する */");
+        listLine.add("/* httpRequest を delegator とした HttpCommonRequest を作成する */");
+        listLine.add("/* この段階では commonRequest は仮。*/");
 
         /*
          * 認証が必要なAPIかどうか
@@ -709,7 +714,18 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             metaIdList = sb.toString();
         }
 
-        listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), commonRequest)");
+        listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
+        listLine.add("");
+
+        /*
+         * commonRequest の生成
+         *
+         */
+        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(argBody, deserializer, httpCommonRequest)");
+        listLine.add("");
+
+        listLine.add("/* ここで型を確定させた commonRequest を格納する */");
+        listLine.add("httpCommonRequest.commonRequest = commonRequest");
         listLine.add("");
 
         listLine.add("/* 前処理を行う（validation等） */");
