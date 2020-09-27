@@ -108,11 +108,8 @@ public class BlancoRestGeneratorKtUtil {
             /*
              * まず始めにすべてのシートを検索して，クラス名とpackage名のリストを作ります．
              * php形式の定義書では，クラスを指定する際にpackage名が指定されていないからです．
-             * なお、restgenerator では classList は使っていないが、
-             * 生成しておかないと valueobject で parse が止まるので、作成しておく。
+             *
              */
-            BlancoValueObjectKtXmlParser.classList =
-                    BlancoValueObjectKtXmlParser.createClassListFromSheets(fileMeta3);
             final BlancoValueObjectKtClassStructure[] structures = parser.parse(fileMeta3[index]);
 
             if (structures != null ) {
