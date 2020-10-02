@@ -469,7 +469,15 @@ public class BlancoRestGeneratorKtXmlParser {
             /* Kotlin の annnotation に対応 */
             String methodAnnotationKt = BlancoXmlBindingUtil.getTextContent(elementList, "annotationKt");
             if (BlancoStringUtil.null2Blank(methodAnnotationKt).length() != 0) {
-                fieldStructure.setAnnotationListKt(createAnnotaionList(methodAnnotationKt));
+                fieldStructure.setAnnotationList(createAnnotaionList(methodAnnotationKt));
+            }
+
+            // required に対応 (NotNullアノテーションの付与）
+            fieldStructure.setRequired("true".equals(BlancoXmlBindingUtil
+                    .getTextContent(elementList, "fieldRequired")));
+            if (fieldStructure.getRequired()) {
+                fieldStructure.getAnnotationList().add("field:NotNull");
+                argTelegramStructure.getImportList().add("javax.validation.constraints.NotNull");
             }
 
             // Nullable に対応
