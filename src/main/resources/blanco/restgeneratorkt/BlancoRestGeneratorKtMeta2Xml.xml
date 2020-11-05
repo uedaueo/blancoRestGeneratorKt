@@ -131,6 +131,9 @@ JavaDocに利用されます</value>
                 <tablecolumn name="fieldRequired">
                     <value>必須</value>
                 </tablecolumn>
+                <tablecolumn name="fieldRequiredKt">
+                    <value>必須(Kt)</value>
+                </tablecolumn>
                 <tablecolumn name="default">
                     <value>デフォルト</value>
                 </tablecolumn>
@@ -151,6 +154,12 @@ JavaDocに利用されます</value>
                 </tablecolumn>
                 <tablecolumn name="fixedValue">
                     <value>変更不可変数</value>
+                </tablecolumn>
+                <tablecolumn name="nullableKt">
+                    <value>Nullable(Kt)</value>
+                </tablecolumn>
+                <tablecolumn name="fixedValueKt">
+                    <value>変更不可変数(Kt)</value>
                 </tablecolumn>
                 <tablecolumn name="constructorArg">
                     <value>コンストラクタ引数</value>
@@ -177,6 +186,10 @@ JavaDocに利用されます</value>
                 <valuemapping>
                     <result>true</result>
                     <source>YES</source>
+                </valuemapping>
+                <valuemapping>
+                    <result>not</result>
+                    <source>NOT</source>
                 </valuemapping>
             </tableblock>
 

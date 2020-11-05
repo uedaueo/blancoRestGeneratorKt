@@ -3,6 +3,8 @@ package blanco.restgeneratorkt.valueobject;
 import java.util.ArrayList;
 import java.util.List;
 
+import blanco.cg.valueobject.BlancoCgField;
+
 /**
  * BlancoRestGeneratorKtのなかで利用されるValueObjectです。
  */
@@ -69,7 +71,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      * フィールド: [annotationList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fAnnotationList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fAnnotationList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * TypeScript 独自。blancoで一括生成されたクラスについて、import文を自動生成します。
@@ -92,7 +94,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      * フィールド: [implementsList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fImplementsList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fImplementsList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * importを指定します。
@@ -100,7 +102,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      * フィールド: [importList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fImportList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fImportList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * source コードの先頭に書かれるコード群です。
@@ -108,7 +110,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      * フィールド: [headerList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fHeaderList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fHeaderList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * フィールドを保持するリスト
@@ -116,7 +118,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      * フィールド: [listField]。
      * デフォルト: [new java.util.ArrayList&lt;&gt;()]。
      */
-    private ArrayList<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure> fListField = new java.util.ArrayList<>();
+    private ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> fListField = new java.util.ArrayList<>();
 
     /**
      * クラスのアクセス。通常は public。
@@ -156,7 +158,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      * フィールド: [constructorArgList]。
      * デフォルト: [new java.util.ArrayList&lt;blanco.cg.valueobject.BlancoCgField&gt;()]。
      */
-    private List<blanco.cg.valueobject.BlancoCgField> fConstructorArgList = new java.util.ArrayList<blanco.cg.valueobject.BlancoCgField>();
+    private List<BlancoCgField> fConstructorArgList = new java.util.ArrayList<blanco.cg.valueobject.BlancoCgField>();
 
     /**
      * パッケージ名の後ろに付加する文字列をしていします。
@@ -355,7 +357,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @param argAnnotationList フィールド[annotationList]に設定する値。
      */
-    public void setAnnotationList(final List<java.lang.String> argAnnotationList) {
+    public void setAnnotationList(final List<String> argAnnotationList) {
         fAnnotationList = argAnnotationList;
     }
 
@@ -367,7 +369,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @return フィールド[annotationList]から取得した値。
      */
-    public List<java.lang.String> getAnnotationList() {
+    public List<String> getAnnotationList() {
         return fAnnotationList;
     }
 
@@ -423,7 +425,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @param argImplementsList フィールド[implementsList]に設定する値。
      */
-    public void setImplementsList(final List<java.lang.String> argImplementsList) {
+    public void setImplementsList(final List<String> argImplementsList) {
         fImplementsList = argImplementsList;
     }
 
@@ -435,7 +437,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @return フィールド[implementsList]から取得した値。
      */
-    public List<java.lang.String> getImplementsList() {
+    public List<String> getImplementsList() {
         return fImplementsList;
     }
 
@@ -446,7 +448,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @param argImportList フィールド[importList]に設定する値。
      */
-    public void setImportList(final List<java.lang.String> argImportList) {
+    public void setImportList(final List<String> argImportList) {
         fImportList = argImportList;
     }
 
@@ -458,7 +460,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @return フィールド[importList]から取得した値。
      */
-    public List<java.lang.String> getImportList() {
+    public List<String> getImportList() {
         return fImportList;
     }
 
@@ -469,7 +471,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @param argHeaderList フィールド[headerList]に設定する値。
      */
-    public void setHeaderList(final List<java.lang.String> argHeaderList) {
+    public void setHeaderList(final List<String> argHeaderList) {
         fHeaderList = argHeaderList;
     }
 
@@ -481,7 +483,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @return フィールド[headerList]から取得した値。
      */
-    public List<java.lang.String> getHeaderList() {
+    public List<String> getHeaderList() {
         return fHeaderList;
     }
 
@@ -492,7 +494,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @param argListField フィールド[listField]に設定する値。
      */
-    public void setListField(final ArrayList<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure> argListField) {
+    public void setListField(final ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> argListField) {
         fListField = argListField;
     }
 
@@ -504,7 +506,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @return フィールド[listField]から取得した値。
      */
-    public ArrayList<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure> getListField() {
+    public ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> getListField() {
         return fListField;
     }
 
@@ -607,7 +609,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @param argConstructorArgList フィールド[constructorArgList]に設定する値。
      */
-    public void setConstructorArgList(final List<blanco.cg.valueobject.BlancoCgField> argConstructorArgList) {
+    public void setConstructorArgList(final List<BlancoCgField> argConstructorArgList) {
         fConstructorArgList = argConstructorArgList;
     }
 
@@ -619,7 +621,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
      *
      * @return フィールド[constructorArgList]から取得した値。
      */
-    public List<blanco.cg.valueobject.BlancoCgField> getConstructorArgList() {
+    public List<BlancoCgField> getConstructorArgList() {
         return fConstructorArgList;
     }
 
@@ -752,15 +754,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         target.fBasedir = this.fBasedir;
         // Name: fAnnotationList
         // Type: java.util.List
-        if (this.fAnnotationList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fAnnotationList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fAnnotationList.add(loopTarget);
-            }
-        }
+        // フィールド[fAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fCreateImportList
         // Type: java.lang.Boolean
         target.fCreateImportList = this.fCreateImportList;
@@ -769,40 +763,16 @@ public class BlancoRestGeneratorKtTelegramStructure {
         target.fExtends = this.fExtends;
         // Name: fImplementsList
         // Type: java.util.List
-        if (this.fImplementsList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fImplementsList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fImplementsList.add(loopTarget);
-            }
-        }
+        // フィールド[fImplementsList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fImportList
         // Type: java.util.List
-        if (this.fImportList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fImportList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fImportList.add(loopTarget);
-            }
-        }
+        // フィールド[fImportList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fHeaderList
         // Type: java.util.List
-        if (this.fHeaderList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fHeaderList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fHeaderList.add(loopTarget);
-            }
-        }
+        // フィールド[fHeaderList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fListField
         // Type: java.util.ArrayList
-        // フィールド[fListField]はサポート外の型[java.util.ArrayList<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure>]です。
+        // フィールド[fListField]はサポート外の型[java.util.ArrayListblanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure]です。
         // Name: fAccess
         // Type: java.lang.String
         target.fAccess = this.fAccess;
@@ -817,15 +787,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         target.fAdjustFieldName = this.fAdjustFieldName;
         // Name: fConstructorArgList
         // Type: java.util.List
-        if (this.fConstructorArgList != null) {
-            final java.util.Iterator<blanco.cg.valueobject.BlancoCgField> iterator = this.fConstructorArgList.iterator();
-            for (; iterator.hasNext();) {
-                blanco.cg.valueobject.BlancoCgField loopSource = iterator.next();
-                blanco.cg.valueobject.BlancoCgField loopTarget = null;
-                // フィールド[generics]はサポート外の型[blanco.cg.valueobject.BlancoCgField]です。
-                target.fConstructorArgList.add(loopTarget);
-            }
-        }
+        // フィールド[fConstructorArgList]はサポート外の型[java.util.Listblanco.cg.valueobject.BlancoCgField]です。
         // Name: fPackageSuffix
         // Type: java.lang.String
         target.fPackageSuffix = this.fPackageSuffix;

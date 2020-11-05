@@ -33,7 +33,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      * フィールド: [descriptionList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fDescriptionList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fDescriptionList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * 型名をパッケージ名のフル修飾付で指定します。必須項目です。
@@ -55,7 +55,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      * フィールド: [annotationList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fAnnotationList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fAnnotationList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * kotlin用の型名をパッケージ名のフル修飾付で指定します。
@@ -77,7 +77,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      * フィールド: [annotationListKt]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fAnnotationListKt = new java.util.ArrayList<java.lang.String>();
+    private List<String> fAnnotationListKt = new java.util.ArrayList<java.lang.String>();
 
     /**
      * 必須項目の場合はtrue
@@ -239,7 +239,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      *
      * @param argDescriptionList フィールド[descriptionList]に設定する値。
      */
-    public void setDescriptionList(final List<java.lang.String> argDescriptionList) {
+    public void setDescriptionList(final List<String> argDescriptionList) {
         fDescriptionList = argDescriptionList;
     }
 
@@ -251,7 +251,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      *
      * @return フィールド[descriptionList]から取得した値。
      */
-    public List<java.lang.String> getDescriptionList() {
+    public List<String> getDescriptionList() {
         return fDescriptionList;
     }
 
@@ -306,7 +306,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      *
      * @param argAnnotationList フィールド[annotationList]に設定する値。
      */
-    public void setAnnotationList(final List<java.lang.String> argAnnotationList) {
+    public void setAnnotationList(final List<String> argAnnotationList) {
         fAnnotationList = argAnnotationList;
     }
 
@@ -318,7 +318,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      *
      * @return フィールド[annotationList]から取得した値。
      */
-    public List<java.lang.String> getAnnotationList() {
+    public List<String> getAnnotationList() {
         return fAnnotationList;
     }
 
@@ -373,7 +373,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      *
      * @param argAnnotationListKt フィールド[annotationListKt]に設定する値。
      */
-    public void setAnnotationListKt(final List<java.lang.String> argAnnotationListKt) {
+    public void setAnnotationListKt(final List<String> argAnnotationListKt) {
         fAnnotationListKt = argAnnotationListKt;
     }
 
@@ -385,7 +385,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
      *
      * @return フィールド[annotationListKt]から取得した値。
      */
-    public List<java.lang.String> getAnnotationListKt() {
+    public List<String> getAnnotationListKt() {
         return fAnnotationListKt;
     }
 
@@ -726,15 +726,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
         target.fDescription = this.fDescription;
         // Name: fDescriptionList
         // Type: java.util.List
-        if (this.fDescriptionList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fDescriptionList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fDescriptionList.add(loopTarget);
-            }
-        }
+        // フィールド[fDescriptionList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fType
         // Type: java.lang.String
         target.fType = this.fType;
@@ -743,15 +735,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
         target.fGeneric = this.fGeneric;
         // Name: fAnnotationList
         // Type: java.util.List
-        if (this.fAnnotationList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fAnnotationList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fAnnotationList.add(loopTarget);
-            }
-        }
+        // フィールド[fAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fTypeKt
         // Type: java.lang.String
         target.fTypeKt = this.fTypeKt;
@@ -760,15 +744,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
         target.fGenericKt = this.fGenericKt;
         // Name: fAnnotationListKt
         // Type: java.util.List
-        if (this.fAnnotationListKt != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fAnnotationListKt.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fAnnotationListKt.add(loopTarget);
-            }
-        }
+        // フィールド[fAnnotationListKt]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fRequired
         // Type: java.lang.Boolean
         target.fRequired = this.fRequired;

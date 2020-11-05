@@ -69,7 +69,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      * フィールド: [annotationList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fAnnotationList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fAnnotationList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * カンマ区切りで記述された文字列が、配列情報として生成されます
@@ -77,7 +77,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      * フィールド: [metaIdList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fMetaIdList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fMetaIdList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * 認証が不要な場合はtrue
@@ -108,7 +108,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      * フィールド: [implementsList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fImplementsList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fImplementsList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * importを指定します。
@@ -116,7 +116,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      * フィールド: [importList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fImportList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fImportList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * source コードの先頭に書かれるコード群です。
@@ -124,7 +124,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      * フィールド: [headerList]。
      * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
      */
-    private List<java.lang.String> fHeaderList = new java.util.ArrayList<java.lang.String>();
+    private List<String> fHeaderList = new java.util.ArrayList<java.lang.String>();
 
     /**
      * この電文処理が使用する電文の一覧
@@ -132,7 +132,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      * フィールド: [listTelegrams]。
      * デフォルト: [new java.util.HashMap&lt;&gt;()]。
      */
-    private HashMap<java.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>> fListTelegrams = new java.util.HashMap<>();
+    private HashMap<String, HashMap<String, BlancoRestGeneratorKtTelegramStructure>> fListTelegrams = new java.util.HashMap<>();
 
     /**
      * リクエスト電文のヘッダクラス名（Canonical）
@@ -352,7 +352,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @param argAnnotationList フィールド[annotationList]に設定する値。
      */
-    public void setAnnotationList(final List<java.lang.String> argAnnotationList) {
+    public void setAnnotationList(final List<String> argAnnotationList) {
         fAnnotationList = argAnnotationList;
     }
 
@@ -364,7 +364,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @return フィールド[annotationList]から取得した値。
      */
-    public List<java.lang.String> getAnnotationList() {
+    public List<String> getAnnotationList() {
         return fAnnotationList;
     }
 
@@ -375,7 +375,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @param argMetaIdList フィールド[metaIdList]に設定する値。
      */
-    public void setMetaIdList(final List<java.lang.String> argMetaIdList) {
+    public void setMetaIdList(final List<String> argMetaIdList) {
         fMetaIdList = argMetaIdList;
     }
 
@@ -387,7 +387,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @return フィールド[metaIdList]から取得した値。
      */
-    public List<java.lang.String> getMetaIdList() {
+    public List<String> getMetaIdList() {
         return fMetaIdList;
     }
 
@@ -466,7 +466,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @param argImplementsList フィールド[implementsList]に設定する値。
      */
-    public void setImplementsList(final List<java.lang.String> argImplementsList) {
+    public void setImplementsList(final List<String> argImplementsList) {
         fImplementsList = argImplementsList;
     }
 
@@ -478,7 +478,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @return フィールド[implementsList]から取得した値。
      */
-    public List<java.lang.String> getImplementsList() {
+    public List<String> getImplementsList() {
         return fImplementsList;
     }
 
@@ -489,7 +489,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @param argImportList フィールド[importList]に設定する値。
      */
-    public void setImportList(final List<java.lang.String> argImportList) {
+    public void setImportList(final List<String> argImportList) {
         fImportList = argImportList;
     }
 
@@ -501,7 +501,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @return フィールド[importList]から取得した値。
      */
-    public List<java.lang.String> getImportList() {
+    public List<String> getImportList() {
         return fImportList;
     }
 
@@ -512,7 +512,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @param argHeaderList フィールド[headerList]に設定する値。
      */
-    public void setHeaderList(final List<java.lang.String> argHeaderList) {
+    public void setHeaderList(final List<String> argHeaderList) {
         fHeaderList = argHeaderList;
     }
 
@@ -524,7 +524,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @return フィールド[headerList]から取得した値。
      */
-    public List<java.lang.String> getHeaderList() {
+    public List<String> getHeaderList() {
         return fHeaderList;
     }
 
@@ -535,7 +535,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @param argListTelegrams フィールド[listTelegrams]に設定する値。
      */
-    public void setListTelegrams(final HashMap<java.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>> argListTelegrams) {
+    public void setListTelegrams(final HashMap<String, HashMap<String, BlancoRestGeneratorKtTelegramStructure>> argListTelegrams) {
         fListTelegrams = argListTelegrams;
     }
 
@@ -547,7 +547,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      *
      * @return フィールド[listTelegrams]から取得した値。
      */
-    public HashMap<java.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>> getListTelegrams() {
+    public HashMap<String, HashMap<String, BlancoRestGeneratorKtTelegramStructure>> getListTelegrams() {
         return fListTelegrams;
     }
 
@@ -746,26 +746,10 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         target.fImpleDirKt = this.fImpleDirKt;
         // Name: fAnnotationList
         // Type: java.util.List
-        if (this.fAnnotationList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fAnnotationList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fAnnotationList.add(loopTarget);
-            }
-        }
+        // フィールド[fAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fMetaIdList
         // Type: java.util.List
-        if (this.fMetaIdList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fMetaIdList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fMetaIdList.add(loopTarget);
-            }
-        }
+        // フィールド[fMetaIdList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fNoAuthentication
         // Type: java.lang.Boolean
         target.fNoAuthentication = this.fNoAuthentication;
@@ -777,40 +761,16 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         target.fExtends = this.fExtends;
         // Name: fImplementsList
         // Type: java.util.List
-        if (this.fImplementsList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fImplementsList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fImplementsList.add(loopTarget);
-            }
-        }
+        // フィールド[fImplementsList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fImportList
         // Type: java.util.List
-        if (this.fImportList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fImportList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fImportList.add(loopTarget);
-            }
-        }
+        // フィールド[fImportList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fHeaderList
         // Type: java.util.List
-        if (this.fHeaderList != null) {
-            final java.util.Iterator<java.lang.String> iterator = this.fHeaderList.iterator();
-            for (; iterator.hasNext();) {
-                java.lang.String loopSource = iterator.next();
-                java.lang.String loopTarget = null;
-                loopTarget = loopSource;
-                target.fHeaderList.add(loopTarget);
-            }
-        }
+        // フィールド[fHeaderList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fListTelegrams
         // Type: java.util.HashMap
-        // フィールド[fListTelegrams]はサポート外の型[java.util.HashMap<java.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>>]です。
+        // フィールド[fListTelegrams]はサポート外の型[java.util.HashMapjava.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>]です。
         // Name: fRequestHeaderClass
         // Type: java.lang.String
         target.fRequestHeaderClass = this.fRequestHeaderClass;

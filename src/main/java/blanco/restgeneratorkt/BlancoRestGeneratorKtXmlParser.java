@@ -6,7 +6,6 @@ import blanco.restgeneratorkt.resourcebundle.BlancoRestGeneratorKtResourceBundle
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramProcessStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
-import blanco.valueobjectkt.valueobject.BlancoValueObjectKtClassStructure;
 import blanco.xml.bind.BlancoXmlBindingUtil;
 import blanco.xml.bind.BlancoXmlUnmarshaller;
 import blanco.xml.bind.valueobject.BlancoXmlDocument;
@@ -473,16 +472,39 @@ public class BlancoRestGeneratorKtXmlParser {
             }
 
             // required に対応 (NotNullアノテーションの付与）
-            fieldStructure.setRequired("true".equals(BlancoXmlBindingUtil
-                    .getTextContent(elementList, "fieldRequired")));
+            String requiredKt = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "fieldRequiredKt");
+            String required = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "fieldRequired");
+            if (BlancoStringUtil.null2Blank(requiredKt).length() > 0) {
+                if ("true".equals(requiredKt)) {
+                    required = requiredKt;
+                } else if ("not".equals(requiredKt) &&
+                        BlancoStringUtil.null2Blank(required).length() > 0) {
+                    required = ""; // requiredKt が not の時は required を無視
+                }
+            }
+            fieldStructure.setRequired("true".equals(required));
             if (fieldStructure.getRequired()) {
                 fieldStructure.getAnnotationList().add("field:NotNull");
                 argTelegramStructure.getImportList().add("javax.validation.constraints.NotNull");
             }
 
             // Nullable に対応
-            fieldStructure.setNullable("true".equals(BlancoXmlBindingUtil
-                    .getTextContent(elementList, "nullable")));
+            String nullableKt = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "nullableKt");
+            String nullable = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "nullable");
+            if (BlancoStringUtil.null2Blank(nullableKt).length() > 0) {
+                if ("true".equals(nullableKt)) {
+                    nullable = nullableKt;
+                } else if ("not".equals(nullableKt) &&
+                        BlancoStringUtil.null2Blank(nullable).length() > 0) {
+                    nullable = ""; // nullableKt が not の時は nullable を無視
+                }
+            }
+            fieldStructure.setNullable("true".equals(nullable));
+
             // 説明
             fieldStructure.setDescription(BlancoXmlBindingUtil
                     .getTextContent(elementList, "fieldDescription"));
@@ -541,12 +563,26 @@ public class BlancoRestGeneratorKtXmlParser {
              */
             fieldStructure.setConstArg(true);
 
-            /*
-             * 要求電文パラメータは変更不可（暫定）
-             */
-            if ("Input".equalsIgnoreCase(argTelegramStructure.getTelegramType())) {
-                fieldStructure.setValue(true);
+//            /*
+//             * 要求電文パラメータは変更不可（暫定）
+//             */
+//            if ("Input".equalsIgnoreCase(argTelegramStructure.getTelegramType())) {
+//                fieldStructure.setValue(true);
+//            }
+            // fixedValue に対応
+            String valueKt = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "fixedValueKt");
+            String value = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "fixedValue");
+            if (BlancoStringUtil.null2Blank(valueKt).length() > 0) {
+                if ("true".equals(valueKt)) {
+                    value = valueKt;
+                } else if ("not".equals(valueKt) &&
+                        BlancoStringUtil.null2Blank(value).length() > 0) {
+                    value = ""; // valueKt が not の時は value を無視
+                }
             }
+            fieldStructure.setValue("true".equals(value));
 
             argTelegramStructure.getListField().add(fieldStructure);
         }
