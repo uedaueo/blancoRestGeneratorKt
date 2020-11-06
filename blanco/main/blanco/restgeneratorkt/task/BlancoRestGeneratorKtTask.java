@@ -84,6 +84,16 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldClientProcessed = false;
 
     /**
+     * フィールド [clientAnnotation] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldClientAnnotationProcessed = false;
+
+    /**
+     * フィールド [overrideClientAnnotation] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldOverrideClientAnnotationProcessed = false;
+
+    /**
      * フィールド [serverType] に値がセットされたかどうか。
      */
     protected boolean fIsFieldServerTypeProcessed = false;
@@ -465,9 +475,59 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
-     * Antタスクの[serverType]アトリビュートのセッターメソッド。
+     * Antタスクの[clientAnnotation]アトリビュートのセッターメソッド。
      *
      * 項目番号: 12<br>
+     * Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書に記載がある場合はそちらを優先します。現在の所、micronautのみが使用可能です。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setClientAnnotation(final String arg) {
+        fInput.setClientAnnotation(arg);
+        fIsFieldClientAnnotationProcessed = true;
+    }
+
+    /**
+     * Antタスクの[clientAnnotation]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 12<br>
+     * Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書に記載がある場合はそちらを優先します。現在の所、micronautのみが使用可能です。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getClientAnnotation() {
+        return fInput.getClientAnnotation();
+    }
+
+    /**
+     * Antタスクの[overrideClientAnnotation]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 13<br>
+     * Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書の記載よりも優先されます。現在の所、micronautのみが使用可能です。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setOverrideClientAnnotation(final String arg) {
+        fInput.setOverrideClientAnnotation(arg);
+        fIsFieldOverrideClientAnnotationProcessed = true;
+    }
+
+    /**
+     * Antタスクの[overrideClientAnnotation]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 13<br>
+     * Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書の記載よりも優先されます。現在の所、micronautのみが使用可能です。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getOverrideClientAnnotation() {
+        return fInput.getOverrideClientAnnotation();
+    }
+
+    /**
+     * Antタスクの[serverType]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 14<br>
      * Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。<br>
      *
      * @param arg セットしたい値
@@ -480,7 +540,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[serverType]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 12<br>
+     * 項目番号: 14<br>
      * Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。<br>
      * デフォルト値[micronaut]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
      *
@@ -493,7 +553,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[basepackage]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 13<br>
+     * 項目番号: 15<br>
      * blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。<br>
      *
      * @param arg セットしたい値
@@ -506,7 +566,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[basepackage]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 13<br>
+     * 項目番号: 15<br>
      * blancoRestGeneratorがJavaソースコードを生成する際の基準となるパッケージ名を指定します。<br>
      * 必須アトリビュートです。Apache Antタスク上で必ず値が指定されます。<br>
      *
@@ -519,7 +579,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[runtimepackage]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 14<br>
+     * 項目番号: 16<br>
      * ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。<br>
      *
      * @param arg セットしたい値
@@ -532,7 +592,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[runtimepackage]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 14<br>
+     * 項目番号: 16<br>
      * ランタイムクラスを生成する生成先を指定します。無指定の場合には basepackageを基準に生成されます。<br>
      *
      * @return このフィールドの値
@@ -544,7 +604,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[genUtils]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 15<br>
+     * 項目番号: 17<br>
      * ユーティリティ類の生成を省略する場合はfalseを指定します。<br>
      *
      * @param arg セットしたい値
@@ -557,7 +617,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[genUtils]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 15<br>
+     * 項目番号: 17<br>
      * ユーティリティ類の生成を省略する場合はfalseを指定します。<br>
      * デフォルト値[true]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
      *
@@ -570,7 +630,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[telegrampackage]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 16<br>
+     * 項目番号: 18<br>
      * 電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。<br>
      *
      * @param arg セットしたい値
@@ -583,7 +643,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[telegrampackage]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 16<br>
+     * 項目番号: 18<br>
      * 電文の基底クラスが配備されているパッケージを指定します。指定がない場合はvalueobjectから探します。<br>
      *
      * @return このフィールドの値
@@ -595,7 +655,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[impledir]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 17<br>
+     * 項目番号: 19<br>
      * 実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。<br>
      *
      * @param arg セットしたい値
@@ -608,7 +668,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[impledir]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 17<br>
+     * 項目番号: 19<br>
      * 実装ファイルの配置ディレクトリを指定します。controllerから呼び出されるmanagementクラスのスケルトンはここに生成されます。<br>
      *
      * @return このフィールドの値
@@ -620,7 +680,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[genSkeleton]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 18<br>
+     * 項目番号: 20<br>
      * controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。<br>
      *
      * @param arg セットしたい値
@@ -633,7 +693,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[genSkeleton]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 18<br>
+     * 項目番号: 20<br>
      * controllerから呼び出されるmanagementクラスのスケルトンを生成します。既にファイルが存在する場合は上書きしません。<br>
      * デフォルト値[false]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
      *
@@ -646,7 +706,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[skeletonDelegateClass]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 19<br>
+     * 項目番号: 21<br>
      * 実装クラスが処理を委譲するクラスのCanonical名です。<br>
      *
      * @param arg セットしたい値
@@ -659,7 +719,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[skeletonDelegateClass]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 19<br>
+     * 項目番号: 21<br>
      * 実装クラスが処理を委譲するクラスのCanonical名です。<br>
      *
      * @return このフィールドの値
@@ -671,7 +731,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[skeletonDelegateInterface]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 20<br>
+     * 項目番号: 22<br>
      * 実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。<br>
      *
      * @param arg セットしたい値
@@ -684,7 +744,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[skeletonDelegateInterface]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 20<br>
+     * 項目番号: 22<br>
      * 実装クラスが処理を委譲するクラスが実装するIntefaceのCanonical名です。<br>
      *
      * @return このフィールドの値
@@ -696,7 +756,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[lineSeparator]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 21<br>
+     * 項目番号: 23<br>
      * 行末記号をしていします。LF=0x0a, CR=0x0d, CFLF=0x0d0x0a とします。LFがデフォルトです。<br>
      *
      * @param arg セットしたい値
@@ -709,7 +769,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[lineSeparator]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 21<br>
+     * 項目番号: 23<br>
      * 行末記号をしていします。LF=0x0a, CR=0x0d, CFLF=0x0d0x0a とします。LFがデフォルトです。<br>
      * デフォルト値[LF]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
      *
@@ -722,7 +782,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[packageSuffix]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 22<br>
+     * 項目番号: 24<br>
      * 定義書で指定されたパッケージ名の後ろに追加するパッケージ文字列を指定します。<br>
      *
      * @param arg セットしたい値
@@ -735,7 +795,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[packageSuffix]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 22<br>
+     * 項目番号: 24<br>
      * 定義書で指定されたパッケージ名の後ろに追加するパッケージ文字列を指定します。<br>
      *
      * @return このフィールドの値
@@ -747,7 +807,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[overridePackage]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 23<br>
+     * 項目番号: 25<br>
      * 定義書で指定されたパッケージ名を上書きします。<br>
      *
      * @param arg セットしたい値
@@ -760,7 +820,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[overridePackage]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 23<br>
+     * 項目番号: 25<br>
      * 定義書で指定されたパッケージ名を上書きします。<br>
      *
      * @return このフィールドの値
@@ -772,7 +832,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[overrideLocation]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 24<br>
+     * 項目番号: 26<br>
      * 定義書で指定されたロケーション名を上書きします。<br>
      *
      * @param arg セットしたい値
@@ -785,7 +845,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[overrideLocation]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 24<br>
+     * 項目番号: 26<br>
      * 定義書で指定されたロケーション名を上書きします。<br>
      *
      * @return このフィールドの値
@@ -797,7 +857,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[voPackageSuffix]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 25<br>
+     * 項目番号: 27<br>
      * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの packageSuffix を指定します。<br>
      *
      * @param arg セットしたい値
@@ -810,7 +870,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[voPackageSuffix]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 25<br>
+     * 項目番号: 27<br>
      * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの packageSuffix を指定します。<br>
      *
      * @return このフィールドの値
@@ -822,7 +882,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[voOverridePackage]アトリビュートのセッターメソッド。
      *
-     * 項目番号: 26<br>
+     * 項目番号: 28<br>
      * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの overridePackage を指定します。<br>
      *
      * @param arg セットしたい値
@@ -835,7 +895,7 @@ public class BlancoRestGeneratorKtTask extends Task {
     /**
      * Antタスクの[voOverridePackage]アトリビュートのゲッターメソッド。
      *
-     * 項目番号: 26<br>
+     * 項目番号: 28<br>
      * packageを探しにいくValueObject定義書を処理する際に指定されていたはずの overridePackage を指定します。<br>
      *
      * @return このフィールドの値
@@ -857,7 +917,7 @@ public class BlancoRestGeneratorKtTask extends Task {
         if (fIsFieldMetadirProcessed == false) {
             throw new BuildException("必須アトリビュート[metadir]が設定されていません。処理を中断します。");
         }
-        // 項目番号[13]、アトリビュート[basepackage]は必須入力です。入力チェックを行います。
+        // 項目番号[15]、アトリビュート[basepackage]は必須入力です。入力チェックを行います。
         if (fIsFieldBasepackageProcessed == false) {
             throw new BuildException("必須アトリビュート[basepackage]が設定されていません。処理を中断します。");
         }
@@ -875,6 +935,8 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- sheetType:[" + getSheetType() + "]");
             System.out.println("- targetStyle:[" + getTargetStyle() + "]");
             System.out.println("- client:[" + getClient() + "]");
+            System.out.println("- clientAnnotation:[" + getClientAnnotation() + "]");
+            System.out.println("- overrideClientAnnotation:[" + getOverrideClientAnnotation() + "]");
             System.out.println("- serverType:[" + getServerType() + "]");
             System.out.println("- basepackage:[" + getBasepackage() + "]");
             System.out.println("- runtimepackage:[" + getRuntimepackage() + "]");

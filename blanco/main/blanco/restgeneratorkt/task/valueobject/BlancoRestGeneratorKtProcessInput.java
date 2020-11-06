@@ -98,6 +98,20 @@ public class BlancoRestGeneratorKtProcessInput {
     private boolean fClient = false;
 
     /**
+     * Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書に記載がある場合はそちらを優先します。現在の所、micronautのみが使用可能です。
+     *
+     * フィールド: [clientAnnotation]。
+     */
+    private String fClientAnnotation;
+
+    /**
+     * Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書の記載よりも優先されます。現在の所、micronautのみが使用可能です。
+     *
+     * フィールド: [overrideClientAnnotation]。
+     */
+    private String fOverrideClientAnnotation;
+
+    /**
      * Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。
      *
      * フィールド: [serverType]。
@@ -480,6 +494,50 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [clientAnnotation] の値を設定します。
+     *
+     * フィールドの説明: [Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書に記載がある場合はそちらを優先します。現在の所、micronautのみが使用可能です。]。
+     *
+     * @param argClientAnnotation フィールド[clientAnnotation]に設定する値。
+     */
+    public void setClientAnnotation(final String argClientAnnotation) {
+        fClientAnnotation = argClientAnnotation;
+    }
+
+    /**
+     * フィールド [clientAnnotation] の値を取得します。
+     *
+     * フィールドの説明: [Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書に記載がある場合はそちらを優先します。現在の所、micronautのみが使用可能です。]。
+     *
+     * @return フィールド[clientAnnotation]から取得した値。
+     */
+    public String getClientAnnotation() {
+        return fClientAnnotation;
+    }
+
+    /**
+     * フィールド [overrideClientAnnotation] の値を設定します。
+     *
+     * フィールドの説明: [Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書の記載よりも優先されます。現在の所、micronautのみが使用可能です。]。
+     *
+     * @param argOverrideClientAnnotation フィールド[overrideClientAnnotation]に設定する値。
+     */
+    public void setOverrideClientAnnotation(final String argOverrideClientAnnotation) {
+        fOverrideClientAnnotation = argOverrideClientAnnotation;
+    }
+
+    /**
+     * フィールド [overrideClientAnnotation] の値を取得します。
+     *
+     * フィールドの説明: [Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書の記載よりも優先されます。現在の所、micronautのみが使用可能です。]。
+     *
+     * @return フィールド[overrideClientAnnotation]から取得した値。
+     */
+    public String getOverrideClientAnnotation() {
+        return fOverrideClientAnnotation;
+    }
+
+    /**
      * フィールド [serverType] の値を設定します。
      *
      * フィールドの説明: [Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。]。
@@ -840,6 +898,8 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",sheetType=" + fSheetType);
         buf.append(",targetStyle=" + fTargetStyle);
         buf.append(",client=" + fClient);
+        buf.append(",clientAnnotation=" + fClientAnnotation);
+        buf.append(",overrideClientAnnotation=" + fOverrideClientAnnotation);
         buf.append(",serverType=" + fServerType);
         buf.append(",basepackage=" + fBasepackage);
         buf.append(",runtimepackage=" + fRuntimepackage);
@@ -913,6 +973,12 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fClient
         // Type: boolean
         target.fClient = this.fClient;
+        // Name: fClientAnnotation
+        // Type: java.lang.String
+        target.fClientAnnotation = this.fClientAnnotation;
+        // Name: fOverrideClientAnnotation
+        // Type: java.lang.String
+        target.fOverrideClientAnnotation = this.fOverrideClientAnnotation;
         // Name: fServerType
         // Type: java.lang.String
         target.fServerType = this.fServerType;

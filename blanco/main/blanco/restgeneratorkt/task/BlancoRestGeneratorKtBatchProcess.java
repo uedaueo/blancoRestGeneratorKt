@@ -81,6 +81,10 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setTargetStyle(arg.substring(13));
             } else if (arg.startsWith("-client=")) {
                 input.setClient(Boolean.valueOf(arg.substring(8)).booleanValue());
+            } else if (arg.startsWith("-clientAnnotation=")) {
+                input.setClientAnnotation(arg.substring(18));
+            } else if (arg.startsWith("-overrideClientAnnotation=")) {
+                input.setOverrideClientAnnotation(arg.substring(26));
             } else if (arg.startsWith("-serverType=")) {
                 input.setServerType(arg.substring(12));
             } else if (arg.startsWith("-basepackage=")) {
@@ -209,7 +213,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -serverType=値13 -basepackage=値14 -runtimepackage=値15 -genUtils=値16 -telegrampackage=値17 -impledir=値18 -genSkeleton=値19 -skeletonDelegateClass=値20 -skeletonDelegateInterface=値21 -lineSeparator=値22 -packageSuffix=値23 -overridePackage=値24 -overrideLocation=値25 -voPackageSuffix=値26 -voOverridePackage=値27");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=値1 -metadir=値2 -targetdir=値3 -tmpdir=値4 -searchTmpdir=値5 -nameAdjust=値6 -encoding=値7 -tabs=値8 -xmlrootelement=値9 -sheetType=値10 -targetStyle=値11 -client=値12 -clientAnnotation=値13 -overrideClientAnnotation=値14 -serverType=値15 -basepackage=値16 -runtimepackage=値17 -genUtils=値18 -telegrampackage=値19 -impledir=値20 -genSkeleton=値21 -skeletonDelegateClass=値22 -skeletonDelegateInterface=値23 -lineSeparator=値24 -packageSuffix=値25 -overridePackage=値26 -overrideLocation=値27 -voPackageSuffix=値28 -voOverridePackage=値29");
         System.out.println("    -verbose");
         System.out.println("      説明[verboseモードで動作させるかどうか。]");
         System.out.println("      型[真偽]");
@@ -256,6 +260,12 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("      説明[trueの場合はサーバ用のメソッドを生成しません。]");
         System.out.println("      型[真偽]");
         System.out.println("      デフォルト値[false]");
+        System.out.println("    -clientAnnotation");
+        System.out.println("      説明[Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書に記載がある場合はそちらを優先します。現在の所、micronautのみが使用可能です。]");
+        System.out.println("      型[文字列]");
+        System.out.println("    -overrideClientAnnotation");
+        System.out.println("      説明[Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書の記載よりも優先されます。現在の所、micronautのみが使用可能です。]");
+        System.out.println("      型[文字列]");
         System.out.println("    -serverType");
         System.out.println("      説明[Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。]");
         System.out.println("      型[文字列]");

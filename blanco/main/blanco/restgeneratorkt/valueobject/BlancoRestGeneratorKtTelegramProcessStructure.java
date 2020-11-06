@@ -72,6 +72,14 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private List<String> fAnnotationList = new java.util.ArrayList<java.lang.String>();
 
     /**
+     * クライアントクラス（インタフェイス）のアノテーションを指定します。
+     *
+     * フィールド: [clientAnnotationList]。
+     * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
+     */
+    private List<String> fClientAnnotationList = new java.util.ArrayList<java.lang.String>();
+
+    /**
      * カンマ区切りで記述された文字列が、配列情報として生成されます
      *
      * フィールド: [metaIdList]。
@@ -366,6 +374,29 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      */
     public List<String> getAnnotationList() {
         return fAnnotationList;
+    }
+
+    /**
+     * フィールド [clientAnnotationList] の値を設定します。
+     *
+     * フィールドの説明: [クライアントクラス（インタフェイス）のアノテーションを指定します。]。
+     *
+     * @param argClientAnnotationList フィールド[clientAnnotationList]に設定する値。
+     */
+    public void setClientAnnotationList(final List<String> argClientAnnotationList) {
+        fClientAnnotationList = argClientAnnotationList;
+    }
+
+    /**
+     * フィールド [clientAnnotationList] の値を取得します。
+     *
+     * フィールドの説明: [クライアントクラス（インタフェイス）のアノテーションを指定します。]。
+     * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
+     *
+     * @return フィールド[clientAnnotationList]から取得した値。
+     */
+    public List<String> getClientAnnotationList() {
+        return fClientAnnotationList;
     }
 
     /**
@@ -685,6 +716,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",basedir=" + fBasedir);
         buf.append(",impleDirKt=" + fImpleDirKt);
         buf.append(",annotationList=" + fAnnotationList);
+        buf.append(",clientAnnotationList=" + fClientAnnotationList);
         buf.append(",metaIdList=" + fMetaIdList);
         buf.append(",noAuthentication=" + fNoAuthentication);
         buf.append(",createImportList=" + fCreateImportList);
@@ -747,6 +779,9 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fAnnotationList
         // Type: java.util.List
         // フィールド[fAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Name: fClientAnnotationList
+        // Type: java.util.List
+        // フィールド[fClientAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
         // Name: fMetaIdList
         // Type: java.util.List
         // フィールド[fMetaIdList]はサポート外の型[java.util.Listjava.lang.String]です。

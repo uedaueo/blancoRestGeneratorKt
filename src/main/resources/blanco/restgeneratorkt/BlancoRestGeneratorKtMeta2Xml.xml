@@ -225,6 +225,9 @@ JavaDocに利用されます</value>
                 <propertykey name="annotation" waitX="3">
                     <value>アノテーション</value>
                 </propertykey>
+                <propertykey name="clientAnnotation" waitX="3">
+                    <value>クライアントアノテーション</value>
+                </propertykey>
                 <propertykey name="requestHeaderClass" waitX="3">
                     <value>リクエストヘッダ情報実装クラス(Kt)</value>
                 </propertykey>

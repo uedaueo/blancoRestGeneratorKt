@@ -1299,6 +1299,66 @@ public class BlancoRestGeneratorKtResourceBundle {
     }
 
     /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.CLIENT.EXECUTOR.DESCRIPTION]
+     *
+     * [クライアントとしてAPIよぶためのインタフェイスです] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.CLIENT.EXECUTOR.DESCRIPTION]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileClientExecutorDescription() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "クライアントとしてAPIよぶためのインタフェイスです";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.CLIENT.EXECUTOR.DESCRIPTION");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.CLIENT.EXECUTOR.ARG.LANGDOC]
+     *
+     * [クライアントとして渡すリクエスト情報です] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.CLIENT.EXECUTOR.ARG.LANGDOC]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileClientExecutorArgLangdoc() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "クライアントとして渡すリクエスト情報です";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.CLIENT.EXECUTOR.ARG.LANGDOC");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.CLIENT.EXECUTOR.RETURN.LANGDOC]
+     *
+     * [サーバから戻されるレスポンス情報です] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.CLIENT.EXECUTOR.RETURN.LANGDOC]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileClientExecutorReturnLangdoc() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "サーバから戻されるレスポンス情報です";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.CLIENT.EXECUTOR.RETURN.LANGDOC");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
      * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.AUTHFLAG.DESCRIPTION]
      *
      * [APIが認証を必要とするかどうかのフラグです．必要な場合はtrueです．] (ja)<br>

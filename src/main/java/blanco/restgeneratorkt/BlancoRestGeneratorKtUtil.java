@@ -59,6 +59,10 @@ public class BlancoRestGeneratorKtUtil {
     public static String overrideLocation = null;
     public static String voPackageSuffix = null;
     public static String voOverridePackage = null;
+    public static boolean client = false;
+    public static String serverType = null;
+    public static String clientAnnotation = null;
+    public static String overrideClientAnnotation = null;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {

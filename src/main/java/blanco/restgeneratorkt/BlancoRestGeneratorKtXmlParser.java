@@ -861,6 +861,19 @@ public class BlancoRestGeneratorKtXmlParser {
             }
         }
 
+        // clieantAnnotation
+        String clientAnnotation = BlancoXmlBindingUtil.getTextContent(
+                argElementCommon, "clientAnnotation");
+        if (BlancoStringUtil.null2Blank(BlancoRestGeneratorKtUtil.overrideClientAnnotation).length() > 0) {
+            clientAnnotation = BlancoRestGeneratorKtUtil.overrideClientAnnotation;
+        } else if (BlancoStringUtil.null2Blank(clientAnnotation).length() == 0 &&
+                BlancoStringUtil.null2Blank(BlancoRestGeneratorKtUtil.clientAnnotation).length() > 0) {
+            clientAnnotation = BlancoRestGeneratorKtUtil.clientAnnotation;
+        }
+        if (BlancoStringUtil.null2Blank(clientAnnotation).length() > 0) {
+            argProcessStructure.setClientAnnotationList(createAnnotaionList(clientAnnotation));
+        }
+
         // 認証が不要なAPI
         argProcessStructure.setCreateImportList("true"
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
