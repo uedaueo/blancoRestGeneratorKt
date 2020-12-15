@@ -505,7 +505,6 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         // import分は無条件で設定します。
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpRequest");
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
-        fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Controller");
         // telegram 類を import します。
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
@@ -680,18 +679,22 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             executeMethodId = BlancoRestGeneratorKtConstants.GET_CONTROLLER_METHOD;
             methodAnn = "Get";
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Get");
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.QueryValue");
         } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(argMethod)) {
             executeMethodId = BlancoRestGeneratorKtConstants.POST_CONTROLLER_METHOD;
             methodAnn = "Post";
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Post");
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
         } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(argMethod)) {
             executeMethodId = BlancoRestGeneratorKtConstants.PUT_CONTROLLER_METHOD;
             methodAnn = "Put";
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Put");
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
         } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_DELETE.equals(argMethod)) {
             executeMethodId = BlancoRestGeneratorKtConstants.DELETE_CONTROLLER_METHOD;
             methodAnn = "Delete";
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Delete");
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.QueryValue");
         }
 
         final BlancoCgMethod cgExecutorMethod = fCgFactory.createMethod(
@@ -740,17 +743,36 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 requestGenerics
         );
 
-        /*
-         * 次にbodyを取得するパラメータを生成します。
-         */
-        BlancoCgParameter body = fCgFactory.createParameter(
-                "argBody",
-                "java.lang.String",
-                "生JSONボディです。"
-        );
-        cgExecutorMethod.getParameterList().add(body);
-        body.setNotnull(true);
-        body.getAnnotationList().add("Body");
+        /* body または queryString (request) を取得します */
+        String rawJsonId = "argBody";
+        if (BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(argMethod) ||
+                BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(argMethod)) {
+            /*
+             * 次にbodyを取得するパラメータを生成します。
+             */
+            rawJsonId = "argBody";
+            BlancoCgParameter body = fCgFactory.createParameter(
+                    rawJsonId,
+                    "java.lang.String",
+                    "生JSONボディです。"
+            );
+            cgExecutorMethod.getParameterList().add(body);
+            body.setNotnull(true);
+            body.getAnnotationList().add("Body");
+        } else {
+            /*
+             * 次にqueryStringを取得するパラメータを生成します。
+             */
+            rawJsonId = "request";
+            BlancoCgParameter parameter = fCgFactory.createParameter(
+                    rawJsonId,
+                    "java.lang.String",
+                    "queryStringに設定された生JSONです。"
+            );
+            cgExecutorMethod.getParameterList().add(parameter);
+            parameter.setNotnull(true);
+            parameter.getAnnotationList().add("QueryValue");
+        }
 
         /*
          * Return 型を設定します。
@@ -830,7 +852,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
          * commonRequest の生成
          *
          */
-        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(argBody, deserializer, httpCommonRequest)");
+        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(" + rawJsonId + ", deserializer, httpCommonRequest)");
         listLine.add("");
 
         listLine.add("/* ここで型を確定させた commonRequest を格納する */");
