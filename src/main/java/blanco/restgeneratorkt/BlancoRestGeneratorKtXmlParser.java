@@ -875,7 +875,7 @@ public class BlancoRestGeneratorKtXmlParser {
         }
 
         // 認証が不要なAPI
-        argProcessStructure.setCreateImportList("true"
+        argProcessStructure.setNoAuthentication("true"
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                         "noAuthentication")));
 
