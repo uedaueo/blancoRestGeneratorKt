@@ -878,6 +878,10 @@ public class BlancoRestGeneratorKtXmlParser {
         argProcessStructure.setNoAuthentication("true"
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                         "noAuthentication")));
+        // 補助的な認証が不要なAPI
+        argProcessStructure.setNoAuxiliaryAuthentication("true"
+                .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
+                        "noAuxiliaryAuthentication")));
 
         // import 文の自動生成
         argProcessStructure.setCreateImportList("true"

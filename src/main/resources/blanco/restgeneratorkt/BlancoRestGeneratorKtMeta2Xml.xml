@@ -204,6 +204,9 @@ JavaDocに利用されます</value>
                 <propertykey name="noAuthentication" waitX="3">
                     <value>認証が不要なAPI</value>
                 </propertykey>
+                <propertykey name="noAuxiliaryAuthentication" waitX="3">
+                    <value>補助的な認証が不要なAPI</value>
+                </propertykey>
                 <propertykey name="webServiceId" waitX="3">
                     <value>ウェブサービスID</value>
                 </propertykey>

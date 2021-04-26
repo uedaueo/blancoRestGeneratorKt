@@ -96,6 +96,14 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private Boolean fNoAuthentication = false;
 
     /**
+     * 補助的な認証が不要な場合はtrue
+     *
+     * フィールド: [noAuxiliaryAuthentication]。
+     * デフォルト: [false]。
+     */
+    private Boolean fNoAuxiliaryAuthentication = false;
+
+    /**
      * TypeScript 独自。blancoで一括生成されたクラスについて、import文を自動生成します。
      *
      * フィールド: [createImportList]。
@@ -446,6 +454,29 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [noAuxiliaryAuthentication] の値を設定します。
+     *
+     * フィールドの説明: [補助的な認証が不要な場合はtrue]。
+     *
+     * @param argNoAuxiliaryAuthentication フィールド[noAuxiliaryAuthentication]に設定する値。
+     */
+    public void setNoAuxiliaryAuthentication(final Boolean argNoAuxiliaryAuthentication) {
+        fNoAuxiliaryAuthentication = argNoAuxiliaryAuthentication;
+    }
+
+    /**
+     * フィールド [noAuxiliaryAuthentication] の値を取得します。
+     *
+     * フィールドの説明: [補助的な認証が不要な場合はtrue]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[noAuxiliaryAuthentication]から取得した値。
+     */
+    public Boolean getNoAuxiliaryAuthentication() {
+        return fNoAuxiliaryAuthentication;
+    }
+
+    /**
      * フィールド [createImportList] の値を設定します。
      *
      * フィールドの説明: [TypeScript 独自。blancoで一括生成されたクラスについて、import文を自動生成します。]。
@@ -719,6 +750,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",clientAnnotationList=" + fClientAnnotationList);
         buf.append(",metaIdList=" + fMetaIdList);
         buf.append(",noAuthentication=" + fNoAuthentication);
+        buf.append(",noAuxiliaryAuthentication=" + fNoAuxiliaryAuthentication);
         buf.append(",createImportList=" + fCreateImportList);
         buf.append(",extends=" + fExtends);
         buf.append(",implementsList=" + fImplementsList);
@@ -788,6 +820,9 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fNoAuthentication
         // Type: java.lang.Boolean
         target.fNoAuthentication = this.fNoAuthentication;
+        // Name: fNoAuxiliaryAuthentication
+        // Type: java.lang.Boolean
+        target.fNoAuxiliaryAuthentication = this.fNoAuxiliaryAuthentication;
         // Name: fCreateImportList
         // Type: java.lang.Boolean
         target.fCreateImportList = this.fCreateImportList;

@@ -648,7 +648,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                  */
             } else {
                 if (!isInterface) {
-                    createExecuteMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getMetaIdList());
+                    createExecuteMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getNoAuxiliaryAuthentication(), argProcessStructure.getMetaIdList());
                 } else {
                     BlancoCgMethod cgMethod = isClient ?
                             createClientMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple, argProcessStructure.getLocation() + "/" + argProcessStructure.getServiceId()) :
@@ -670,6 +670,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             final String argResponseHeaderIdSimple,
             final String argInjectedParameterId,
             final Boolean argNoAuthentication,
+            final Boolean argNoAuxiliaryAuthentication,
             final List<String> argMetaIdList
     ) {
 
@@ -846,6 +847,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
+        /*
+         * 補助認証が不要かどうか
+         */
+        if (argNoAuxiliaryAuthentication) {
+            listLine.add("httpCommonRequest.noAuxiliaryAuthentication = true");
+        }
         listLine.add("");
 
         /*
