@@ -346,24 +346,8 @@ public class BlancoRestGeneratorKtXmlParser {
             if (interfaceName == null || interfaceName.trim().length() == 0) {
                 continue;
             }
-            /*
-             * import 情報の作成
-             */
-            String fqInterface = interfaceName;
-            if (argTelegramStructure.getCreateImportList()) {
-                String packageName = BlancoRestGeneratorKtUtil.getPackageName(interfaceName);
-                String className = BlancoRestGeneratorKtUtil.getSimpleClassName(interfaceName);
-                if (packageName.length() == 0) {
-                    /*
-                     * このクラスのパッケージ名を探す
-                     */
-                    packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(className);
-                    if (packageName != null & packageName.length() > 0) {
-                        fqInterface = packageName + "." + className;
-                    }
-                }
-                argTelegramStructure.getImplementsList().add(fqInterface);
-            }
+            System.out.println("### interface = " + interfaceName);
+            argTelegramStructure.getImplementsList().add(interfaceName);
         }
     }
 

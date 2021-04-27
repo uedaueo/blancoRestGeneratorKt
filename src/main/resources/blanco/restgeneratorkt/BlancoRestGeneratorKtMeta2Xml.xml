@@ -72,7 +72,7 @@
             </propertyblock>
 
             <tableblock name="blancotelegram-implements" waitY="2" titleheight="2" rowname="interface">
-                <startstring>電文定義・実装</startstring>
+                <startstring>電文定義(Kt)・実装</startstring>
 
                 <tablecolumn name="no">
                     <value>No.</value>

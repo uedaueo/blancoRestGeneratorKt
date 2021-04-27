@@ -1157,6 +1157,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                     .get(index);
             fCgClass.getImplementInterfaceList().add(
                     fCgFactory.createType(impl));
+            System.out.println("!!! implement = " + impl);
         }
 
         // クラスのJavaDocを設定します。
