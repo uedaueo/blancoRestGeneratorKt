@@ -256,6 +256,9 @@ public class BlancoRestGeneratorKtXmlParser {
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                         "createImportList")));
 
+        argTelegramStructure.setPermissionKind(BlancoXmlBindingUtil.getTextContent(argElementCommon,
+                "permissionKind"));
+
         /*
          * 電文クラスは常に
          *  dataクラス

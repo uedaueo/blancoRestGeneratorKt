@@ -1209,6 +1209,11 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             buildField(argTelegramStructure, fieldStructure);
         }
 
+        // permissionKind が設定されている場合
+        if (BlancoStringUtil.null2Blank(argTelegramStructure.getPermissionKind()).length() > 0) {
+            buildPermissionKindField(argTelegramStructure.getPermissionKind());
+        }
+
         // 収集された情報を元に実際のソースコードを自動生成。
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
@@ -1351,6 +1356,25 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             field.getAnnotationList().addAll(annotationList);
             System.out.println("/* tueda */ method annotation = " + field.getAnnotationList().get(0));
         }
+    }
+
+    private void buildPermissionKindField(String value) {
+        /*
+         * blancoValueObjectではプロパティ名の前にfをつける流儀であるが、
+         * kotlinについては暗黙のgetter/setterを使う都合上、つけない。
+         */
+        final BlancoCgField field = fCgFactory.createField(BlancoRestGeneratorKtConstants.PERMISSION_KIND_PROPERTY,
+                "String", null);
+
+        field.setDescription(fBundle.getBlancorestPermissionFieldDescription());
+        field.setDefault("\"" + value + "\"");
+        field.setAccess("public");
+        field.setOverride(true);
+        field.setFinal(true);
+        field.setConst(true);
+        field.setNotnull(true);
+
+        fCgClass.getFieldList().add(field);
     }
 
     /**

@@ -175,6 +175,13 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fOverridePackage;
 
     /**
+     * APIの権限認証で使用。[write]の場合のみ利用可能、または、[read/write]で利用可能
+     *
+     * フィールド: [permissionKind]。
+     */
+    private String fPermissionKind;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -670,6 +677,28 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [permissionKind] の値を設定します。
+     *
+     * フィールドの説明: [APIの権限認証で使用。[write]の場合のみ利用可能、または、[read/write]で利用可能]。
+     *
+     * @param argPermissionKind フィールド[permissionKind]に設定する値。
+     */
+    public void setPermissionKind(final String argPermissionKind) {
+        fPermissionKind = argPermissionKind;
+    }
+
+    /**
+     * フィールド [permissionKind] の値を取得します。
+     *
+     * フィールドの説明: [APIの権限認証で使用。[write]の場合のみ利用可能、または、[read/write]で利用可能]。
+     *
+     * @return フィールド[permissionKind]から取得した値。
+     */
+    public String getPermissionKind() {
+        return fPermissionKind;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -706,6 +735,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",constructorArgList=" + fConstructorArgList);
         buf.append(",packageSuffix=" + fPackageSuffix);
         buf.append(",overridePackage=" + fOverridePackage);
+        buf.append(",permissionKind=" + fPermissionKind);
         buf.append("]");
         return buf.toString();
     }
@@ -794,5 +824,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fOverridePackage
         // Type: java.lang.String
         target.fOverridePackage = this.fOverridePackage;
+        // Name: fPermissionKind
+        // Type: java.lang.String
+        target.fPermissionKind = this.fPermissionKind;
     }
 }

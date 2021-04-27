@@ -321,4 +321,10 @@ public class BlancoRestGeneratorKtConstants {
      * コントローラから呼び出す実装クラスが実装するインタフェイスのサブパッケージ名
      */
     public static final String INTERFACE_PACKAGE = "interface";
+
+    /**
+     * 項目番号:54<br>
+     * APIの権限を表す文字列を保持するプロパティの名前です。
+     */
+    public static final String PERMISSION_KIND_PROPERTY = "permissionKind";
 }

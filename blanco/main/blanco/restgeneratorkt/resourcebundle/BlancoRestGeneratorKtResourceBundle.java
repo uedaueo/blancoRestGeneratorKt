@@ -1670,4 +1670,24 @@ public class BlancoRestGeneratorKtResourceBundle {
         // 置換文字列はひとつもありません。
         return strFormat;
     }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[BLANCOREST.PERMISSION_FIELD.DESCRIPTION]
+     *
+     * [APIの権限を表す文字列を保持します。ApiTelegramクラスに基底フィールドが定義されていることが前提です。] (ja)<br>
+     *
+     * @return key[BLANCOREST.PERMISSION_FIELD.DESCRIPTION]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getBlancorestPermissionFieldDescription() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "APIの権限を表す文字列を保持します。ApiTelegramクラスに基底フィールドが定義されていることが前提です。";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("BLANCOREST.PERMISSION_FIELD.DESCRIPTION");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
 }

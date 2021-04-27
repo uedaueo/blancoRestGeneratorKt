@@ -40,6 +40,9 @@
 <!--                <propertykey name="createImportList" waitX="2">-->
 <!--                    <value>import文の自動生成</value>-->
 <!--                </propertykey>-->
+                <propertykey name="permissionKind" waitX="2">
+                    <value>許可ユーザー権限</value>
+                </propertykey>
 
                 <valuemapping>
                     <result>Input</result>
