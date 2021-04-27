@@ -1157,7 +1157,6 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                     .get(index);
             fCgClass.getImplementInterfaceList().add(
                     fCgFactory.createType(impl));
-            System.out.println("!!! implement = " + impl);
         }
 
         // クラスのJavaDocを設定します。
@@ -1292,6 +1291,9 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         } else {
             field.setConst(false);
         }
+
+        /* override 修飾子を設定します */
+        field.setOverride(argFieldStructure.getOverride());
 
         /*
          * field がconstructotr引数かどうをチェック

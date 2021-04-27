@@ -185,6 +185,9 @@ JavaDocに利用されます</value>
                 <tablecolumn name="fieldBiko">
                     <value>備考</value>
                 </tablecolumn>
+                <tablecolumn name="override">
+                    <value>オーバーライド</value>
+                </tablecolumn>
 
                 <valuemapping>
                     <result>true</result>

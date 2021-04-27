@@ -346,7 +346,6 @@ public class BlancoRestGeneratorKtXmlParser {
             if (interfaceName == null || interfaceName.trim().length() == 0) {
                 continue;
             }
-            System.out.println("### interface = " + interfaceName);
             argTelegramStructure.getImplementsList().add(interfaceName);
         }
     }
@@ -570,6 +569,10 @@ public class BlancoRestGeneratorKtXmlParser {
                 }
             }
             fieldStructure.setValue("true".equals(value));
+
+            /* オーバーライド修飾子に対応 */
+            fieldStructure.setOverride("true".equals(BlancoXmlBindingUtil
+                    .getTextContent(elementList, "override")));
 
             argTelegramStructure.getListField().add(fieldStructure);
         }

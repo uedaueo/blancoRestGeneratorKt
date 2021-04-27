@@ -167,6 +167,14 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
     private String fFieldBiko;
 
     /**
+     * override 修飾子を付与します
+     *
+     * フィールド: [override]。
+     * デフォルト: [false]。
+     */
+    private Boolean fOverride = false;
+
+    /**
      * フィールド [no] の値を設定します。
      *
      * フィールドの説明: [項目番号。省略可能です。]。
@@ -657,6 +665,29 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
     }
 
     /**
+     * フィールド [override] の値を設定します。
+     *
+     * フィールドの説明: [override 修飾子を付与します]。
+     *
+     * @param argOverride フィールド[override]に設定する値。
+     */
+    public void setOverride(final Boolean argOverride) {
+        fOverride = argOverride;
+    }
+
+    /**
+     * フィールド [override] の値を取得します。
+     *
+     * フィールドの説明: [override 修飾子を付与します]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[override]から取得した値。
+     */
+    public Boolean getOverride() {
+        return fOverride;
+    }
+
+    /**
      * このバリューオブジェクトの文字列表現を取得します。
      *
      * <P>使用上の注意</P>
@@ -693,6 +724,7 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
         buf.append(",maxInclusive=" + fMaxInclusive);
         buf.append(",pattern=" + fPattern);
         buf.append(",fieldBiko=" + fFieldBiko);
+        buf.append(",override=" + fOverride);
         buf.append("]");
         return buf.toString();
     }
@@ -781,5 +813,8 @@ public class BlancoRestGeneratorKtTelegramFieldStructure {
         // Name: fFieldBiko
         // Type: java.lang.String
         target.fFieldBiko = this.fFieldBiko;
+        // Name: fOverride
+        // Type: java.lang.Boolean
+        target.fOverride = this.fOverride;
     }
 }
