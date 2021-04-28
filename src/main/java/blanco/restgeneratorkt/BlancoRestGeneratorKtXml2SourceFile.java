@@ -584,6 +584,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 controllerClassId + "が呼び出す実装クラスです。"
         );
         impleClass.setNotnull(true);
+        /* Always final because Controller is always final class. */
+        impleClass.setFinal(true);
         fCgClass.getConstructorArgList().add(impleClass);
 
         // サービスメソッドを生成します。
