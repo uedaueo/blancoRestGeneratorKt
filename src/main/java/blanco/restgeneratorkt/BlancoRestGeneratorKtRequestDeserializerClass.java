@@ -91,6 +91,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
             cgClass.getConstructorArgList().add(vc);
             vc.getType().setGenerics("*"); // <> は自動的につけられる
             vc.setConst(true); // val
+            vc.setFinal(true);
 
             BlancoCgField infoClazz = fCgFactory.createField("infoClazz", "java.lang.Class", "CommonRequest#info の実装クラスを設定します。");
             cgClass.getFieldList().add(infoClazz);
