@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 「メッセージ定義書」Excel様式からメッセージを処理するクラス・ソースコードを生成。
+ * Generates class source code to process messages from "Message Definition Form" Excel format.
  *
- * このクラスは、中間XMLファイルからソースコードを自動生成する機能を担います。
+ * This class is responsible for generation of source code from intermediate XML files.
  *
  * @author IGA Tosiki
  * @author tueda
@@ -81,17 +81,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     }
 
     /**
-     * このプロダクトのリソースバンドルへのアクセスオブジェクト。
+     * An access object to the resource bundle for this product.
      */
     private final BlancoRestGeneratorKtResourceBundle fBundle = new BlancoRestGeneratorKtResourceBundle();
 
     /**
-     * 出力対象となるプログラミング言語。
+     * Target programming language.
      */
     private int fTargetLang = BlancoCgSupportedLang.TS;
 
     /**
-     * 入力シートに期待するプログラミング言語
+     * Programming language expected for the input sheet.
      */
     private int fSheetLang = BlancoCgSupportedLang.JAVA;
 
@@ -100,7 +100,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     }
 
     /**
-     * ソースコード生成先ディレクトリのスタイル
+     * Style of the destination directory.
      */
     private boolean fTargetStyleAdvanced = false;
     public void setTargetStyleAdvanced(boolean argTargetStyleAdvanced) {
@@ -111,42 +111,42 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     }
 
     /**
-     * 内部的に利用するblancoCg用ファクトリ。
+     * A factory for blancoCg to be used internally.
      */
     private BlancoCgObjectFactory fCgFactory = null;
 
     /**
-     * 内部的に利用するblancoCg用ソースファイル情報。
+     * Source file information for blancoCg to be used internally.
      */
     private BlancoCgSourceFile fCgSourceFile = null;
 
     /**
-     * 内部的に利用するblancoCg用クラス情報。
+     * Class information for blancoCg to be used internally.
      */
     private BlancoCgClass fCgClass = null;
 
     /**
-     * 内部的に利用するblancoCg用インタフェイス情報。
+     * Interface information for blancoCg to be used internally.
      */
     private BlancoCgInterface fCgInterface = null;
 
     /**
-     * フィールド名やメソッド名の名前変形を行うかどうか。
+     * Whether to adjust field names and method names.
      *
      */
     private boolean fNameAdjust = true;
 
     /**
-     * 要求電文のベースクラス
+     * Base class for request telegrams.
      */
     private String inputTelegramBase = null;
     /**
-     * 応答電文のベースクラス
+     * Base class for response telegrams.
      */
     private String outputTelegramBase = null;
 
     /**
-     * 自動生成するソースファイルの文字エンコーディング。
+     * Character encoding of auto-generated source files.
      */
     private String fEncoding = null;
 
@@ -155,14 +155,14 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     }
 
     /**
-     * 中間XMLファイルからソースコードを自動生成します。
+     * Auto-generates source code from intermediate XML files.
      *
      * @param argMetaXmlSourceFile
-     *            メタ情報が含まれているXMLファイル。
+     *            An XML file that contains meta-information.
      * @param argDirectoryTarget
-     *            ソースコード生成先ディレクトリ (/mainを除く部分を指定します)。
+     *            Output directory of the generated source code (specify the part excluding /main).
      * @throws IOException
-     *             入出力例外が発生した場合。
+     *             If an I/O exception occurs.
      */
     public void process(final File argMetaXmlSourceFile,
                         final File argDirectoryTarget)
@@ -172,7 +172,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 //            System.out.println("BlancoRestGeneratorKtXml2SourceFile#process file = " + argMetaXmlSourceFile.getName());
 //        }
 
-        fNameAdjust = true; // BlancoRestGenerator では常にフィールド名を変形します。
+        fNameAdjust = true; // The BlancoRestGenerator always transforms the field name.
 
         BlancoRestGeneratorKtXmlParser parser = new BlancoRestGeneratorKtXmlParser();
         parser.setVerbose(this.isVerbose());
@@ -188,13 +188,13 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         if (BlancoRestGeneratorKtUtil.genUtils) {
-            // util系を生成します
+            // Generates a util system.
             generateDeserializer(argDirectoryTarget);
         }
 
         for (int index = 0; index < processStructures.length; index++) {
             BlancoRestGeneratorKtTelegramProcessStructure processStructure = processStructures[index];
-            // 得られた情報から kotlin コードを生成します。
+            // Generates Kotlin code from the obtained information.
             generate(processStructure, argDirectoryTarget);
         }
     }
@@ -204,10 +204,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     ) {
 
         /*
-         * 出力ディレクトリはant taskのtargetStyel引数で
-         * 指定された書式で出力されます。
-         * 従来と互換性を保つために、指定がない場合は blanco/main
-         * となります。
+         * The output directory will be in the format specified by the targetStyle argument of the ant task.
+         * To maintain compatibility with the previous version, it will be blanco/main if not specified.
          * by tueda, 2019/08/30
          */
         String strTarget = argDirectoryTarget
@@ -228,37 +226,37 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
     private void generate(final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure, final File argDirectoryTarget) {
 
-        // まず電文を生成します。
-        Set<String> methodKeys = argProcessStructure.getListTelegrams().keySet(); // parse 時点で check しているので null はないはず
+        // The first step is to generate a telegram.
+        Set<String> methodKeys = argProcessStructure.getListTelegrams().keySet(); // It should not be null because it is checked at time of parse.
         for (String methodKey : methodKeys) {
             HashMap<String, BlancoRestGeneratorKtTelegramStructure> kindMap =
                     argProcessStructure.getListTelegrams().get(methodKey);
-            Set<String> kindKeys = kindMap.keySet(); // parse 時点で check しているので null はないはず
+            Set<String> kindKeys = kindMap.keySet(); // It should not be null because it is checked at time of parse.
             for (String kindKey : kindKeys) {
                 generateTelegram(kindMap.get(kindKey), argDirectoryTarget);
             }
         }
 
         /*
-         * 次に電文処理を生成します。
-         * 現時点では micronaut 向けの controller を生成します。
-         * 将来的には tomcat 向けの abstract クラスにも対応します。
+         * Next, it generates the telegram processing.
+         * Generates a controller for micronaut for now.
+         * In the future, abstract classes for tomcat will also be supported.
          */
         if (BlancoRestGeneratorKtUtil.client != true) {
             /*
-             * サーバサイドの電文処理
+             * Server-side telegram processing.
              */
             generateMicronautController(argProcessStructure, argDirectoryTarget);
             /*
-             * 次に、インジェクションするクラスが実装するインタフェイスを生成します。
+             * Then, generates the interface to be implemented by the class to be injected.
              */
             if (this.isCreateServiceMethod()) {
                 generateApplicationInterface(argProcessStructure, argDirectoryTarget);
             }
 
             /*
-             * 次に実装クラスのスケルトンを生成します。
-             * スケルトンのパッケージ名はoverrideしません。
+             * Finally, generates the skeleton of the implementation class.
+             * The package name of the skeleton is not overriden.
              */
             if (BlancoRestGeneratorKtUtil.genSkeleton &&
                     BlancoRestGeneratorKtUtil.impleDir != null &&
@@ -273,9 +271,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         /*
-         * クライアントサイドの電文処理を生成します。
-         * 通常はサーバサイドコードとクライアントサイドコードが同じプロジェクトで
-         * 生成されることはありませんが、念のため、両立可能としておきます。
+         * Generates client-side telegram processing.
+         * Normally, server-side code and client-side code are not generated in the same project, but just in case, we will assume that they are compatible.
          */
         if (BlancoRestGeneratorKtUtil.client){
             generateClientInterface(argProcessStructure, argDirectoryTarget);
@@ -284,7 +281,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     }
 
     /**
-     * アプリケーション実装クラスが実装するインタフェイスを生成します。
+     * Generates the interface to be implemented by the application implementation class.
      * @param argProcessStructure
      * @param argDirectoryTarget
      */
@@ -294,10 +291,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     ) {
 
         /*
-         * 出力ディレクトリはant taskのtargetStyel引数で
-         * 指定された書式で出力されます。
-         * 従来と互換性を保つために、指定がない場合は blanco/main
-         * となります。
+         * The output directory will be in the format specified by the targetStyle argument of the ant task.
+         * To maintain compatibility with the previous version, it will be blanco/main if not specified.
          * by tueda, 2019/08/30
          */
         String strTarget = argDirectoryTarget
@@ -312,8 +307,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 //            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
 //        }
 
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String myPackage = argProcessStructure.getPackage();
         if (argProcessStructure.getPackageSuffix() != null && argProcessStructure.getPackageSuffix().length() > 0) {
             myPackage = myPackage + "." + argProcessStructure.getPackageSuffix();
@@ -324,25 +319,24 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         String interfacePackage = myPackage + ".interfaces";
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
-        fCgSourceFile = fCgFactory.createSourceFile(interfacePackage, "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile = fCgFactory.createSourceFile(interfacePackage, "This source code has been generated by blanco Framework.");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
 
-        // micronaut と jackson で使用するための
-        // import分は無条件で設定します。
+        // The import for use with micronaut and jackson is set to unconditional.
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
-        // telegram 類を import します。
+        // Imports kinds of a telegram.
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonRequest");
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
 
-        // RequestHeader, ResponseHeader はここで確定しておく
+        // Determines RequestHeader and ResponseHeader here.
         String requestHeaderClass = argProcessStructure.getRequestHeaderClass();
         String responseHeaderClass = argProcessStructure.getResponseHeaderClass();
         String requestHeaderIdSimple = null;
         if (requestHeaderClass != null && requestHeaderClass.length() > 0) {
-            fCgSourceFile.getImportList().add(requestHeaderClass); // fullPackageで指定されている前提
+            fCgSourceFile.getImportList().add(requestHeaderClass); // Assumes that it is specified in fullPackage.
             requestHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(requestHeaderClass);
         }
         String responseHeaderIdSimple = null;
@@ -351,7 +345,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             responseHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(responseHeaderClass);
         }
 
-        // インタフェイスを作成
+        // Creates an interface.
         String applicationInterfaceId = "I" + argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
         fCgInterface = fCgFactory.createInterface(applicationInterfaceId,
                 BlancoStringUtil.null2Blank(argProcessStructure
@@ -359,16 +353,16 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgSourceFile.getInterfaceList().add(fCgInterface);
         fCgInterface.setAccess("public");
 
-        // ServiceMethod を生成します。
+        // Generates a ServiceMethod.
         createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true, false, false);
 
-        // 収集された情報を元に実際のソースコードを自動生成。
+        // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
     }
 
     /**
-     * クライアント側のインタフェイスを生成します。
+     * Generates a client-side interface.
      * @param argProcessStructure
      * @param argDirectoryTarget
      */
@@ -378,10 +372,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     ) {
 
         /*
-         * 出力ディレクトリはant taskのtargetStyel引数で
-         * 指定された書式で出力されます。
-         * 従来と互換性を保つために、指定がない場合は blanco/main
-         * となります。
+         * The output directory will be in the format specified by the targetStyle argument of the ant task.
+         * To maintain compatibility with the previous version, it will be blanco/main if not specified.
          * by tueda, 2019/08/30
          */
         String strTarget = argDirectoryTarget
@@ -396,8 +388,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 //            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
 //        }
 
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String myPackage = argProcessStructure.getPackage();
         if (argProcessStructure.getPackageSuffix() != null && argProcessStructure.getPackageSuffix().length() > 0) {
             myPackage = myPackage + "." + argProcessStructure.getPackageSuffix();
@@ -408,25 +400,24 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         String interfacePackage = myPackage + ".interfaces";
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
-        fCgSourceFile = fCgFactory.createSourceFile(interfacePackage, "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile = fCgFactory.createSourceFile(interfacePackage, "This source code has been generated by blanco Framework.");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
 
-        // micronaut と jackson で使用するための
-        // import分は無条件で設定します。
+        // The import for use with micronaut and jackson is set to unconditional.
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
-        // telegram 類を import します。
+        // Imports kinds of a telegram.
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonRequest");
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
 
-        // RequestHeader, ResponseHeader はここで確定しておく
+        // Determines RequestHeader and ResponseHeader here.
         String requestHeaderClass = argProcessStructure.getRequestHeaderClass();
         String responseHeaderClass = argProcessStructure.getResponseHeaderClass();
         String requestHeaderIdSimple = null;
         if (requestHeaderClass != null && requestHeaderClass.length() > 0) {
-            fCgSourceFile.getImportList().add(requestHeaderClass); // fullPackageで指定されている前提
+            fCgSourceFile.getImportList().add(requestHeaderClass); // Assumes that it is specified in fullPackage.
             requestHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(requestHeaderClass);
         }
         String responseHeaderIdSimple = null;
@@ -435,7 +426,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             responseHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(responseHeaderClass);
         }
 
-        // インタフェイスを作成
+        // Creates an interface.
         String applicationInterfaceId = "I" + argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_CLIENT;
         fCgInterface = fCgFactory.createInterface(applicationInterfaceId,
                 BlancoStringUtil.null2Blank(argProcessStructure
@@ -443,23 +434,23 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgSourceFile.getInterfaceList().add(fCgInterface);
         fCgInterface.setAccess("public");
 
-        // Client アノテーションを設定します。
+        // Sets the Client annotation.
         for (String annotation : argProcessStructure.getClientAnnotationList()) {
             fCgInterface.getAnnotationList().add(annotation);
         }
-        // Client アノテーションは必ずあるものとします。その他のアノテーションを記述する場合はパッケージ名まで指定すること。
+        // The Client annotation must be present. If other annotations are used, the package name must be specified.
         fCgSourceFile.getImportList().add("io.micronaut.http.client.annotation.Client");
 
-        // ServiceMethod を生成します。
+        // Generates a ServiceMethod.
         createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true, false, true);
 
-        // 収集された情報を元に実際のソースコードを自動生成。
+        // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
     }
 
     /**
-     * 電文処理クラスを生成します。
+     * Generates a telegram processing class.
      * @param argProcessStructure
      * @param argDirectoryTarget
      */
@@ -469,10 +460,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
 
         /*
-         * 出力ディレクトリはant taskのtargetStyel引数で
-         * 指定された書式で出力されます。
-         * 従来と互換性を保つために、指定がない場合は blanco/main
-         * となります。
+         * The output directory will be in the format specified by the targetStyle argument of the ant task.
+         * To maintain compatibility with the previous version, it will be blanco/main if not specified.
          * by tueda, 2019/08/30
          */
         String strTarget = argDirectoryTarget
@@ -487,8 +476,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 //            System.out.println("BlancoRestGenerateTsXml2SourceFile#generateTelegramProcess SATRT with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
 //        }
 
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String myPackage = argProcessStructure.getPackage();
         if (argProcessStructure.getPackageSuffix() != null && argProcessStructure.getPackageSuffix().length() > 0) {
             myPackage = myPackage + "." + argProcessStructure.getPackageSuffix();
@@ -497,16 +486,15 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
-        fCgSourceFile = fCgFactory.createSourceFile(myPackage, "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile = fCgFactory.createSourceFile(myPackage, "This source code has been generated by blanco Framework.");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
 
-        // micronaut と jackson で使用するための
-        // import分は無条件で設定します。
+        // The import for use with micronaut and jackson is set to unconditional.
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpRequest");
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Controller");
-        // telegram 類を import します。
+        // Imports kinds of a telegram.
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         String runtimePkg = BlancoRestGeneratorKtUtil.runtimePackage;
         fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
@@ -514,22 +502,22 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
         fCgSourceFile.getImportList().add(runtimePkg + ".util.BlancoRestGeneratorKtRequestDeserializer");
 
-        // クラスを作成
+        // Creates a class.
         String controllerClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_CONTROLLER;
         fCgClass = fCgFactory.createClass(controllerClassId,
                 BlancoStringUtil.null2Blank(argProcessStructure
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
-        // 電文処理クラスは常に public final
+        // The telegram processing class is always public final.
         fCgClass.setAccess("public");
         fCgClass.setFinal(true);
-        // 継承
+        // Inheritance
         if (BlancoStringUtil.null2Blank(argProcessStructure.getExtends())
                 .length() > 0) {
             fCgClass.getExtendClassList().add(
                     fCgFactory.createType(argProcessStructure.getExtends()));
         }
-        // 実装
+        // Implementation
         for (int index = 0; index < argProcessStructure.getImplementsList()
                 .size(); index++) {
             final String impl = (String) argProcessStructure.getImplementsList()
@@ -537,10 +525,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             fCgClass.getImplementInterfaceList().add(
                     fCgFactory.createType(impl));
         }
-        // クラスのJavaDocを設定します。
+        // Sets the JavaDoc for the class.
         fCgClass.setDescription(argProcessStructure.getDescription());
 
-        /* クラスのannotation を設定します */
+        /* Sets the annotation for the class. */
         List annotationList = argProcessStructure.getAnnotationList();
         if (annotationList != null && annotationList.size() > 0) {
             fCgClass.getAnnotationList().addAll(argProcessStructure.getAnnotationList());
@@ -551,12 +539,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         /*
-         * Controller アノテーションは常に設定します。
+         * The Controller annotation is always set.
          */
         String location = BlancoStringUtil.null2Blank(argProcessStructure.getLocation());
 
         /*
-         * overrideLocation が指定されていた場合はそちらが優先
+         * If overrideLocation is specified, it takes precedence.
          */
         String overrideLocation = argProcessStructure.getOverrideLocation();
         if (overrideLocation != null && overrideLocation.length() > 0) {
@@ -571,7 +559,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgClass.getAnnotationList().add(controllerAnn);
 
         /*
-         * APIごとの実装クラスをインジェクションします。
+         * Injects the implementation class for each API.
          */
         String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
         String applicationClassPackage = argProcessStructure.getPackage() + "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
@@ -581,20 +569,20 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         BlancoCgField impleClass = fCgFactory.createField(
                 injectedParameterId,
                 applicationClassPackage + "." + applicationClassId,
-                controllerClassId + "が呼び出す実装クラスです。"
+                "The implementation class to be called by " + controllerClassId + "."
         );
         impleClass.setNotnull(true);
         /* Always final because Controller is always final class. */
         impleClass.setFinal(true);
         fCgClass.getConstructorArgList().add(impleClass);
 
-        // サービスメソッドを生成します。
-        // RequestHeader, ResponseHeader はここで確定しておく
+        // Generates a service method.
+        // Determines RequestHeader and ResponseHeader here.
         String requestHeaderClass = argProcessStructure.getRequestHeaderClass();
         String responseHeaderClass = argProcessStructure.getResponseHeaderClass();
         String requestHeaderIdSimple = null;
         if (requestHeaderClass != null && requestHeaderClass.length() > 0) {
-            fCgSourceFile.getImportList().add(requestHeaderClass); // fullPackageで指定されている前提
+            fCgSourceFile.getImportList().add(requestHeaderClass); // Assumes that it is specified in fullPackage.
             requestHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(requestHeaderClass);
         }
         String responseHeaderIdSimple = null;
@@ -610,13 +598,13 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             }
         }
 
-        // 収集された情報を元に実際のソースコードを自動生成。
+        // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
     }
 
     /**
-     * Serviceメソッドを実装します。
+     * Implements the Service method.
      * @param argProcessStructure
      * @param isInterface
      * @param isSkeleton
@@ -643,10 +631,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         for (String method : httpMethods) {
             HashMap<String, BlancoRestGeneratorKtTelegramStructure> telegrams = argProcessStructure.getListTelegrams().get(method);
             if (telegrams == null) {
-                /* このメソッドは未対応 */
+                /* This method is unsupported. */
 //                createExecuteMethodNotImplemented(method);
                 /*
-                 * Micronaut対応では未対応メソッドは記述しない
+                 * In Micronaut support, unsupported methods are not described.
                  */
             } else {
                 if (!isInterface) {
@@ -706,12 +694,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         cgExecutorMethod.setFinal(true);
 
         /*
-         * アノテーションを設定します。
+         * Sets the annotation.
          */
         cgExecutorMethod.getAnnotationList().add(methodAnn);
 
         /*
-         * まず、HttpRequestパラメータを生成します。
+         * First, generates the HttpRequest parameter.
          */
         BlancoCgParameter httpRequest = fCgFactory.createParameter(
                 "argHttpRequest",
@@ -722,8 +710,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         httpRequest.setNotnull(true);
 
         /*
-         * telegram 類が定義されているパッケージについては、API定義書で
-         * 明示的にimportされている前提とする。（または同一パッケージ）
+         * For packages in which kinds of a telegram are defined, it is assumed that they are explicitly imported in the API definition document. (or the smae package)
          */
         String requestId = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_INPUT).getName();
         if (this.isVerbose()) {
@@ -733,8 +720,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         String commonRequestId = "CommonRequest";
 
         /*
-         * kotlin transformer では一重目の generics の
-         * <> は自動的に追加され、パッケージは削除される。
+         * With the Kotlin transformer, the "<>" of the first layer of generics is automatically added and the package is removed.
          */
         String requestGenerics = "";
         if (argRequestHeaderIdSimple == null || argRequestHeaderIdSimple.length() <= 0) {
@@ -746,31 +732,31 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 requestGenerics
         );
 
-        /* body または queryString (request) を取得します */
+        /* Gets the body or queryString (request). */
         String rawJsonId = "argBody";
         if (BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(argMethod) ||
                 BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(argMethod)) {
             /*
-             * 次にbodyを取得するパラメータを生成します。
+             * Next, generates a parameter to get the body.
              */
             rawJsonId = "argBody";
             BlancoCgParameter body = fCgFactory.createParameter(
                     rawJsonId,
                     "java.lang.String",
-                    "生JSONボディです。"
+                    "Raw JSON body."
             );
             cgExecutorMethod.getParameterList().add(body);
             body.setNotnull(true);
             body.getAnnotationList().add("Body");
         } else {
             /*
-             * 次にqueryStringを取得するパラメータを生成します。
+             * Then, generates a parameter to get the queryString.
              */
             rawJsonId = "request";
             BlancoCgParameter parameter = fCgFactory.createParameter(
                     rawJsonId,
                     "java.lang.String",
-                    "queryStringに設定された生JSONです。"
+                    "Raw JSON set as queryString."
             );
             cgExecutorMethod.getParameterList().add(parameter);
             parameter.setNotnull(true);
@@ -778,7 +764,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         /*
-         * Return 型を設定します。
+         * Sets the Return type.
          */
         String responseId = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_OUTPUT).getName();
         if (this.isVerbose()) {
@@ -801,7 +787,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 responseGenerics
         );
 
-        // メソッド本体の実装
+        // Implements the method body.
         final List<String> listLine = cgExecutorMethod.getLineList();
 
         String requestDeserializerId = BlancoRestGeneratorKtUtil.runtimePackage + ".util.BlancoRestGeneratorKtRequestDeserializer";
@@ -809,28 +795,28 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         String requestDeserializerIdSimple = "BlancoRestGeneratorKtRequestDeserializer";
 
         /*
-         * deserializer の生成
+         * Generates a deserializer.
          */
-        listLine.add("/* json 文字列から CommonRequest インスタンスを生成する */");
+        listLine.add("/* Creates a CommonRequest instance from a JSON string. */");
         listLine.add("val deserializer = " + requestDeserializerIdSimple + "<" + argRequestHeaderIdSimple + ", " + requestId + ">(argHttpRequest.javaClass)");
         listLine.add("deserializer.infoClazz = " + argRequestHeaderIdSimple + "::class.java");
         listLine.add("deserializer.telegramClazz = " + requestId + "::class.java");
         listLine.add("");
 
         /*
-         * HttpCommonRequest の生成
+         * Generates a HttpCommonRequest.
          */
 
-        listLine.add("/* httpRequest を delegator とした HttpCommonRequest を作成する */");
-        listLine.add("/* この段階では commonRequest は仮。*/");
+        listLine.add("/* Creates HttpCommonRequest with httpRequest as delegator. */");
+        listLine.add("/* At this stage, commonRequest is tentative.*/");
 
         /*
-         * 認証が必要なAPIかどうか
+         * Whether the API requires authentication.
          */
         String noAuthentication = argNoAuthentication ? "true" : "false";
 
         /*
-         * あれば、MetaIdListを設定します。
+         * If there is, sets MetaIdList.
          */
         String metaIdList = "";
         if (argMetaIdList != null && argMetaIdList.size() > 0) {
@@ -850,7 +836,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
         listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
         /*
-         * 補助認証が不要かどうか
+         * Whether or not auxiliary authentication is required.
          */
         if (argNoAuxiliaryAuthentication) {
             listLine.add("httpCommonRequest.noAuxiliaryAuthentication = true");
@@ -858,23 +844,23 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         listLine.add("");
 
         /*
-         * commonRequest の生成
+         * Generates a commonRequest.
          *
          */
         listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(" + rawJsonId + ", deserializer, httpCommonRequest)");
         listLine.add("");
 
-        listLine.add("/* ここで型を確定させた commonRequest を格納する */");
+        listLine.add("/* Stores the commonRequest with its type determined */");
         listLine.add("httpCommonRequest.commonRequest = commonRequest");
         listLine.add("");
 
-        listLine.add("/* 前処理を行う（validation等） */");
+        listLine.add("/* Performs preprocessing (validation, etc.) */");
         listLine.add(argInjectedParameterId + ".prepare(httpCommonRequest)");
         listLine.add("");
-        listLine.add("/* HttpCommonRequest を渡す */");
+        listLine.add("/* Passes HttpCommonRequest */");
         listLine.add("val httpResponse = " + argInjectedParameterId + "." + executeMethodId + "(httpCommonRequest)");
         listLine.add("");
-        listLine.add("/* 後処理 */");
+        listLine.add("/* Postprocessing */");
         listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
         listLine.add("");
         listLine.add("return httpResponse");
@@ -915,8 +901,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             System.out.println("### requestId = " + requestIdSimple);
         }
 
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String overridePackage = requestStructure.getPackage();
         if (requestStructure.getPackageSuffix() != null && requestStructure.getPackageSuffix().length() > 0) {
             overridePackage = overridePackage + "." + requestStructure.getPackageSuffix();
@@ -963,7 +949,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         cgReturn.getType().setGenerics(responseGenerics);
 
         if (isSkelton) {
-            // skeletonの場合はメソッド本体を生成する
+            // In the case of skeleton, generates the method body.
             List<String> lineList = cgExecutorMethod.getLineList();
             lineList.add("TODO(\"Not yet implemented\")");
         }
@@ -1021,8 +1007,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             System.out.println("### client requestId = " + requestIdSimple);
         }
 
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String overridePackage = requestStructure.getPackage();
         if (requestStructure.getPackageSuffix() != null && requestStructure.getPackageSuffix().length() > 0) {
             overridePackage = overridePackage + "." + requestStructure.getPackageSuffix();
@@ -1087,7 +1073,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     }
 
     /**
-     * 電文クラスを生成します。
+     * Generates a telegram class.
      *
      * @param argTelegramStructure
      * @param argDirectoryTarget
@@ -1097,10 +1083,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             final File argDirectoryTarget) {
 
         /*
-         * 出力ディレクトリはant taskのtargetStyel引数で
-         * 指定された書式で出力されます。
-         * 従来と互換性を保つために、指定がない場合は blanco/main
-         * となります。
+         * The output directory will be in the format specified by the targetStyle argument of the ant task.
+         * To maintain compatibility with the previous version, it will be blanco/main if not specified.
          * by tueda, 2019/08/30
          */
         String strTarget = argDirectoryTarget
@@ -1115,8 +1099,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             System.out.println("BlancoRestGeneratorKtXml2SourceFile#generateTelegram START with argDirectoryTarget : " + argDirectoryTarget.getAbsolutePath());
         }
 
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String myPackage = argTelegramStructure.getPackage();
         if (argTelegramStructure.getPackageSuffix() != null && argTelegramStructure.getPackageSuffix().length() > 0) {
             myPackage = myPackage + "." + argTelegramStructure.getPackageSuffix();
@@ -1125,34 +1109,34 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
-        fCgSourceFile = fCgFactory.createSourceFile(myPackage, "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile = fCgFactory.createSourceFile(myPackage, "This source code has been generated by blanco Framework.");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
-        // クラスを作成
+        // Creates a class.
         fCgClass = fCgFactory.createClass(argTelegramStructure.getName(),
                 BlancoStringUtil.null2Blank(argTelegramStructure
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
-        // 電文クラスは常に public, kotlin では省略可。
+        // The telegram class is always public, and can be omitted in Kotlin.
         String access = "";
-        // data クラスかどうか、かつコンストラクタ引数がひとつでもあるか。
+        // Whether or not it is a data class and whether or not it has at least one constructor argument. 
         if (argTelegramStructure.getData() && this.hasConstructorArgs(argTelegramStructure)) {
             access += "data";
         }
         fCgClass.setAccess(access);
-        // Finalクラスかどうか。dataクラスは強制的にfinal。
+        // Whether or not it is a Final class. data class is forced to be final.
         if (argTelegramStructure.getData() && !argTelegramStructure.getFinal()) {
             fCgClass.setFinal(true);
         } else {
             fCgClass.setFinal(argTelegramStructure.getFinal());
         }
-        // 継承
+        // Inheritance
         if (BlancoStringUtil.null2Blank(argTelegramStructure.getExtends())
                 .length() > 0) {
             fCgClass.getExtendClassList().add(
                     fCgFactory.createType(argTelegramStructure.getExtends()));
         }
-        // 実装
+        // Implementation
         for (int index = 0; index < argTelegramStructure.getImplementsList()
                 .size(); index++) {
             final String impl = (String) argTelegramStructure.getImplementsList()
@@ -1161,10 +1145,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                     fCgFactory.createType(impl));
         }
 
-        // クラスのJavaDocを設定します。
+        // Sets the JavaDoc for the class.
         fCgClass.setDescription(argTelegramStructure.getDescription());
 
-        /* クラスのannotation を設定します */
+        /* Sets the annotation for the class. */
         List annotationList = argTelegramStructure.getAnnotationList();
         if (annotationList != null && annotationList.size() > 0) {
             fCgClass.getAnnotationList().addAll(argTelegramStructure.getAnnotationList());
@@ -1174,7 +1158,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             }
         }
 
-        /* クラスのimport を設定します */
+        /* Sets the import for the class. */
         for (int index = 0; index < argTelegramStructure.getImportList()
                 .size(); index++) {
             final String imported = (String) argTelegramStructure.getImportList()
@@ -1186,14 +1170,14 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             System.out.println("BlancoRestGeneratorKtXml2SourceFile: Start create properties : " + argTelegramStructure.getName());
         }
 
-        // 電文定義・一覧
+        // TelegramDefinition list.
         for (int indexField = 0; indexField < argTelegramStructure.getListField()
                 .size(); indexField++) {
-            // おのおののフィールドを処理します。
+            // Processes each field.
             final BlancoRestGeneratorKtTelegramFieldStructure fieldStructure =
                     argTelegramStructure.getListField().get(indexField);
 
-            // 必須項目が未設定の場合には例外処理を実施します。
+            // Performs exception processing if a required field is not set.
             if (fieldStructure.getName() == null) {
                 throw new IllegalArgumentException(fBundle
                         .getXml2sourceFileErr004(argTelegramStructure.getName()));
@@ -1207,24 +1191,24 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 System.out.println("property : " + fieldStructure.getName());
             }
 
-            // フィールドの生成。
+            // Generates a field.
             buildField(argTelegramStructure, fieldStructure);
         }
 
-        // permissionKind が設定されている場合
+        // If permissionKind is set.
         if (BlancoStringUtil.null2Blank(argTelegramStructure.getPermissionKind()).length() > 0) {
             buildPermissionKindField(argTelegramStructure.getPermissionKind());
         }
 
-        // 収集された情報を元に実際のソースコードを自動生成。
+        // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
     }
 
     /**
-     * クラスにフィールドを生成します。
+     * Generates a field in the class.
      * @param argClassStructure
-     *            クラス情報。
+     *            Class information.
      * @param argFieldStructure
      */
     private void buildField(
@@ -1235,10 +1219,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             case BlancoCgSupportedLang.PHP:
                 if (argFieldStructure.getType() == "kotlin.Int") argFieldStructure.setType("kotlin.Long");
                 break;
-            /* 対応言語を増やす場合はここに case を追記します */
+            /* Adds the case here if you want to add more languages. */
         }
 
-        /* 型を決定します。typeKtが設定されている場合はそちらを優先します */
+        /* Determines the type; if typeKt is set, it will take precedence. */
         boolean isKtPreferred = true;
         String typeRaw = argFieldStructure.getTypeKt();
         if (typeRaw == null || typeRaw.length() == 0) {
@@ -1247,16 +1231,14 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         }
 
         /*
-         * blancoValueObjectではプロパティ名の前にfをつける流儀であるが、
-         * kotlinについては暗黙のgetter/setterを使う都合上、つけない。
+         * In blancoValueObject, the property name is prefixed with "f", but in Kotlin, it is not because of the implicit getter/setter.
          */
         final BlancoCgField field = fCgFactory.createField(argFieldStructure.getName(),
                 typeRaw, null);
 
         /*
-         * Generic に対応します。blancoCg 側では <> が付いている前提かつ
-         * package部をtrimするので、ここで設定しないと正しく設定されません。
-         * genericKt が設定されている場合はそちらを優先します。
+         * Supports Generic. The blancoCg side assumes that "<>" is attached and trims the package part, so if it is not set here, it will no be set correctly.
+         * If genericKt is set, it will take precedence.
          */
         String genericRaw = argFieldStructure.getGenericKt();
         if (!isKtPreferred && (genericRaw == null || genericRaw.length() == 0)) {
@@ -1272,13 +1254,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 //        }
 
         /*
-         * 当面の間、blancoValueObjectKt ではprivateやgetter/setter,
-         * open には対応しません。
+         * For the time being, it does not support private, getter/setter, and open in blancoValueObjectKt.
          */
         field.setAccess("public");
         field.setFinal(true);
 
-        // nullable に対応します。
+        // Supports nullable.
         Boolean isNullable = argFieldStructure.getNullable();
         if (isNullable != null && isNullable) {
             field.setNotnull(false);
@@ -1286,7 +1267,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             field.setNotnull(true);
         }
 
-        // value / variable に対応します。
+        // Supports value / variable.
         Boolean isValue = argFieldStructure.getValue();
         if (isValue != null && isValue) {
             field.setConst(true);
@@ -1294,11 +1275,11 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             field.setConst(false);
         }
 
-        /* override 修飾子を設定します */
+        /* Sets the override modifier. */
         field.setOverride(argFieldStructure.getOverride());
 
         /*
-         * field がconstructotr引数かどうをチェック
+         * Checks if field is a constructor argument.
          */
         Boolean isConstArg = argFieldStructure.getConstArg();
         if (isConstArg != null && isConstArg) {
@@ -1307,52 +1288,51 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             fCgClass.getFieldList().add(field);
         }
 
-        // フィールドのJavaDocを設定します。
+        // Sets the JavaDoc for the field.
         field.setDescription(argFieldStructure.getDescription());
         for (String line : argFieldStructure.getDescriptionList()) {
             field.getLangDoc().getDescriptionList().add(line);
         }
 
-        // フィールドのデフォルト値を設定します。
+        // Sets the default value for the field.
         if (argFieldStructure.getDefault() != null || argFieldStructure.getDefaultKt() != null) {
             final String type = field.getType().getName();
 
             if (type.equals("java.util.Date")) {
                 /*
-                 * java.util.Date 型ではデフォルト値を許容しません。
+                 * The java.util.Date type does not allow default values.
                  */
                 throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg06());
             }
 
             /*
-             * kotlinでは プロパティのデフォルト値は原則必須
-             * ただし、abstract クラスにおいては、プロパティに abstract 修飾子が
-             * ついている場合は省略可。
-             * とはいえ、blancoValueObjectKt では当面abstractプロパティはサポートしません。
+             * In Kotlin, the default value of a property is mandatory in principle.
+             * However, in the abstract class, it can be omitted if the property has the abstract modifier.
+             * Nevertheless, blancoValueObjectKt will not support abstract properties for the time being.
              */
 
             /*
-             * defaultKt があればそちらを優先します。
+             * If there is a defaultKt, it will take precedence.
              */
             String defaultRawValue = argFieldStructure.getDefaultKt();
             if (!isKtPreferred && (defaultRawValue == null || defaultRawValue.length() == 0)) {
                 defaultRawValue = argFieldStructure.getDefault();
             }
             if (!isConstArg && (defaultRawValue == null || defaultRawValue.length() <= 0)) {
-                System.err.println("/* tueda */ フィールドにデフォルト値が設定されていません。blancoValueObjectKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。");
+                System.err.println("/* tueda */ The field does not have a default value. blancoValueObjectKt will not support abstract fields for the time being, so be sure to set the default value.");
                 throw new IllegalArgumentException(fBundle
                         .getBlancorestErrorMsg07());
             }
 
-            // フィールドのデフォルト値を設定します。
+            // Sets the default value for the field.
             field.getLangDoc().getDescriptionList().add(
                     BlancoCgSourceUtil.escapeStringAsLangDoc(BlancoCgSupportedLang.KOTLIN, fBundle.getXml2sourceFileFieldDefault(defaultRawValue)));
 
-            // blancoRestGenerator では、デフォルト値は定義書上の値をそのまま採用。
+            // In the case of blancoRestGenerator, the default value is the value in the definition document.
             field.setDefault(defaultRawValue);
         }
 
-        /* メソッドの annotation を設定します。アノテーション(kt) があればそちらを優先します。 */
+        /* Sets the annotation for the method. If there is an annotation (kt), it will take precedence. */
         List annotationList = argFieldStructure.getAnnotationListKt();
         if (annotationList == null || annotationList.size() == 0) {
             annotationList = argFieldStructure.getAnnotationList();
@@ -1365,8 +1345,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
     private void buildPermissionKindField(String value) {
         /*
-         * blancoValueObjectではプロパティ名の前にfをつける流儀であるが、
-         * kotlinについては暗黙のgetter/setterを使う都合上、つけない。
+         * In blancoValueObject, the property name is prefixed with "f", but in Kotlin, it is not prefixed because of the implicit getter/setter.
          */
         final BlancoCgField field = fCgFactory.createField(BlancoRestGeneratorKtConstants.PERMISSION_KIND_PROPERTY,
                 "String", null);
@@ -1383,7 +1362,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
     }
 
     /**
-     * アプリケーション実装クラスのスケルトンを生成します。
+     * Generates the skeleton of the application implementation class.
      * @param argProcessStructure
      */
     private void generateApplicationSkeleton(
@@ -1395,39 +1374,39 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
         String applicationFileName = BlancoRestGeneratorKtUtil.impleDir + "/" + applicationPackage.replace(".", "/") + "/" + applicationClassId + ".kt";
         /*
-         * 既にファイルがある場合は作成しません。
+         * If the file already exists, it will not be created.
          */
         File classFile = new File(applicationFileName);
         if (classFile.exists()) {
-            System.out.println(applicationClassId + " は存在します。スキップします。");
+            System.out.println(applicationClassId + " exists. Skips it.");
             return;
         } else {
             if (this.isVerbose()) {
-                System.out.println(applicationClassId + " を作成します。");
+                System.out.println("Creates " + applicationClassId + ".");
             }
         }
 
         final File fileBlancoMain = new File(BlancoRestGeneratorKtUtil.impleDir);
 
         fCgFactory = BlancoCgObjectFactory.getInstance();
-        fCgSourceFile = fCgFactory.createSourceFile(applicationPackage, "このソースコードは blanco Frameworkによって自動生成されています。");
+        fCgSourceFile = fCgFactory.createSourceFile(applicationPackage, "This source code has been generated by blanco Framework.");
         fCgSourceFile.setEncoding(fEncoding);
         fCgSourceFile.setTabs(this.getTabs());
 
-        // micronaut で使用するための import分は無条件で設定します。
+        // The import for use with micronaut is set to unconditional.
         fCgSourceFile.getImportList().add("io.micronaut.http.HttpResponse");
-        // telegram 類を import します。
+        // Imports kinds of a telegram.
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonRequest");
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
 
-        // RequestHeader, ResponseHeader はここで確定しておく
+        // Determines RequestHeader and ResponseHeader here.
         String requestHeaderClass = argProcessStructure.getRequestHeaderClass();
         String responseHeaderClass = argProcessStructure.getResponseHeaderClass();
         String requestHeaderIdSimple = null;
         if (requestHeaderClass != null && requestHeaderClass.length() > 0) {
-            fCgSourceFile.getImportList().add(requestHeaderClass); // fullPackageで指定されている前提
+            fCgSourceFile.getImportList().add(requestHeaderClass); // Assumes that it is specified in fullPackage.
             requestHeaderIdSimple = BlancoRestGeneratorKtUtil.getSimpleClassName(requestHeaderClass);
         }
         String responseHeaderIdSimple = null;
@@ -1441,12 +1420,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
         fCgClass.setAccess("public");
-        // 必ず @Singleton にします。
+        // It is always @Singleton.
         fCgClass.getAnnotationList().add("Singleton");
         fCgSourceFile.getImportList().add("javax.inject.Singleton");
 
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String overridePackage = argProcessStructure.getPackage();
         if (argProcessStructure.getPackageSuffix() != null && argProcessStructure.getPackageSuffix().length() > 0) {
             overridePackage = overridePackage + "." + argProcessStructure.getPackageSuffix();
@@ -1454,9 +1433,9 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             overridePackage = argProcessStructure.getOverridePackage();
         }
 
-        // まず interface を実装します。
+        // The first step is to implement an interface.
         String interfacePackage = overridePackage + ".interfaces";
-        // インタフェイスを作成します
+        // Creates an interface.
         String applicationInterfaceId = "I" + argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
         BlancoCgType interfaceType = fCgFactory.createType(
                 interfacePackage + "." + applicationInterfaceId
@@ -1465,39 +1444,39 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 interfaceType
         );
 
-        // delegateを作成します。
+        // Creates a delegate.
         String delegateInterface = BlancoRestGeneratorKtUtil.skeletonDelegateInterface;
         BlancoCgType cgDeleInterface = fCgFactory.createType(delegateInterface);
         fCgClass.getImplementInterfaceList().add(cgDeleInterface);
         fCgClass.getDelegateMap().put(cgDeleInterface.getName(), "apiBase");
 
-        // 対応するコンストラクタ引数を生成
+        // Generates the corresponding constructor arguments.
         String delegateClass = BlancoRestGeneratorKtUtil.skeletonDelegateClass;
         BlancoCgType cgDeleClass = fCgFactory.createType(delegateClass);
-        BlancoCgField cgField = fCgFactory.createField("apiBase", delegateClass, "Application クラスの共通処理を定義するデリゲートクラスです。");
+        BlancoCgField cgField = fCgFactory.createField("apiBase", delegateClass, "This is a delegate class that defines the common processing of the Application class.");
         fCgClass.getConstructorArgList().add(cgField);
         cgField.setNotnull(true);
 
-        // ServiceMethod を生成します。
+        // Generates a ServiceMethod.
         createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true, true, false);
 
         if (this.isVerbose()) {
-            System.out.println("スケルトンを生成します。");
+            System.out.println("Generates the skeleton.");
             System.out.println("Settled  : " + fileBlancoMain.getAbsolutePath());
             System.out.println("package  : " + fCgSourceFile.getPackage());
             System.out.println("ClassName: " + fCgSourceFile.getClassList().get(0).getName());
         }
-        // 収集された情報を元に実際のソースコードを自動生成。
+        // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
     }
 
     /**
-     * 調整済みのフィールド名を取得します。
+     * Gets the adjusted field name.
      *
      * @param argFieldStructure
-     *            フィールド情報。
-     * @return 調整後のフィールド名。
+     *            Field information.
+     * @return Adjusted field name.
      */
     private String getFieldNameAdjustered(
             final BlancoRestGeneratorKtTelegramFieldStructure argFieldStructure) {

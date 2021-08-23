@@ -24,7 +24,7 @@ import java.io.IOException;
 public class BlancoRestGeneratorKtProcessImpl implements
         BlancoRestGeneratorKtProcess {
     /**
-     * このプロダクトのリソースバンドルへのアクセスオブジェクト。
+     * An access object to the resource bundle for this product.
      */
     private final BlancoRestGeneratorKtResourceBundle fBundle = new BlancoRestGeneratorKtResourceBundle();
 
@@ -43,7 +43,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
             }
 
             /*
-             * 改行コードを決定します。
+             * Determines the newline code.
              */
             String LF = "\n";
             String CR = "\r";
@@ -75,20 +75,20 @@ public class BlancoRestGeneratorKtProcessImpl implements
             }
 
             /*
-             * targetdir, targetStyleの処理。
-             * 生成されたコードの保管場所を設定する。
+             * Processes targetdir and targetStyle.
+             * Sets the storage location for the generated code.
              * targetstyle = blanco:
-             *  targetdirの下に main ディレクトリを作成
+             *  Creates a main directory under targetdir.
              * targetstyle = maven:
-             *  targetdirの下に main/java ディレクトリを作成
+             *  Creates a main/java directory under targetdir.
              * targetstyle = free:
-             *  targetdirをそのまま使用してディレクトリを作成。
-             *  ただしtargetdirがからの場合はデフォルト文字列(blanco)使用する。
+             *  Creates a directory using targetdir as is.
+             *  However, the default string (blanco) is used if targetdir is empty.
              * by tueda, 2019/08/30
              */
             String strTarget = input.getTargetdir();
             String style = input.getTargetStyle();
-            // ここを通ったら常にtrue
+            // Always true when passing through here.
             boolean isTargetStyleAdvanced = true;
 
             if (style != null && BlancoRestGeneratorKtConstants.TARGET_STYLE_MAVEN.equals(style)) {
@@ -97,7 +97,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
                     !BlancoRestGeneratorKtConstants.TARGET_STYLE_FREE.equals(style)) {
                 strTarget = strTarget + "/" + BlancoRestGeneratorKtConstants.TARGET_DIR_SUFFIX_BLANCO;
             }
-            /* style が free だったらtargetdirをそのまま使う */
+            /* Uses targetdir as is if style is free. */
 //            if (input.getVerbose()) {
 //                System.out.println("BlancoRestGeneratorKtProcessImpl#process TARGETDIR = " + strTarget);
 //            }
@@ -134,22 +134,21 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.overrideClientAnnotation = input.getOverrideClientAnnotation();
 
             /*
-             * validator を作る時に使うために，
-             * ValueObject で既に定義されている（はずの）オブジェクトを取得しておく
+             * Gets an object that is already (supposed to be) defined in ValueObject to use when creating validator. 
              */
             BlancoRestGeneratorKtUtil.processValueObjects(input);
 
-            // テンポラリディレクトリを作成。
+            // Creates a temporary directory.
             new File(input.getTmpdir()
                     + BlancoRestGeneratorKtConstants.TARGET_SUBDIRECTORY)
                     .mkdirs();
 
-            // 指定されたメタディレクトリを処理します。
+            // Processes the specified meta directory.
             new BlancoRestGeneratorKtMeta2Xml()
                     .processDirectory(fileMetadir, input.getTmpdir()
                             + BlancoRestGeneratorKtConstants.TARGET_SUBDIRECTORY);
 
-            // XML化された中間ファイルからソースコードを生成
+            // Generates source code from XML-ized intermediate files.
             final File[] fileMeta2 = new File(input.getTmpdir()
                     + BlancoRestGeneratorKtConstants.TARGET_SUBDIRECTORY)
                     .listFiles();

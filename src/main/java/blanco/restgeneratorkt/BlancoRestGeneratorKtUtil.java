@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * BlancoValueObject で作成されているObjectの一覧を XML から取得し，保持しておきます
+ * Gets the list of Object created in BlancoValueObject from XML and stores it.
  *
  * Created by tueda on 15/07/05.
  */
 public class BlancoRestGeneratorKtUtil {
     /**
-     * ValueObject 用リソースバンドルへのアクセスオブジェクト。
+     * An access object to the resource bundle for ValueObject.
      */
     private final static BlancoRestGeneratorKtResourceBundle fBundle = new BlancoRestGeneratorKtResourceBundle();
 
@@ -34,12 +34,12 @@ public class BlancoRestGeneratorKtUtil {
     };
 
     /**
-     * フィールド名やメソッド名の名前変形を行うかどうか。
+     * Whether to adjust name of field and method.
      */
     private boolean fNameAdjust = true;
 
     /**
-     * 自動生成するソースファイルの文字エンコーディング。
+     * Character encoding of auto-generated source files.
      */
     public static String encoding = null;
     public static boolean isVerbose = false;
@@ -69,9 +69,9 @@ public class BlancoRestGeneratorKtUtil {
             System.out.println("BlancoRestGeneratorKtObjectsInfo : processValueObjects start !");
         }
 
-        /* tmpdir はユニーク */
+        /* tmpdir is unique. */
         String baseTmpdir = input.getTmpdir();
-        /* searchTmpdir はカンマ区切り */
+        /* searchTmpdir is comma separated. */
         String tmpTmpdirs = input.getSearchTmpdir();
         List<String> searchTmpdirList = null;
         if (tmpTmpdirs != null && !tmpTmpdirs.equals(baseTmpdir)) {
@@ -90,7 +90,7 @@ public class BlancoRestGeneratorKtUtil {
 
     static private void searchTmpdir(String tmpdir) {
 
-        // XML化された中間ファイルから情報を読み込む
+        // Reads information from XML-ized intermediate files.
         final File[] fileMeta3 = new File(tmpdir
                 + BlancoRestGeneratorKtConstants.OBJECT_SUBDIRECTORY)
                 .listFiles();
@@ -110,8 +110,8 @@ public class BlancoRestGeneratorKtUtil {
             BlancoValueObjectKtXmlParser parser = new BlancoValueObjectKtXmlParser();
 //            parser.setVerbose(this.isVerbose());
             /*
-             * まず始めにすべてのシートを検索して，クラス名とpackage名のリストを作ります．
-             * php形式の定義書では，クラスを指定する際にpackage名が指定されていないからです．
+             * First, it searches all the sheets and make a list of class and package names.
+             * This is because in the PHP-style definitions, the package name is not specified when specifying class.
              *
              */
             final BlancoValueObjectKtClassStructure[] structures = parser.parse(fileMeta3[index]);
@@ -135,7 +135,7 @@ public class BlancoRestGeneratorKtUtil {
     }
 
     /**
-     * メソッド毎の電文の親クラスを返します。
+     * Returns the parent class of the telegram for each method.
      * @param method
      * @return
      */
@@ -162,7 +162,7 @@ public class BlancoRestGeneratorKtUtil {
     }
 
     /**
-     * メソッド毎の電文の親クラスを返します。
+     * Returns the parent class of the telegram for each method.
      * @param method
      * @return
      */
@@ -229,8 +229,8 @@ public class BlancoRestGeneratorKtUtil {
     }
 
     static public String searchPackageBySimpleName(String simpleName) {
-        // パッケージ名の置き換えオプションが指定されていれば置き換え
-        // Suffix があればそちらが優先です。
+        // Replaces the package name if the replace package name option is specified.
+        // If there is Suffix, that is the priority.
         String packageName = null;
         BlancoValueObjectKtClassStructure voStructure = objects.get(simpleName);
         if (voStructure != null) {
