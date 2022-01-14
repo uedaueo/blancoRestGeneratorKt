@@ -143,6 +143,14 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private List<String> fHeaderList = new java.util.ArrayList<java.lang.String>();
 
     /**
+     * Getリクエストパラメータのリスト
+     *
+     * フィールド: [getRequestBindList]。
+     * デフォルト: [new java.util.ArrayList&lt;blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure&gt;()]。
+     */
+    private List<BlancoRestGeneratorKtGetRequestBindStructure> fGetRequestBindList = new java.util.ArrayList<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure>();
+
+    /**
      * この電文処理が使用する電文の一覧
      *
      * フィールド: [listTelegrams]。
@@ -591,6 +599,29 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [getRequestBindList] の値を設定します。
+     *
+     * フィールドの説明: [Getリクエストパラメータのリスト]。
+     *
+     * @param argGetRequestBindList フィールド[getRequestBindList]に設定する値。
+     */
+    public void setGetRequestBindList(final List<BlancoRestGeneratorKtGetRequestBindStructure> argGetRequestBindList) {
+        fGetRequestBindList = argGetRequestBindList;
+    }
+
+    /**
+     * フィールド [getRequestBindList] の値を取得します。
+     *
+     * フィールドの説明: [Getリクエストパラメータのリスト]。
+     * デフォルト: [new java.util.ArrayList&lt;blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure&gt;()]。
+     *
+     * @return フィールド[getRequestBindList]から取得した値。
+     */
+    public List<BlancoRestGeneratorKtGetRequestBindStructure> getGetRequestBindList() {
+        return fGetRequestBindList;
+    }
+
+    /**
      * フィールド [listTelegrams] の値を設定します。
      *
      * フィールドの説明: [この電文処理が使用する電文の一覧]。
@@ -756,6 +787,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",implementsList=" + fImplementsList);
         buf.append(",importList=" + fImportList);
         buf.append(",headerList=" + fHeaderList);
+        buf.append(",getRequestBindList=" + fGetRequestBindList);
         buf.append(",listTelegrams=" + fListTelegrams);
         buf.append(",requestHeaderClass=" + fRequestHeaderClass);
         buf.append(",responseHeaderClass=" + fResponseHeaderClass);
@@ -838,6 +870,9 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fHeaderList
         // Type: java.util.List
         // フィールド[fHeaderList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Name: fGetRequestBindList
+        // Type: java.util.List
+        // フィールド[fGetRequestBindList]はサポート外の型[java.util.Listblanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure]です。
         // Name: fListTelegrams
         // Type: java.util.HashMap
         // フィールド[fListTelegrams]はサポート外の型[java.util.HashMapjava.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>]です。

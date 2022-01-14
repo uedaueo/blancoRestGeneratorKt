@@ -3,6 +3,7 @@ package blanco.restgeneratorkt;
 import blanco.commons.util.BlancoNameUtil;
 import blanco.commons.util.BlancoStringUtil;
 import blanco.restgeneratorkt.resourcebundle.BlancoRestGeneratorKtResourceBundle;
+import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramProcessStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
@@ -753,6 +754,13 @@ public class BlancoRestGeneratorKtXmlParser {
             parseProcessImport(elementInterfaceRoot, processStructure);
         }
 
+        final List<BlancoXmlElement> getRequestBindList = BlancoXmlBindingUtil
+                .getElementsByTagName(argElementSheet, fBundle.getMeta2xmlProcessGetRequestBind());
+        if (getRequestBindList != null && getRequestBindList.size() != 0) {
+            final BlancoXmlElement elementInterfaceRoot = getRequestBindList.get(0);
+            parseProcessGetRequestBind(elementInterfaceRoot, processStructure);
+        }
+
         /*
          * Determines the telegram ID from telegram process ID, and sets only the defined one to processStructure.
          * The telegram ID is determined by the following rule.
@@ -974,6 +982,47 @@ public class BlancoRestGeneratorKtXmlParser {
             argProcessStructure.getImportList().add(
                     BlancoXmlBindingUtil
                             .getTextContent(elementList, "name"));
+        }
+    }
+
+    /**
+     * Parses an XML document in the form of an  intermediate XML file to get "TelegramDefinition get request".
+     * @param argElementListRoot
+     * @param argProcessStructure
+     */
+    private void parseProcessGetRequestBind(
+            final BlancoXmlElement argElementListRoot,
+            final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure) {
+        final List<BlancoXmlElement> listGetRequestBindChildNodes = BlancoXmlBindingUtil
+                .getElementsByTagName(argElementListRoot, "get-request-bind");
+        for (int index = 0;
+             listGetRequestBindChildNodes != null &&
+                     index < listGetRequestBindChildNodes.size();
+             index++) {
+            final BlancoXmlElement elementList = listGetRequestBindChildNodes
+                    .get(index);
+
+            final String no = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "no");
+
+            final String name = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "name");
+            if (name == null || name.trim().length() == 0) {
+                continue;
+            }
+
+            final String kind = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "kind");
+            if (kind == null || kind.trim().length() == 0) {
+                continue;
+            }
+
+            BlancoRestGeneratorKtGetRequestBindStructure structure = new BlancoRestGeneratorKtGetRequestBindStructure();
+            structure.setNumber(Integer.parseInt(no));
+            structure.setName(name);
+            structure.setKind(kind);
+
+            argProcessStructure.getGetRequestBindList().add(structure);
         }
     }
 

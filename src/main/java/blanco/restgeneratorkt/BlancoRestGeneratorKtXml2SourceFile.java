@@ -18,6 +18,7 @@ import blanco.cg.valueobject.*;
 import blanco.commons.util.BlancoNameAdjuster;
 import blanco.commons.util.BlancoStringUtil;
 import blanco.restgeneratorkt.resourcebundle.BlancoRestGeneratorKtResourceBundle;
+import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramProcessStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -638,7 +640,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                  */
             } else {
                 if (!isInterface) {
-                    createExecuteMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getNoAuxiliaryAuthentication(), argProcessStructure.getMetaIdList());
+                    createExecuteMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getNoAuxiliaryAuthentication(), argProcessStructure.getMetaIdList(), argProcessStructure.getGetRequestBindList());
                 } else {
                     BlancoCgMethod cgMethod = isClient ?
                             createClientMethod(telegrams, method, argRequestHeaderIdSimple, argResponseHeaderIdSimple, argProcessStructure.getLocation() + "/" + argProcessStructure.getServiceId()) :
@@ -661,7 +663,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             final String argInjectedParameterId,
             final Boolean argNoAuthentication,
             final Boolean argNoAuxiliaryAuthentication,
-            final List<String> argMetaIdList
+            final List<String> argMetaIdList,
+            final List<BlancoRestGeneratorKtGetRequestBindStructure> argGetRequestBindList
     ) {
 
         String executeMethodId = "";
@@ -669,8 +672,32 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         if (BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.equals(argMethod)) {
             executeMethodId = BlancoRestGeneratorKtConstants.GET_CONTROLLER_METHOD;
             methodAnn = "Get";
+            if (isArgGetRequestBind(argMethod, argGetRequestBindList)) {
+                boolean isFirstQuery = true;
+                methodAnn += "(\"";
+                for (BlancoRestGeneratorKtGetRequestBindStructure structure : argGetRequestBindList) {
+                    if (Objects.equals(structure.getKind(), "path")) {
+                        methodAnn += "/{" + structure.getName() + "}";
+                    } else {
+                        if (isFirstQuery) {
+                            isFirstQuery = false;
+                            methodAnn += "{?" + structure.getName();
+                        } else {
+                            methodAnn += "," + structure.getName();
+                        }
+                    }
+                }
+                if (!isFirstQuery) {
+                    methodAnn += "}";
+                }
+                methodAnn += "\")";
+
+                fCgSourceFile.getImportList().add("io.micronaut.http.annotation.RequestBean");
+            } else {
+                fCgSourceFile.getImportList().add("io.micronaut.http.annotation.QueryValue");
+            }
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Get");
-            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.QueryValue");
+
         } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(argMethod)) {
             executeMethodId = BlancoRestGeneratorKtConstants.POST_CONTROLLER_METHOD;
             methodAnn = "Post";
@@ -748,6 +775,19 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             cgExecutorMethod.getParameterList().add(body);
             body.setNotnull(true);
             body.getAnnotationList().add("Body");
+        } else if (isArgGetRequestBind(argMethod, argGetRequestBindList)) {
+            /*
+             *  generates a parameter to get the bean.
+             */
+            rawJsonId = "bean";
+            BlancoCgParameter parameter = fCgFactory.createParameter(
+                    rawJsonId,
+                    requestId,
+                    "get parameter set as bean."
+            );
+            cgExecutorMethod.getParameterList().add(parameter);
+            parameter.setNotnull(true);
+            parameter.getAnnotationList().add("RequestBean");
         } else {
             /*
              * Then, generates a parameter to get the queryString.
@@ -797,11 +837,13 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         /*
          * Generates a deserializer.
          */
-        listLine.add("/* Creates a CommonRequest instance from a JSON string. */");
-        listLine.add("val deserializer = " + requestDeserializerIdSimple + "<" + argRequestHeaderIdSimple + ", " + requestId + ">(argHttpRequest.javaClass)");
-        listLine.add("deserializer.infoClazz = " + argRequestHeaderIdSimple + "::class.java");
-        listLine.add("deserializer.telegramClazz = " + requestId + "::class.java");
-        listLine.add("");
+        if (!isArgGetRequestBind(argMethod, argGetRequestBindList)) {
+            listLine.add("/* Creates a CommonRequest instance from a JSON string. */");
+            listLine.add("val deserializer = " + requestDeserializerIdSimple + "<" + argRequestHeaderIdSimple + ", " + requestId + ">(argHttpRequest.javaClass)");
+            listLine.add("deserializer.infoClazz = " + argRequestHeaderIdSimple + "::class.java");
+            listLine.add("deserializer.telegramClazz = " + requestId + "::class.java");
+            listLine.add("");
+        }
 
         /*
          * Generates a HttpCommonRequest.
@@ -847,7 +889,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
          * Generates a commonRequest.
          *
          */
-        listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(" + rawJsonId + ", deserializer, httpCommonRequest)");
+        if (isArgGetRequestBind(argMethod, argGetRequestBindList)) {
+            listLine.add("val info = " + argRequestHeaderIdSimple + "()");
+            listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + "," + requestId + "> = " + commonRequestId + "(info, bean)");
+        } else {
+            listLine.add("val commonRequest: " + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + "> = " + argInjectedParameterId + ".convertJsonToCommonRequest(" + rawJsonId + ", deserializer, httpCommonRequest)");
+        }
         listLine.add("");
 
         listLine.add("/* Stores the commonRequest with its type determined */");
@@ -1493,5 +1540,17 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             }
         }
         return  found;
+    }
+
+    private boolean isArgGetRequestBind(
+            String argMethod,
+            List<BlancoRestGeneratorKtGetRequestBindStructure> argGetRequestBindList
+    ) {
+        boolean result = false;
+        if (BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.equals(argMethod) && !argGetRequestBindList.isEmpty()) {
+            result = true;
+        }
+
+        return result;
     }
 }

@@ -354,6 +354,26 @@ public class BlancoRestGeneratorKtResourceBundle {
     }
 
     /**
+     * bundle[BlancoRestGeneratorKt], key[META2XML.PROCESS_GET_REQUEST_BIND]
+     *
+     * [blancotelegramprocess-get-request-bind] (ja)<br>
+     *
+     * @return key[META2XML.PROCESS_GET_REQUEST_BIND]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getMeta2xmlProcessGetRequestBind() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "blancotelegramprocess-get-request-bind";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("META2XML.PROCESS_GET_REQUEST_BIND");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
      * bundle[BlancoRestGeneratorKt], key[META2XML.PROCESS_LIST]
      *
      * [blancotelegramprocess-list] (ja)<br>

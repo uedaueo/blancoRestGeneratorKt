@@ -320,6 +320,21 @@ JavaDocに利用されます</value>
 
             </tableblock>
 
+            <tableblock name="blancotelegramprocess-get-request-bind" waitY="2" titleheight="2" rowname="get-request-bind">
+                <startstring>電文処理定義・GETリクエストバインド</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>項目名</value>
+                </tablecolumn>
+                <tablecolumn name="kind">
+                    <value>種別</value>
+                </tablecolumn>
+
+            </tableblock>
+
         </blancocalcparser>
     </target>
 </blanco>
