@@ -913,11 +913,11 @@ public class BlancoRestGeneratorKtTask extends Task {
     public final void execute() throws BuildException {
         System.out.println("BlancoRestGeneratorKtTask begin.");
 
-        // 項目番号[1]、アトリビュート[metadir]は必須入力です。入力チェックを行います。
+        // 項目番号[1], アトリビュート[metadir]は必須入力です。入力チェックを行います。
         if (fIsFieldMetadirProcessed == false) {
             throw new BuildException("必須アトリビュート[metadir]が設定されていません。処理を中断します。");
         }
-        // 項目番号[15]、アトリビュート[basepackage]は必須入力です。入力チェックを行います。
+        // 項目番号[15], アトリビュート[basepackage]は必須入力です。入力チェックを行います。
         if (fIsFieldBasepackageProcessed == false) {
             throw new BuildException("必須アトリビュート[basepackage]が設定されていません。処理を中断します。");
         }
@@ -956,10 +956,10 @@ public class BlancoRestGeneratorKtTask extends Task {
 
         try {
             // 実際のAntタスクの主処理を実行します。
-            // この箇所でコンパイルエラーが発生する場合、BlancoRestGeneratorKtProcessインタフェースを実装して blanco.restgeneratorkt.taskパッケージに BlancoRestGeneratorKtProcessImplクラスを作成することにより解決できる場合があります。
+            // If you get a compile error at this point, You may be able to solve it by implementing a BlancoRestGeneratorKtProcess interface and creating an BlancoRestGeneratorKtProcessImpl class in package blanco.restgeneratorkt.task.
             final BlancoRestGeneratorKtProcess proc = new BlancoRestGeneratorKtProcessImpl();
             if (proc.execute(fInput) != BlancoRestGeneratorKtBatchProcess.END_SUCCESS) {
-                throw new BuildException("タスクは異常終了しました。");
+                throw new BuildException("The task has terminated abnormally.");
             }
         } catch (IllegalArgumentException e) {
             if (getVerbose()) {
