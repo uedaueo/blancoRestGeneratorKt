@@ -741,12 +741,12 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
-     * このバリューオブジェクトを指定のターゲットに複写します。
+     * Copies this value object to the specified target.
      *
-     * <P>使用上の注意</P>
+     * <P>Cautions for use</P>
      * <UL>
-     * <LI>オブジェクトのシャロー範囲のみ複写処理対象となります。
-     * <LI>オブジェクトが循環参照している場合には、このメソッドは使わないでください。
+     * <LI>Only the shallow range of the object will be subject to the copying process.
+     * <LI>Do not use this method if the object has a circular reference.
      * </UL>
      *
      * @param target target value object.
@@ -784,7 +784,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         target.fBasedir = this.fBasedir;
         // Name: fAnnotationList
         // Type: java.util.List
-        // フィールド[fAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fAnnotationList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fCreateImportList
         // Type: java.lang.Boolean
         target.fCreateImportList = this.fCreateImportList;
@@ -793,16 +793,16 @@ public class BlancoRestGeneratorKtTelegramStructure {
         target.fExtends = this.fExtends;
         // Name: fImplementsList
         // Type: java.util.List
-        // フィールド[fImplementsList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fImplementsList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fImportList
         // Type: java.util.List
-        // フィールド[fImportList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fImportList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fHeaderList
         // Type: java.util.List
-        // フィールド[fHeaderList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fHeaderList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fListField
         // Type: java.util.ArrayList
-        // フィールド[fListField]はサポート外の型[java.util.ArrayListblanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure]です。
+        // Field[fListField] is an unsupported type[java.util.ArrayListblanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure].
         // Name: fAccess
         // Type: java.lang.String
         target.fAccess = this.fAccess;
@@ -817,7 +817,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         target.fAdjustFieldName = this.fAdjustFieldName;
         // Name: fConstructorArgList
         // Type: java.util.List
-        // フィールド[fConstructorArgList]はサポート外の型[java.util.Listblanco.cg.valueobject.BlancoCgField]です。
+        // Field[fConstructorArgList] is an unsupported type[java.util.Listblanco.cg.valueobject.BlancoCgField].
         // Name: fPackageSuffix
         // Type: java.lang.String
         target.fPackageSuffix = this.fPackageSuffix;

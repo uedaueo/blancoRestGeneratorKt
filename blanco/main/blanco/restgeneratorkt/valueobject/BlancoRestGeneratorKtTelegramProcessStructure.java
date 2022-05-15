@@ -799,12 +799,12 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
-     * このバリューオブジェクトを指定のターゲットに複写します。
+     * Copies this value object to the specified target.
      *
-     * <P>使用上の注意</P>
+     * <P>Cautions for use</P>
      * <UL>
-     * <LI>オブジェクトのシャロー範囲のみ複写処理対象となります。
-     * <LI>オブジェクトが循環参照している場合には、このメソッドは使わないでください。
+     * <LI>Only the shallow range of the object will be subject to the copying process.
+     * <LI>Do not use this method if the object has a circular reference.
      * </UL>
      *
      * @param target target value object.
@@ -842,13 +842,13 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         target.fImpleDirKt = this.fImpleDirKt;
         // Name: fAnnotationList
         // Type: java.util.List
-        // フィールド[fAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fAnnotationList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fClientAnnotationList
         // Type: java.util.List
-        // フィールド[fClientAnnotationList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fClientAnnotationList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fMetaIdList
         // Type: java.util.List
-        // フィールド[fMetaIdList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fMetaIdList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fNoAuthentication
         // Type: java.lang.Boolean
         target.fNoAuthentication = this.fNoAuthentication;
@@ -863,19 +863,19 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         target.fExtends = this.fExtends;
         // Name: fImplementsList
         // Type: java.util.List
-        // フィールド[fImplementsList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fImplementsList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fImportList
         // Type: java.util.List
-        // フィールド[fImportList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fImportList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fHeaderList
         // Type: java.util.List
-        // フィールド[fHeaderList]はサポート外の型[java.util.Listjava.lang.String]です。
+        // Field[fHeaderList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fGetRequestBindList
         // Type: java.util.List
-        // フィールド[fGetRequestBindList]はサポート外の型[java.util.Listblanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure]です。
+        // Field[fGetRequestBindList] is an unsupported type[java.util.Listblanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure].
         // Name: fListTelegrams
         // Type: java.util.HashMap
-        // フィールド[fListTelegrams]はサポート外の型[java.util.HashMapjava.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>]です。
+        // Field[fListTelegrams] is an unsupported type[java.util.HashMapjava.lang.String, java.util.HashMap<java.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>].
         // Name: fRequestHeaderClass
         // Type: java.lang.String
         target.fRequestHeaderClass = this.fRequestHeaderClass;
