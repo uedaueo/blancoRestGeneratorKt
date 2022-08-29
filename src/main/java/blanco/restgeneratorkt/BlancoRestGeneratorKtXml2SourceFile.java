@@ -667,6 +667,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             final List<BlancoRestGeneratorKtGetRequestBindStructure> argGetRequestBindList
     ) {
 
+        boolean isDeleteMethod = false;
         String executeMethodId = "";
         String methodAnn = "";
         if (BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.equals(argMethod)) {
@@ -709,6 +710,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Put");
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
         } else if (BlancoRestGeneratorKtConstants.HTTP_METHOD_DELETE.equals(argMethod)) {
+            isDeleteMethod = true;
             executeMethodId = BlancoRestGeneratorKtConstants.DELETE_CONTROLLER_METHOD;
             methodAnn = "Delete";
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Delete");
@@ -754,6 +756,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             requestGenerics = commonRequestId + "<" + requestId + ">";
         } else {
             requestGenerics = commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">";
+        }
+        String savedRequestGenerics = requestGenerics;
+        if (isDeleteMethod) {
+            requestGenerics = "*";
         }
         httpRequest.getType().setGenerics(
                 requestGenerics
@@ -839,7 +845,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
          */
         if (!isArgGetRequestBind(argMethod, argGetRequestBindList)) {
             listLine.add("/* Creates a CommonRequest instance from a JSON string. */");
-            listLine.add("val deserializer = " + requestDeserializerIdSimple + "<" + argRequestHeaderIdSimple + ", " + requestId + ">(argHttpRequest.javaClass)");
+            listLine.add("val deserializer = " + requestDeserializerIdSimple + "<" + argRequestHeaderIdSimple + ", " + requestId + ">(CommonRequest::class.java)");
             listLine.add("deserializer.infoClazz = " + argRequestHeaderIdSimple + "::class.java");
             listLine.add("deserializer.telegramClazz = " + requestId + "::class.java");
             listLine.add("");
@@ -876,7 +882,12 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             metaIdList = sb.toString();
         }
 
-        listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
+        String deleteRequestCast = "";
+        if (isDeleteMethod) {
+            listLine.add("@Suppress(\"UNCHECKED_CAST\")");
+            deleteRequestCast = " as HttpRequest<" + savedRequestGenerics + ">";
+        }
+        listLine.add("val httpCommonRequest = HttpCommonRequest<" + commonRequestId + "<" + argRequestHeaderIdSimple + ", " + requestId + ">>(argHttpRequest" + deleteRequestCast + ", " + noAuthentication + ", listOf(" + metaIdList + "), null)");
         /*
          * Whether or not auxiliary authentication is required.
          */
@@ -1166,7 +1177,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         fCgSourceFile.getClassList().add(fCgClass);
         // The telegram class is always public, and can be omitted in Kotlin.
         String access = "";
-        // Whether or not it is a data class and whether or not it has at least one constructor argument. 
+        // Whether or not it is a data class and whether or not it has at least one constructor argument.
         if (argTelegramStructure.getData() && this.hasConstructorArgs(argTelegramStructure)) {
             access += "data";
         }
