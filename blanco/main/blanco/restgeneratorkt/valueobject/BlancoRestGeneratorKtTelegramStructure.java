@@ -182,6 +182,14 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fPermissionKind;
 
     /**
+     * Kotlin 独自。メソッド毎の使用不可設定を実装する場合にtrueにします。
+     *
+     * フィールド: [impleSpoiled]。
+     * デフォルト: [false]。
+     */
+    private Boolean fImpleSpoiled = false;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -699,6 +707,29 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [impleSpoiled] の値を設定します。
+     *
+     * フィールドの説明: [Kotlin 独自。メソッド毎の使用不可設定を実装する場合にtrueにします。]。
+     *
+     * @param argImpleSpoiled フィールド[impleSpoiled]に設定する値。
+     */
+    public void setImpleSpoiled(final Boolean argImpleSpoiled) {
+        fImpleSpoiled = argImpleSpoiled;
+    }
+
+    /**
+     * フィールド [impleSpoiled] の値を取得します。
+     *
+     * フィールドの説明: [Kotlin 独自。メソッド毎の使用不可設定を実装する場合にtrueにします。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[impleSpoiled]から取得した値。
+     */
+    public Boolean getImpleSpoiled() {
+        return fImpleSpoiled;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -736,6 +767,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",packageSuffix=" + fPackageSuffix);
         buf.append(",overridePackage=" + fOverridePackage);
         buf.append(",permissionKind=" + fPermissionKind);
+        buf.append(",impleSpoiled=" + fImpleSpoiled);
         buf.append("]");
         return buf.toString();
     }
@@ -827,5 +859,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fPermissionKind
         // Type: java.lang.String
         target.fPermissionKind = this.fPermissionKind;
+        // Name: fImpleSpoiled
+        // Type: java.lang.Boolean
+        target.fImpleSpoiled = this.fImpleSpoiled;
     }
 }

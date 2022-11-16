@@ -600,6 +600,14 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             }
         }
 
+        /* Sets the import for the class. */
+        for (int index = 0; index < argProcessStructure.getImportList()
+                .size(); index++) {
+            final String imported = (String) argProcessStructure.getImportList()
+                    .get(index);
+            fCgSourceFile.getImportList().add(imported);
+        }
+
         // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
@@ -670,6 +678,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         boolean isDeleteMethod = false;
         String executeMethodId = "";
         String methodAnn = "";
+        String strMethodName = argMethod.split("_")[2];
         if (BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.equals(argMethod)) {
             executeMethodId = BlancoRestGeneratorKtConstants.GET_CONTROLLER_METHOD;
             methodAnn = "Get";
@@ -739,9 +748,10 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         httpRequest.setNotnull(true);
 
         /*
-         * For packages in which kinds of a telegram are defined, it is assumed that they are explicitly imported in the API definition document. (or the smae package)
+         * For packages in which kinds of a telegram are defined, it is assumed that they are explicitly imported in the API definition document. (or the same package)
          */
-        String requestId = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_INPUT).getName();
+        BlancoRestGeneratorKtTelegramStructure inputTelegram = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_INPUT);
+        String requestId = inputTelegram.getName();
         if (this.isVerbose()) {
             System.out.println("### requestId = " + requestId);
         }
@@ -839,6 +849,20 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         String requestDeserializerId = BlancoRestGeneratorKtUtil.runtimePackage + ".util.BlancoRestGeneratorKtRequestDeserializer";
         fCgSourceFile.getImportList().add(requestDeserializerId);
         String requestDeserializerIdSimple = "BlancoRestGeneratorKtRequestDeserializer";
+
+        /*
+         * Implement spoiled option.
+         * ApiSpoilException should be implemented manually.
+         */
+        if (inputTelegram.getImpleSpoiled()) {
+            listLine.add("/*");
+            listLine.add(" * Test method is spoiled or not.");
+            listLine.add(" * ApiSpoilException should be implemented manually.");
+            listLine.add(" */");
+            listLine.add("if (" + argInjectedParameterId + ".isSpoiled(\"" + strMethodName + "\")) {");
+            listLine.add("throw ApiSpoilException()");
+            listLine.add(" }");
+        }
 
         /*
          * Generates a deserializer.

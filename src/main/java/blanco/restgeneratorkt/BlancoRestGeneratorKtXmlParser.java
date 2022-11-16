@@ -256,6 +256,10 @@ public class BlancoRestGeneratorKtXmlParser {
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                         "createImportList")));
 
+        argTelegramStructure.setImpleSpoiled("true"
+                .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
+                        "impleSpoiled")));
+
         argTelegramStructure.setPermissionKind(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                 "permissionKind"));
 
@@ -495,7 +499,7 @@ public class BlancoRestGeneratorKtXmlParser {
                     fieldStructure.setDescription(lines[indexLine]);
                 } else {
                     // For a multi-line description, it will be split and stored.
-                    // From the second line, assumes that character reference encoding has been properly implemented.   
+                    // From the second line, assumes that character reference encoding has been properly implemented.
                     fieldStructure.getDescriptionList().add(
                             lines[indexLine]);
                 }
