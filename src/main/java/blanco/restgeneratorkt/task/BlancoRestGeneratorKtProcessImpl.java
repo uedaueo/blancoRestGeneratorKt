@@ -130,8 +130,25 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.voOverridePackage = input.getVoOverridePackage();
             BlancoRestGeneratorKtUtil.client = input.getClient();
             BlancoRestGeneratorKtUtil.serverType = input.getServerType();
+            BlancoRestGeneratorKtUtil.telegramStyle = input.getTelegramStyle();
             BlancoRestGeneratorKtUtil.clientAnnotation = input.getClientAnnotation();
             BlancoRestGeneratorKtUtil.overrideClientAnnotation = input.getOverrideClientAnnotation();
+
+            if (!BlancoRestGeneratorKtUtil.serverType.equals(BlancoRestGeneratorKtConstants.SERVER_TYPE_MICRONAUT)) {
+                throw new IllegalArgumentException(fBundle.getBlancorestServerTypeError());
+            }
+            // Currently, just micronaut is supported for serverType.
+            BlancoRestGeneratorKtUtil.isServerTypeMicronaut = true;
+
+            if (!BlancoRestGeneratorKtUtil.telegramStyle.equals(BlancoRestGeneratorKtConstants.TELEGRAM_STYLE_BLANCO) && 
+                !BlancoRestGeneratorKtUtil.telegramStyle.equals(BlancoRestGeneratorKtConstants.TELEGRAM_STYLE_PLAIN)) {
+                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStyleError());
+            }
+            if (BlancoRestGeneratorKtUtil.telegramStyle.equals(BlancoRestGeneratorKtConstants.TELEGRAM_STYLE_PLAIN)) {
+                BlancoRestGeneratorKtUtil.isTelegramStyleBlanco = false;
+                BlancoRestGeneratorKtUtil.isTelegramStylePlain = true;
+            }
+
 
             /*
              * Gets an object that is already (supposed to be) defined in ValueObject to use when creating validator. 

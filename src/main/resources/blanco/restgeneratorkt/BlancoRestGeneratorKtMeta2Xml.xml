@@ -17,6 +17,12 @@
                 <propertykey name="telegramMethod" waitX="2">
                     <value>電文のMETHOD</value>
                 </propertykey>
+                <propertykey name="telegramSuffix" waitX="2">
+                    <value>電文Suffix</value>
+                </propertykey>
+                <propertykey name="statusCode" waitX="2">
+                    <value>StatusCode</value>
+                </propertykey>
 <!--                <propertykey name="superClass" waitX="2">-->
 <!--                    <value>電文の親クラス</value>-->
 <!--                </propertykey>-->
@@ -54,6 +60,10 @@
                 <valuemapping>
                     <result>Output</result>
                     <source>応答電文(S→C)</source>
+                </valuemapping>
+                <valuemapping>
+                    <result>Error</result>
+                    <source>エラー電文(S→C)</source>
                 </valuemapping>
                 <valuemapping>
                     <result>true</result>

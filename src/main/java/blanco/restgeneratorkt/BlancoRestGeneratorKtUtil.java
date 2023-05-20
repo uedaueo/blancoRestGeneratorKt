@@ -1,14 +1,20 @@
 package blanco.restgeneratorkt;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import blanco.cg.BlancoCgSupportedLang;
 import blanco.restgeneratorkt.resourcebundle.BlancoRestGeneratorKtResourceBundle;
 import blanco.restgeneratorkt.task.valueobject.BlancoRestGeneratorKtProcessInput;
+import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
 import blanco.valueobjectkt.BlancoValueObjectKtXmlParser;
 import blanco.valueobjectkt.valueobject.BlancoValueObjectKtClassStructure;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
 
 /**
  * Gets the list of Object created in BlancoValueObject from XML and stores it.
@@ -61,8 +67,12 @@ public class BlancoRestGeneratorKtUtil {
     public static String voOverridePackage = null;
     public static boolean client = false;
     public static String serverType = null;
+    public static boolean isServerTypeMicronaut = true;
     public static String clientAnnotation = null;
     public static String overrideClientAnnotation = null;
+    public static String telegramStyle = BlancoRestGeneratorKtConstants.TELEGRAM_STYLE_BLANCO;
+    public static boolean isTelegramStyleBlanco = true;
+    public static boolean isTelegramStylePlain = false;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {
@@ -186,6 +196,30 @@ public class BlancoRestGeneratorKtUtil {
         }
 
         return telegramId;
+    }
+
+    /**
+     * Search telegrams startWith specified name.
+     * It may very slow if the sheet contains many telegrams, but be patient
+     * because it is just on generate sources phase.
+     * @param start
+     * @param argTelegramStructureMap
+     * @return
+     */
+    static public List<BlancoRestGeneratorKtTelegramStructure> searchTelegramsStartWith(
+        final String start,
+        final Map<String, BlancoRestGeneratorKtTelegramStructure> argTelegramStructureMap
+    ) {
+        List<BlancoRestGeneratorKtTelegramStructure> telegrams = new ArrayList<>();
+
+        Set<String> keySet = argTelegramStructureMap.keySet();
+        for (String key : keySet) {
+            if (key.startsWith(start)) {
+                telegrams.add(argTelegramStructureMap.get(key));
+            }
+        }
+
+        return telegrams;
     }
 
     /**

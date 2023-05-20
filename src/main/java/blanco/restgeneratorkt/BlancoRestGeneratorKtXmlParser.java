@@ -124,7 +124,7 @@ public class BlancoRestGeneratorKtXmlParser {
             final BlancoRestGeneratorKtTelegramStructure telegramStructure = parseTelegramSheet(elementSheet);
 
             // Stores the telegram information in a map with the telegram ID as the key.
-            if (telegramStructure != null) {
+            if (telegramStructure != null && BlancoStringUtil.null2Blank(telegramStructure.getName()).trim().length() > 0) {
                 telegramStructureMap.put(telegramStructure.getName(), telegramStructure);
             }
         }
@@ -168,6 +168,14 @@ public class BlancoRestGeneratorKtXmlParser {
             // If httpMethod is empty, skips the process.
             // System.out.println("BlancoRestXmlSourceFile#process !!! NO NAME !!!");
             return telegramStructure;
+        }
+
+        final String telegramType = BlancoXmlBindingUtil.getTextContent(elementCommon, "type");
+        if (BlancoStringUtil.null2Blank(telegramType).trim().length() == 0 || (
+            !BlancoRestGeneratorKtUtil.isTelegramStylePlain && BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_ERROR.equals(telegramType)
+        )) {
+            System.out.println("BlancoRestGeneratorKtXmlParser#parseTelegramSheet !!! Error sheet is skipped !!! " + name);
+            return telegramStructure;            
         }
 
         if (this.isVerbose()) {
@@ -230,10 +238,23 @@ public class BlancoRestGeneratorKtXmlParser {
                 argElementCommon, "package"));
         // Description
         argTelegramStructure.setDescription(BlancoXmlBindingUtil.getTextContent(argElementCommon, "description"));
-        // Telegram type (Input/Output)
+        // Telegram type (Input/Output/Error)
         argTelegramStructure.setTelegramType(BlancoXmlBindingUtil.getTextContent(argElementCommon, "type"));
         // HTTP method
         argTelegramStructure.setTelegramMethod(BlancoXmlBindingUtil.getTextContent(argElementCommon, "telegramMethod"));
+        // telegram suffix
+        argTelegramStructure.setTelegramSuffix(BlancoXmlBindingUtil.getTextContent(argElementCommon, "telegramSuffix"));
+
+        // StatusCode
+        if (BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_ERROR.equals(argTelegramStructure.getTelegramType())) {
+            String statusCode = BlancoXmlBindingUtil.getTextContent(argElementCommon, "statusCode");
+            if (BlancoStringUtil.null2Blank(statusCode).trim().length() == 0) {
+                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeRequired());
+            }
+            argTelegramStructure.setStatusCode("\"" + statusCode + "\"");
+        }
+
+        // basedir
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));
 
         /* Supports class annotation. */
@@ -247,7 +268,7 @@ public class BlancoRestGeneratorKtXmlParser {
             argTelegramStructure.setAnnotationList(createAnnotaionList(classAnnotation));
         }
         /* Always adds @Introspected in micronaut. */
-        if ("micronaut".equalsIgnoreCase(this.getServerType())) {
+        if (BlancoRestGeneratorKtUtil.isServerTypeMicronaut) {
             argTelegramStructure.getAnnotationList().add("Introspected");
             argTelegramStructure.getImportList().add("io.micronaut.core.annotation.Introspected");
         }
@@ -404,6 +425,12 @@ public class BlancoRestGeneratorKtXmlParser {
                     || fieldStructure.getName().trim().length() == 0) {
 //                System.out.println("*** NO NAME SKIP!!! ");
                 continue;
+            }
+
+            /* if telegramStyle is plain, statusCode is reserved. */
+            if (BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_ERROR.equals(argTelegramStructure.getTelegramType()) &&
+                BlancoRestGeneratorKtConstants.TELEGRAM_STATUS_CODE.equals(fieldStructure.getName())) {
+                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeReserved());
             }
 
             /*
@@ -572,6 +599,25 @@ public class BlancoRestGeneratorKtXmlParser {
             fieldStructure.setOverride("true".equals(BlancoXmlBindingUtil
                     .getTextContent(elementList, "override")));
 
+            argTelegramStructure.getListField().add(fieldStructure);
+        }
+        /* Set StatusCode for ErrorTelegram if telegram style is plain. */
+        if (BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_ERROR.equals(argTelegramStructure.getTelegramType())) {
+            final BlancoRestGeneratorKtTelegramFieldStructure fieldStructure = new BlancoRestGeneratorKtTelegramFieldStructure();
+
+            fieldStructure.setNo("0");
+            fieldStructure.setName(BlancoRestGeneratorKtConstants.TELEGRAM_STATUS_CODE);
+            fieldStructure.setType("kotlin.String");
+            fieldStructure.setNullable(false);
+            fieldStructure.setConstArg(false);
+            fieldStructure.setValue(true);
+            String statusCode = argTelegramStructure.getStatusCode();
+            if (BlancoStringUtil.null2Blank(statusCode).trim().length() == 0) {
+                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeRequired());
+            }
+            fieldStructure.setDefault(statusCode);
+            fieldStructure.setDefaultKt(statusCode);
+            fieldStructure.setDescription(fBundle.getBlancorestTelegramStylePlainStatusCodeLangdoc());
             argTelegramStructure.getListField().add(fieldStructure);
         }
     }
@@ -1094,6 +1140,15 @@ public class BlancoRestGeneratorKtXmlParser {
             }
             argProcessStructure.getListTelegrams().put(methodKey, telegrams);
             found = true;
+
+            /* Search Error telegrams on telegramType is plain. */
+            if (BlancoRestGeneratorKtUtil.isTelegramStylePlain) {
+                String telegramIdPrefix = argProcessId + method + "Error";
+                List<BlancoRestGeneratorKtTelegramStructure> listErrors = BlancoRestGeneratorKtUtil.searchTelegramsStartWith(telegramIdPrefix, argTelegramStructureMap);
+                if (listErrors.size() > 0) {
+                    argProcessStructure.getErrorTelegrams().put(methodKey, listErrors);
+                }
+            }
         }
 
         return found;

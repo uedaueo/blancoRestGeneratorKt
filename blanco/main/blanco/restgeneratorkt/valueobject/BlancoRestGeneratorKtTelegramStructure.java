@@ -190,6 +190,20 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private Boolean fImpleSpoiled = false;
 
     /**
+     * 電文IDの後ろに付与されます。エラー電文で使用される想定です。
+     *
+     * フィールド: [telegramSuffix]。
+     */
+    private String fTelegramSuffix;
+
+    /**
+     * 応答ステータス。エラー電文で使用される想定です。
+     *
+     * フィールド: [statusCode]。
+     */
+    private String fStatusCode;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -730,6 +744,50 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [telegramSuffix] の値を設定します。
+     *
+     * フィールドの説明: [電文IDの後ろに付与されます。エラー電文で使用される想定です。]。
+     *
+     * @param argTelegramSuffix フィールド[telegramSuffix]に設定する値。
+     */
+    public void setTelegramSuffix(final String argTelegramSuffix) {
+        fTelegramSuffix = argTelegramSuffix;
+    }
+
+    /**
+     * フィールド [telegramSuffix] の値を取得します。
+     *
+     * フィールドの説明: [電文IDの後ろに付与されます。エラー電文で使用される想定です。]。
+     *
+     * @return フィールド[telegramSuffix]から取得した値。
+     */
+    public String getTelegramSuffix() {
+        return fTelegramSuffix;
+    }
+
+    /**
+     * フィールド [statusCode] の値を設定します。
+     *
+     * フィールドの説明: [応答ステータス。エラー電文で使用される想定です。]。
+     *
+     * @param argStatusCode フィールド[statusCode]に設定する値。
+     */
+    public void setStatusCode(final String argStatusCode) {
+        fStatusCode = argStatusCode;
+    }
+
+    /**
+     * フィールド [statusCode] の値を取得します。
+     *
+     * フィールドの説明: [応答ステータス。エラー電文で使用される想定です。]。
+     *
+     * @return フィールド[statusCode]から取得した値。
+     */
+    public String getStatusCode() {
+        return fStatusCode;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -768,6 +826,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",overridePackage=" + fOverridePackage);
         buf.append(",permissionKind=" + fPermissionKind);
         buf.append(",impleSpoiled=" + fImpleSpoiled);
+        buf.append(",telegramSuffix=" + fTelegramSuffix);
+        buf.append(",statusCode=" + fStatusCode);
         buf.append("]");
         return buf.toString();
     }
@@ -862,5 +922,11 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fImpleSpoiled
         // Type: java.lang.Boolean
         target.fImpleSpoiled = this.fImpleSpoiled;
+        // Name: fTelegramSuffix
+        // Type: java.lang.String
+        target.fTelegramSuffix = this.fTelegramSuffix;
+        // Name: fStatusCode
+        // Type: java.lang.String
+        target.fStatusCode = this.fStatusCode;
     }
 }

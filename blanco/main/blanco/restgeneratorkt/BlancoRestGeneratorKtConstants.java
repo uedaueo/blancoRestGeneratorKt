@@ -20,7 +20,7 @@ public class BlancoRestGeneratorKtConstants {
      * 項目番号:3<br>
      * バージョン番号。
      */
-    public static final String VERSION = "0.1.0";
+    public static final String VERSION = "3.1.0";
 
     /**
      * 項目番号:4<br>
@@ -281,10 +281,16 @@ public class BlancoRestGeneratorKtConstants {
     public static final String TELEGRAM_INPUT = "TELEGRAM_INPUT";
 
     /**
-     * 項目番号:47<br>
+     * 項目番号:46<br>
      * 電文種別OUTPUTを表す文字列
      */
     public static final String TELEGRAM_OUTPUT = "TELEGRAM_OUTPUT";
+
+    /**
+     * 項目番号:47<br>
+     * 電文種別ERRORを表す文字列
+     */
+    public static final String TELEGRAM_ERROR = "TELEGRAM_ERROR";
 
     /**
      * 項目番号:48<br>
@@ -327,4 +333,46 @@ public class BlancoRestGeneratorKtConstants {
      * APIの権限を表す文字列を保持するプロパティの名前です。
      */
     public static final String PERMISSION_KIND_PROPERTY = "permissionKind";
+
+    /**
+     * 項目番号:55<br>
+     * 電文定義書に要求電文として定義された電文種別を表す文字列
+     */
+    public static final String TELEGRAM_TYPE_INPUT = "Input";
+
+    /**
+     * 項目番号:56<br>
+     * 電文定義書に応答電文として定義された電文種別を表す文字列
+     */
+    public static final String TELEGRAM_TYPE_OUTPUT = "Output";
+
+    /**
+     * 項目番号:57<br>
+     * 電文定義書にエラー電文として定義された電文種別を表す文字列
+     */
+    public static final String TELEGRAM_TYPE_ERROR = "Error";
+
+    /**
+     * 項目番号:58<br>
+     * Task引数として渡される電文スタイル文字列: blanco
+     */
+    public static final String TELEGRAM_STYLE_BLANCO = "blanco";
+
+    /**
+     * 項目番号:59<br>
+     * Task引数として渡される電文スタイル文字列: plain
+     */
+    public static final String TELEGRAM_STYLE_PLAIN = "plain";
+
+    /**
+     * 項目番号:60<br>
+     * Task引数として渡されるserverType文字列: micronaut
+     */
+    public static final String SERVER_TYPE_MICRONAUT = "micronaut";
+
+    /**
+     * 項目番号:61<br>
+     * エラー電文に追加されるstatusCodeのプロパティ名
+     */
+    public static final String TELEGRAM_STATUS_CODE = "statusCode";
 }

@@ -2,6 +2,7 @@ package blanco.restgeneratorkt.valueobject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * BlancoRestGeneratorKtのなかで利用されるValueObjectです。
@@ -151,8 +152,9 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private List<BlancoRestGeneratorKtGetRequestBindStructure> fGetRequestBindList = new java.util.ArrayList<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure>();
 
     /**
-     * この電文処理が使用する電文の一覧
+     * この電文処理が使用する電文の一覧。
      *
+     * Map<HttpMethod, Map<telegramKind, telegramStructure>> となっているので、本当はMapなんだけど、初期にlistと命名しちゃったので、、、
      * フィールド: [listTelegrams]。
      * デフォルト: [new java.util.HashMap&lt;&gt;()]。
      */
@@ -192,6 +194,15 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
      * フィールド: [overrideLocation]。
      */
     private String fOverrideLocation;
+
+    /**
+     * この電文処理が使用するエラー電文。
+     *
+     * Map<HttpMethod, List<telegramStructure>> を想定。
+     * フィールド: [errorTelegrams]。
+     * デフォルト: [new java.util.HashMap&lt;&gt;()]。
+     */
+    private Map<String, List<BlancoRestGeneratorKtTelegramStructure>> fErrorTelegrams = new java.util.HashMap<>();
 
     /**
      * フィールド [name] の値を設定します。
@@ -624,7 +635,8 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     /**
      * フィールド [listTelegrams] の値を設定します。
      *
-     * フィールドの説明: [この電文処理が使用する電文の一覧]。
+     * フィールドの説明: [この電文処理が使用する電文の一覧。]。
+     * Map<HttpMethod, Map<telegramKind, telegramStructure>> となっているので、本当はMapなんだけど、初期にlistと命名しちゃったので、、、
      *
      * @param argListTelegrams フィールド[listTelegrams]に設定する値。
      */
@@ -635,7 +647,8 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     /**
      * フィールド [listTelegrams] の値を取得します。
      *
-     * フィールドの説明: [この電文処理が使用する電文の一覧]。
+     * フィールドの説明: [この電文処理が使用する電文の一覧。]。
+     * Map<HttpMethod, Map<telegramKind, telegramStructure>> となっているので、本当はMapなんだけど、初期にlistと命名しちゃったので、、、
      * デフォルト: [new java.util.HashMap&lt;&gt;()]。
      *
      * @return フィールド[listTelegrams]から取得した値。
@@ -755,6 +768,31 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [errorTelegrams] の値を設定します。
+     *
+     * フィールドの説明: [この電文処理が使用するエラー電文。]。
+     * Map<HttpMethod, List<telegramStructure>> を想定。
+     *
+     * @param argErrorTelegrams フィールド[errorTelegrams]に設定する値。
+     */
+    public void setErrorTelegrams(final Map<String, List<BlancoRestGeneratorKtTelegramStructure>> argErrorTelegrams) {
+        fErrorTelegrams = argErrorTelegrams;
+    }
+
+    /**
+     * フィールド [errorTelegrams] の値を取得します。
+     *
+     * フィールドの説明: [この電文処理が使用するエラー電文。]。
+     * Map<HttpMethod, List<telegramStructure>> を想定。
+     * デフォルト: [new java.util.HashMap&lt;&gt;()]。
+     *
+     * @return フィールド[errorTelegrams]から取得した値。
+     */
+    public Map<String, List<BlancoRestGeneratorKtTelegramStructure>> getErrorTelegrams() {
+        return fErrorTelegrams;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -794,6 +832,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",packageSuffix=" + fPackageSuffix);
         buf.append(",overridePackage=" + fOverridePackage);
         buf.append(",overrideLocation=" + fOverrideLocation);
+        buf.append(",errorTelegrams=" + fErrorTelegrams);
         buf.append("]");
         return buf.toString();
     }
@@ -891,5 +930,8 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fOverrideLocation
         // Type: java.lang.String
         target.fOverrideLocation = this.fOverrideLocation;
+        // Name: fErrorTelegrams
+        // Type: java.util.Map
+        // Field[fErrorTelegrams] is an unsupported type[java.util.Mapjava.lang.String, java.util.List<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>].
     }
 }

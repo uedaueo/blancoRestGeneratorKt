@@ -228,7 +228,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
 
     private void generate(final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure, final File argDirectoryTarget) {
 
-        // The first step is to generate a telegram.
+        // The first step is to generate telegrams.
         Set<String> methodKeys = argProcessStructure.getListTelegrams().keySet(); // It should not be null because it is checked at time of parse.
         for (String methodKey : methodKeys) {
             HashMap<String, BlancoRestGeneratorKtTelegramStructure> kindMap =
@@ -236,6 +236,13 @@ public class BlancoRestGeneratorKtXml2SourceFile {
             Set<String> kindKeys = kindMap.keySet(); // It should not be null because it is checked at time of parse.
             for (String kindKey : kindKeys) {
                 generateTelegram(kindMap.get(kindKey), argDirectoryTarget);
+            }
+            /* Generate Error Telegrams if telegramType is plain. */
+            List<BlancoRestGeneratorKtTelegramStructure> errorTelegrams = argProcessStructure.getErrorTelegrams().get(methodKey);
+            if (errorTelegrams != null && !errorTelegrams.isEmpty()) {
+                for (BlancoRestGeneratorKtTelegramStructure errorTelegram : errorTelegrams) {
+                    generateTelegram(errorTelegram, argDirectoryTarget);
+                }    
             }
         }
 
@@ -1281,6 +1288,9 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         if (BlancoStringUtil.null2Blank(argTelegramStructure.getPermissionKind()).length() > 0) {
             buildPermissionKindField(argTelegramStructure.getPermissionKind());
         }
+
+        // Set StatusCode on error telegram.
+        // if (BlancoStringUtil.null2Blank(argTelegramStructure.getTelegramType()))
 
         // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
