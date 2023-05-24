@@ -24,10 +24,10 @@ import blanco.valueobjectkt.task.valueobject.BlancoValueObjectKtProcessInput;
  * @author IGA Tosiki
  * @author tueda
  */
-public class BlancoRestGeneratorKtTest {
+public class BlancoRestGeneratorKtPlainTest {
 
     @Test
-    public void testBlancoRestGenerator() {
+    public void testBlancoRestGeneratorPlain() {
         /*
          * まず ValueObject を生成します。
          */
@@ -36,7 +36,7 @@ public class BlancoRestGeneratorKtTest {
         /*
          * その後、電文と電文処理を生成します。
          */
-        this.testGeneratorProcesses();
+        this.testGeneratorProcessesPlain();
     }
 
     private void testGenerateValueObjects() {
@@ -60,7 +60,7 @@ public class BlancoRestGeneratorKtTest {
         }
     }
 
-    private void testGeneratorProcesses() {
+    private void testGeneratorProcessesPlain() {
         /*
          * その後、電文と電文処理を生成します。
          */
@@ -84,6 +84,7 @@ public class BlancoRestGeneratorKtTest {
         inputRestGenerator.setSkeletonDelegateInterface("blanco.restgenerator.application.IApiBase");
         inputRestGenerator.setPackageSuffix("blanco");
         inputRestGenerator.setOverrideLocation("/api/sample/blanco");
+        inputRestGenerator.setTelegramStyle("plain");
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);

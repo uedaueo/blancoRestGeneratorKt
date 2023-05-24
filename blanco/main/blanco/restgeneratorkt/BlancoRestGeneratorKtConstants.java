@@ -375,4 +375,22 @@ public class BlancoRestGeneratorKtConstants {
      * エラー電文に追加されるstatusCodeのプロパティ名
      */
     public static final String TELEGRAM_STATUS_CODE = "statusCode";
+
+    /**
+     * 項目番号:62<br>
+     * BODYで渡されたプロパティをURIパスで渡されたプロパティで上書きする
+     */
+    public static final String ON_CONFLICT_PREFER_PATH = "PREFER_PATH";
+
+    /**
+     * 項目番号:63<br>
+     * BODYで渡されたプロパティをURIパスより優先する
+     */
+    public static final String ON_CONFLICT_PREFER_BODY = "PREFER_BODY";
+
+    /**
+     * 項目番号:64<br>
+     * BODYとURIパスでプロパティが重複した場合はREJECTする
+     */
+    public static final String ON_CONFLICT_REJECT = "REJECT";
 }

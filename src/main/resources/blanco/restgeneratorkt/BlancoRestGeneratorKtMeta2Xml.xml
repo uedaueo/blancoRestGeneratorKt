@@ -23,6 +23,9 @@
                 <propertykey name="statusCode" waitX="2">
                     <value>StatusCode</value>
                 </propertykey>
+                <propertykey name="additionalPath" waitX="2">
+                    <value>追加パス</value>
+                </propertykey>
 <!--                <propertykey name="superClass" waitX="2">-->
 <!--                    <value>電文の親クラス</value>-->
 <!--                </propertykey>-->
@@ -52,6 +55,9 @@
                 <propertykey name="permissionKind" waitX="2">
                     <value>許可ユーザー権限</value>
                 </propertykey>
+                <propertykey name="paramPreferred" waitX="2">
+                    <value>パラメータ優先</value>
+                </propertykey>
 
                 <valuemapping>
                     <result>Input</result>
@@ -69,6 +75,19 @@
                     <result>true</result>
                     <source>YES</source>
                 </valuemapping>
+                <valuemapping>
+                    <result>PREFER_PATH</result>
+                    <source>PATH</source>
+                </valuemapping>
+                <valuemapping>
+                    <result>PREFER_BODY</result>
+                    <source>BODY</source>
+                </valuemapping>
+                <valuemapping>
+                    <result>REJECT</result>
+                    <source>ERROR</source>
+                </valuemapping>
+
             </propertyblock>
 
             <propertyblock name="blancotelegram-extends" waitY="1">
@@ -164,6 +183,12 @@ JavaDocに利用されます</value>
                 </tablecolumn>
                 <tablecolumn name="defaultKt">
                     <value>デフォルト(Kt)</value>
+                </tablecolumn>
+                <tablecolumn name="alias">
+                    <value>別名</value>
+                </tablecolumn>
+                <tablecolumn name="queryKind">
+                    <value>クエリ種別</value>
                 </tablecolumn>
                 <tablecolumn name="nullable">
                     <value>Nullable</value>

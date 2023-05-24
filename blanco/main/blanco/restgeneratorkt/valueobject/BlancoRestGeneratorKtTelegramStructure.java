@@ -204,6 +204,21 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fStatusCode;
 
     /**
+     * メソッド毎に固定のパスを追加する場合に使用。
+     *
+     * フィールド: [additionalPath]。
+     */
+    private String fAdditionalPath;
+
+    /**
+     * POST/PUTメソッドでURIパスとbodyのJSONプロパティの名前が被った際の動作を規定する。
+     *
+     * フィールド: [paramPreferred]。
+     * デフォルト: [&quot;PATH&quot;]。
+     */
+    private String fParamPreferred = "PATH";
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -788,6 +803,51 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [additionalPath] の値を設定します。
+     *
+     * フィールドの説明: [メソッド毎に固定のパスを追加する場合に使用。]。
+     *
+     * @param argAdditionalPath フィールド[additionalPath]に設定する値。
+     */
+    public void setAdditionalPath(final String argAdditionalPath) {
+        fAdditionalPath = argAdditionalPath;
+    }
+
+    /**
+     * フィールド [additionalPath] の値を取得します。
+     *
+     * フィールドの説明: [メソッド毎に固定のパスを追加する場合に使用。]。
+     *
+     * @return フィールド[additionalPath]から取得した値。
+     */
+    public String getAdditionalPath() {
+        return fAdditionalPath;
+    }
+
+    /**
+     * フィールド [paramPreferred] の値を設定します。
+     *
+     * フィールドの説明: [POST/PUTメソッドでURIパスとbodyのJSONプロパティの名前が被った際の動作を規定する。]。
+     *
+     * @param argParamPreferred フィールド[paramPreferred]に設定する値。
+     */
+    public void setParamPreferred(final String argParamPreferred) {
+        fParamPreferred = argParamPreferred;
+    }
+
+    /**
+     * フィールド [paramPreferred] の値を取得します。
+     *
+     * フィールドの説明: [POST/PUTメソッドでURIパスとbodyのJSONプロパティの名前が被った際の動作を規定する。]。
+     * デフォルト: [&quot;PATH&quot;]。
+     *
+     * @return フィールド[paramPreferred]から取得した値。
+     */
+    public String getParamPreferred() {
+        return fParamPreferred;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -828,6 +888,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",impleSpoiled=" + fImpleSpoiled);
         buf.append(",telegramSuffix=" + fTelegramSuffix);
         buf.append(",statusCode=" + fStatusCode);
+        buf.append(",additionalPath=" + fAdditionalPath);
+        buf.append(",paramPreferred=" + fParamPreferred);
         buf.append("]");
         return buf.toString();
     }
@@ -928,5 +990,11 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fStatusCode
         // Type: java.lang.String
         target.fStatusCode = this.fStatusCode;
+        // Name: fAdditionalPath
+        // Type: java.lang.String
+        target.fAdditionalPath = this.fAdditionalPath;
+        // Name: fParamPreferred
+        // Type: java.lang.String
+        target.fParamPreferred = this.fParamPreferred;
     }
 }

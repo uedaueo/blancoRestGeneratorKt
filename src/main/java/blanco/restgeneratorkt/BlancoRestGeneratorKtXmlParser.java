@@ -254,6 +254,11 @@ public class BlancoRestGeneratorKtXmlParser {
             argTelegramStructure.setStatusCode("\"" + statusCode + "\"");
         }
 
+        // 追加パス
+        argTelegramStructure.setAdditionalPath(BlancoXmlBindingUtil.getTextContent(argElementCommon, "additionalPath"));
+        // パラメータ優先
+        argTelegramStructure.setParamPreferred(BlancoXmlBindingUtil.getTextContent(argElementCommon, "paramPreferred"));
+
         // basedir
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));
 
@@ -598,6 +603,11 @@ public class BlancoRestGeneratorKtXmlParser {
             /* Supports override modifiers. */
             fieldStructure.setOverride("true".equals(BlancoXmlBindingUtil
                     .getTextContent(elementList, "override")));
+
+            /* alias */
+            fieldStructure.setAlias(BlancoXmlBindingUtil.getTextContent(elementList, "alias"));
+            /* queryKind */
+            fieldStructure.setQueryKind(BlancoXmlBindingUtil.getTextContent(elementList, "queryKind"));
 
             argTelegramStructure.getListField().add(fieldStructure);
         }
