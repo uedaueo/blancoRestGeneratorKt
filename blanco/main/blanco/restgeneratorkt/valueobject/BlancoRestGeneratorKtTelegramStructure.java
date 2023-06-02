@@ -219,6 +219,21 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fParamPreferred = "PATH";
 
     /**
+     * パラメータをQueryStringで取得する場合はtrueとします。
+     *
+     * フィールド: [hasQueryParams]。
+     * デフォルト: [false]。
+     */
+    private Boolean fHasQueryParams = false;
+
+    /**
+     * 最終的に使用されるパッケージ名を保存します。
+     *
+     * フィールド: [calculatedPackage]。
+     */
+    private String fCalculatedPackage;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -848,6 +863,51 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [hasQueryParams] の値を設定します。
+     *
+     * フィールドの説明: [パラメータをQueryStringで取得する場合はtrueとします。]。
+     *
+     * @param argHasQueryParams フィールド[hasQueryParams]に設定する値。
+     */
+    public void setHasQueryParams(final Boolean argHasQueryParams) {
+        fHasQueryParams = argHasQueryParams;
+    }
+
+    /**
+     * フィールド [hasQueryParams] の値を取得します。
+     *
+     * フィールドの説明: [パラメータをQueryStringで取得する場合はtrueとします。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[hasQueryParams]から取得した値。
+     */
+    public Boolean getHasQueryParams() {
+        return fHasQueryParams;
+    }
+
+    /**
+     * フィールド [calculatedPackage] の値を設定します。
+     *
+     * フィールドの説明: [最終的に使用されるパッケージ名を保存します。]。
+     *
+     * @param argCalculatedPackage フィールド[calculatedPackage]に設定する値。
+     */
+    public void setCalculatedPackage(final String argCalculatedPackage) {
+        fCalculatedPackage = argCalculatedPackage;
+    }
+
+    /**
+     * フィールド [calculatedPackage] の値を取得します。
+     *
+     * フィールドの説明: [最終的に使用されるパッケージ名を保存します。]。
+     *
+     * @return フィールド[calculatedPackage]から取得した値。
+     */
+    public String getCalculatedPackage() {
+        return fCalculatedPackage;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -890,6 +950,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",statusCode=" + fStatusCode);
         buf.append(",additionalPath=" + fAdditionalPath);
         buf.append(",paramPreferred=" + fParamPreferred);
+        buf.append(",hasQueryParams=" + fHasQueryParams);
+        buf.append(",calculatedPackage=" + fCalculatedPackage);
         buf.append("]");
         return buf.toString();
     }
@@ -996,5 +1058,11 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fParamPreferred
         // Type: java.lang.String
         target.fParamPreferred = this.fParamPreferred;
+        // Name: fHasQueryParams
+        // Type: java.lang.Boolean
+        target.fHasQueryParams = this.fHasQueryParams;
+        // Name: fCalculatedPackage
+        // Type: java.lang.String
+        target.fCalculatedPackage = this.fCalculatedPackage;
     }
 }

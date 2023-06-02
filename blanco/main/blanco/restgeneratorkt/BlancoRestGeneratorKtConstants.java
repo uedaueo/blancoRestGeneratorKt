@@ -393,4 +393,16 @@ public class BlancoRestGeneratorKtConstants {
      * BODYとURIパスでプロパティが重複した場合はREJECTする
      */
     public static final String ON_CONFLICT_REJECT = "REJECT";
+
+    /**
+     * 項目番号:65<br>
+     * 電文プロパティをQuery文字列として受け取る際の種別
+     */
+    public static final String TELEGRAM_QUERY_KIND_PATH = "path";
+
+    /**
+     * 項目番号:66<br>
+     * 電文プロパティをQuery文字列として受け取る際の種別
+     */
+    public static final String TELEGRAM_QUERY_KIND_QUERY = "query";
 }

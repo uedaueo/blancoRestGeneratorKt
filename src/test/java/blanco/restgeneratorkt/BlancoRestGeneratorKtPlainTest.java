@@ -40,6 +40,7 @@ public class BlancoRestGeneratorKtPlainTest {
     }
 
     private void testGenerateValueObjects() {
+        System.out.println("!!! Plain Test Starts !!!");
         /*
          * まず ValueObject を生成します。
          */
@@ -65,7 +66,7 @@ public class BlancoRestGeneratorKtPlainTest {
          * その後、電文と電文処理を生成します。
          */
         BlancoRestGeneratorKtProcessInput inputRestGenerator = new BlancoRestGeneratorKtProcessInput();
-        inputRestGenerator.setMetadir("meta/api");
+        inputRestGenerator.setMetadir("meta/plainApi");
         inputRestGenerator.setEncoding("UTF-8");
         inputRestGenerator.setSheetType("php");
         inputRestGenerator.setTmpdir("tmpTest");

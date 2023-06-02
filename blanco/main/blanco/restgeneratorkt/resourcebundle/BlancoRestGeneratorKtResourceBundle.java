@@ -1652,6 +1652,26 @@ public class BlancoRestGeneratorKtResourceBundle {
     }
 
     /**
+     * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.08]
+     *
+     * [電文のメソッドタイプが設定されていません。電文はGet/Delete/Post/Putのいずれかでなければなりません。] (ja)<br>
+     *
+     * @return key[BLANCOREST.ERROR.MSG.08]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getBlancorestErrorMsg08() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "電文のメソッドタイプが設定されていません。電文はGet/Delete/Post/Putのいずれかでなければなりません。";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.08");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
      * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.DEFAULT.EXCEPTION.TYPE.LANGDOC]
      *
      * [blancoRestGeneratorTsのデフォルト例外の定義です.] (ja)<br>

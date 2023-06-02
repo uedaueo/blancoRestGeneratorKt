@@ -608,6 +608,9 @@ public class BlancoRestGeneratorKtXmlParser {
             fieldStructure.setAlias(BlancoXmlBindingUtil.getTextContent(elementList, "alias"));
             /* queryKind */
             fieldStructure.setQueryKind(BlancoXmlBindingUtil.getTextContent(elementList, "queryKind"));
+            if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().length() > 0) {
+                argTelegramStructure.setHasQueryParams(true);
+            }
 
             argTelegramStructure.getListField().add(fieldStructure);
         }

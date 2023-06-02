@@ -28,6 +28,7 @@ public class BlancoRestGeneratorKtTest {
 
     @Test
     public void testBlancoRestGenerator() {
+        System.out.println("!!! Blanco Test Starts !!!");
         /*
          * まず ValueObject を生成します。
          */
