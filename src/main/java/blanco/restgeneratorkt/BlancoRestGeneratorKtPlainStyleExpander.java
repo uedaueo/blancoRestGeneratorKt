@@ -33,7 +33,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             for (String kindKey : kindKeys) {
                 BlancoRestGeneratorKtTelegramStructure telegramStructure = kindMap.get(kindKey);
                 generateTelegram(telegramStructure, argDirectoryTarget);
-                // if (BlancoRestGeneratorKtConstants.TELEGRAM_INPUT.equals(kindKey) && 
+                // if (BlancoRestGeneratorKtConstants.TELEGRAM_INPUT.equals(kindKey) &&
                 // telegramStructure.getHasQueryParams() &&
                 // (
                 //     BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(methodKey) ||
@@ -54,7 +54,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             if (errorTelegrams != null && !errorTelegrams.isEmpty()) {
                 for (BlancoRestGeneratorKtTelegramStructure errorTelegram : errorTelegrams) {
                     generateTelegram(errorTelegram, argDirectoryTarget);
-                }    
+                }
             }
         }
 
@@ -123,10 +123,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (fieldStructureList.size() > 0) {
             queryParamsStructure = new BlancoRestGeneratorKtTelegramStructure();
             argTelegramStructure.copyTo(queryParamsStructure);
-    
+
             String name = queryParamsStructure.getName() + "Query";
             queryParamsStructure.setName(name);
-            queryParamsStructure.setListField(fieldStructureList);    
+            queryParamsStructure.setListField(fieldStructureList);
         }
 
         return queryParamsStructure;
@@ -161,7 +161,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             bodyJsonStructure.setName(name);
             bodyJsonStructure.setListField(fieldStructureList);
         }
-        
+
         return bodyJsonStructure;
     }
 
@@ -310,7 +310,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             boolean isPostMethod = BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(method);
             boolean isPutMethod = BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(method);
 
-            BlancoCgMethod cgMethod = null;    
+            BlancoCgMethod cgMethod = null;
             if (telegrams == null) {
                 /* This method is unsupported. */
 //                createExecuteMethodNotImplemented(method);
@@ -370,7 +370,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
 
     /**
      * Create Post execute methods for Controller
-     * 
+     *
      * @param argTelegrams
      * @param argInjectedParameterId
      * @param argNoAuthentication
@@ -421,10 +421,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             String queryKind = BlancoStringUtil.null2Blank(field.getQueryKind());
             String name = field.getName();
             String alias = field.getAlias();
-            boolean isAlias = true;
             if (BlancoStringUtil.null2Blank(alias).trim().length() == 0) {
                 alias = name;
-                isAlias = false;
             }
 
             /*
@@ -486,9 +484,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
                 queryParam.getType().setGenerics(paramGeneric);
             }
-            if (isAlias) {
-                paramAnn = paramAnn + "(\"" + alias + "\")";
-            }
+            /* Always specify alias */
+            paramAnn = paramAnn + "(\"" + alias + "\")";
             queryParam.getAnnotationList().add(paramAnn);
             queryParmeters.add(queryParam);
 
@@ -499,7 +496,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 requestBeanField.add("}");
             } else {
                 requestBeanField.add("argRequestBean." + name + " = " + paramName);
-            }                    
+            }
         }
        if (!isFirstQuery) {
             methodAnnUri.append("}");
@@ -658,16 +655,15 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
 
         return cgExecutorMethod;
     }
-    
+
     /**
      * Create Get execute methods for Controller
-     * 
+     *
      * @param argTelegrams
      * @param argInjectedParameterId
      * @param argNoAuthentication
      * @param argNoAuxiliaryAuthentication
      * @param argMetaIdList
-     * @param argGetRequestBindList
      */
     private BlancoCgMethod createGetDeleteMethod(
             final HashMap<String, BlancoRestGeneratorKtTelegramStructure> argTelegrams,
@@ -716,10 +712,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             String queryKind = BlancoStringUtil.null2Blank(field.getQueryKind());
             String name = field.getName();
             String alias = field.getAlias();
-            boolean isAlias = true;
             if (BlancoStringUtil.null2Blank(alias).trim().length() == 0) {
                 alias = name;
-                isAlias = false;
             }
 
             /*
@@ -732,7 +726,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 methodAnnUri.append("/{" + alias + "}");
                 hasPathVariable = true;
                 isPathVariable = true;
-                paramAnn = "PathVariable";                
+                paramAnn = "PathVariable";
             } else {
                 hasQueryParams = true;
                 if (isFirstQuery) {
@@ -779,9 +773,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
                 queryParam.getType().setGenerics(paramGeneric);
             }
-            if (isAlias) {
-                paramAnn = paramAnn + "(\"" + alias + "\")";
-            }
+            /* Always specify alias */
+            paramAnn = paramAnn + "(\"" + alias + "\")";
             queryParam.getAnnotationList().add(paramAnn);
             queryParmeters.add(queryParam);
 
@@ -800,18 +793,18 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                     defaultValue = field.getDefaultKt();
                 }
                 if ("Optional".equals(paramType)) {
-                    requestBeanConst.add(name + " = if (" + paramName + ".isPresent()) " + paramName + ".get() else " + defaultValue);
+                    requestBeanConst.add(name + " = if (" + paramName + "?.isPresent == true) " + paramName + ".get() else " + defaultValue);
                 } else {
                     requestBeanConst.add(name + " = " + paramName);
-                }    
+                }
             } else {
                 if ("Optional".equals(paramType)) {
-                    requestBeanField.add("if (" + paramName + ".isPresent()) {");
+                    requestBeanField.add("if (" + paramName + "?.isPresent == true) {");
                     requestBeanField.add("requestBean." + name + " = " + paramName + ".get()");
                     requestBeanField.add("}");
                 } else {
                     requestBeanField.add("requestBean." + name + " = " + paramName);
-                }                    
+                }
             }
         }
         requestBeanConst.add(")");
@@ -960,7 +953,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
 
     /**
      * create execute methods for interface or skelton.
-     * 
+     *
      * @param argTelegrams
      * @param argMethod
      * @param isSkelton
@@ -1044,7 +1037,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
 
     /**
      * create execute methods for clients.
-     * 
+     *
      * @param argTelegrams
      * @param argMethod
      * @param argRequestHeaderIdSimple
@@ -1462,5 +1455,5 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
-    }    
+    }
 }
