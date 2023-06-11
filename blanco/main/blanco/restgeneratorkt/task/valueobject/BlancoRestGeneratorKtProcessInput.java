@@ -229,6 +229,14 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fTelegramStyle = "blanco";
 
     /**
+     * Management クラスの package として、Controller クラスの package に application を追加したものを想定し、importします。
+     *
+     * フィールド: [appendApplicationPackage]。
+     * デフォルト: [true]。
+     */
+    private boolean fAppendApplicationPackage = true;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [Whether to run in verbose mode.]。
@@ -903,6 +911,29 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [appendApplicationPackage] の値を設定します。
+     *
+     * フィールドの説明: [Management クラスの package として、Controller クラスの package に application を追加したものを想定し、importします。]。
+     *
+     * @param argAppendApplicationPackage フィールド[appendApplicationPackage]に設定する値。
+     */
+    public void setAppendApplicationPackage(final boolean argAppendApplicationPackage) {
+        fAppendApplicationPackage = argAppendApplicationPackage;
+    }
+
+    /**
+     * フィールド [appendApplicationPackage] の値を取得します。
+     *
+     * フィールドの説明: [Management クラスの package として、Controller クラスの package に application を追加したものを想定し、importします。]。
+     * デフォルト: [true]。
+     *
+     * @return フィールド[appendApplicationPackage]から取得した値。
+     */
+    public boolean getAppendApplicationPackage() {
+        return fAppendApplicationPackage;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -947,6 +978,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",voPackageSuffix=" + fVoPackageSuffix);
         buf.append(",voOverridePackage=" + fVoOverridePackage);
         buf.append(",telegramStyle=" + fTelegramStyle);
+        buf.append(",appendApplicationPackage=" + fAppendApplicationPackage);
         buf.append("]");
         return buf.toString();
     }
@@ -1059,5 +1091,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fTelegramStyle
         // Type: java.lang.String
         target.fTelegramStyle = this.fTelegramStyle;
+        // Name: fAppendApplicationPackage
+        // Type: boolean
+        target.fAppendApplicationPackage = this.fAppendApplicationPackage;
     }
 }

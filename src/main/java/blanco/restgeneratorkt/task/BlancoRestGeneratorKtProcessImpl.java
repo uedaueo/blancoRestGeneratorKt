@@ -133,6 +133,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.telegramStyle = input.getTelegramStyle();
             BlancoRestGeneratorKtUtil.clientAnnotation = input.getClientAnnotation();
             BlancoRestGeneratorKtUtil.overrideClientAnnotation = input.getOverrideClientAnnotation();
+            BlancoRestGeneratorKtUtil.isAppendApplicationPackage = input.getAppendApplicationPackage();
 
             if (!BlancoRestGeneratorKtUtil.serverType.equals(BlancoRestGeneratorKtConstants.SERVER_TYPE_MICRONAUT)) {
                 throw new IllegalArgumentException(fBundle.getBlancorestServerTypeError());
@@ -140,7 +141,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
             // Currently, just micronaut is supported for serverType.
             BlancoRestGeneratorKtUtil.isServerTypeMicronaut = true;
 
-            if (!BlancoRestGeneratorKtUtil.telegramStyle.equals(BlancoRestGeneratorKtConstants.TELEGRAM_STYLE_BLANCO) && 
+            if (!BlancoRestGeneratorKtUtil.telegramStyle.equals(BlancoRestGeneratorKtConstants.TELEGRAM_STYLE_BLANCO) &&
                 !BlancoRestGeneratorKtUtil.telegramStyle.equals(BlancoRestGeneratorKtConstants.TELEGRAM_STYLE_PLAIN)) {
                 throw new IllegalArgumentException(fBundle.getBlancorestTelegramStyleError());
             }
@@ -151,7 +152,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
 
 
             /*
-             * Gets an object that is already (supposed to be) defined in ValueObject to use when creating validator. 
+             * Gets an object that is already (supposed to be) defined in ValueObject to use when creating validator.
              */
             BlancoRestGeneratorKtUtil.processValueObjects(input);
 

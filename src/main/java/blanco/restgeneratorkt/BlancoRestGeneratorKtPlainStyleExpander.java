@@ -173,7 +173,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure
     ) {
         String applicationPackage = argProcessStructure
-                .getPackage() + "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+                .getPackage();
+        if (BlancoRestGeneratorKtUtil.isAppendApplicationPackage) {
+            applicationPackage += "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        }
         String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
 
         String applicationFileName = BlancoRestGeneratorKtUtil.impleDir + "/" + applicationPackage.replace(".", "/") + "/" + applicationClassId + ".kt";
@@ -1408,7 +1411,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Injects the implementation class for each API.
          */
         String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
-        String applicationClassPackage = argProcessStructure.getPackage() + "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        String applicationClassPackage = argProcessStructure.getPackage();
+        if (BlancoRestGeneratorKtUtil.isAppendApplicationPackage) {
+            applicationClassPackage += "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        }
 
         String injectedParameterId = BlancoNameAdjuster.toParameterName(applicationClassId);
 

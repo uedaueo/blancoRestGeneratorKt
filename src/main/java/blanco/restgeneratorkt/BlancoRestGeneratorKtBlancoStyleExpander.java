@@ -76,7 +76,7 @@ public class BlancoRestGeneratorKtBlancoStyleExpander extends BlancoRestGenerato
         if (BlancoRestGeneratorKtUtil.client){
             generateClientInterface(argProcessStructure, argDirectoryTarget);
         }
-    }    
+    }
 
     /**
      * Generates the skeleton of the application implementation class.
@@ -86,7 +86,10 @@ public class BlancoRestGeneratorKtBlancoStyleExpander extends BlancoRestGenerato
             final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure
     ) {
         String applicationPackage = argProcessStructure
-                .getPackage() + "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+                .getPackage();
+        if (BlancoRestGeneratorKtUtil.isAppendApplicationPackage) {
+            applicationPackage += "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        }
         String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
 
         String applicationFileName = BlancoRestGeneratorKtUtil.impleDir + "/" + applicationPackage.replace(".", "/") + "/" + applicationClassId + ".kt";
@@ -995,7 +998,10 @@ public class BlancoRestGeneratorKtBlancoStyleExpander extends BlancoRestGenerato
          * Injects the implementation class for each API.
          */
         String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
-        String applicationClassPackage = argProcessStructure.getPackage() + "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        String applicationClassPackage = argProcessStructure.getPackage();
+        if (BlancoRestGeneratorKtUtil.isAppendApplicationPackage) {
+            applicationClassPackage += "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        }
 
         String injectedParameterId = BlancoNameAdjuster.toParameterName(applicationClassId);
 

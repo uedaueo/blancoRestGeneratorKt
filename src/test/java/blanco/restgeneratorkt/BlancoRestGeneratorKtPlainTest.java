@@ -83,9 +83,10 @@ public class BlancoRestGeneratorKtPlainTest {
         inputRestGenerator.setImpledir("sample/blanco/main/kotlin");
         inputRestGenerator.setSkeletonDelegateClass("blanco.restgenerator.application.ApiBase");
         inputRestGenerator.setSkeletonDelegateInterface("blanco.restgenerator.application.IApiBase");
-        inputRestGenerator.setPackageSuffix("blanco");
+//        inputRestGenerator.setPackageSuffix("blanco");
         inputRestGenerator.setOverrideLocation("/api/sample/blanco");
         inputRestGenerator.setTelegramStyle("plain");
+        inputRestGenerator.setAppendApplicationPackage(false);
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);

@@ -118,6 +118,8 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setVoOverridePackage(arg.substring(19));
             } else if (arg.startsWith("-telegramStyle=")) {
                 input.setTelegramStyle(arg.substring(15));
+            } else if (arg.startsWith("-appendApplicationPackage=")) {
+                input.setAppendApplicationPackage(Boolean.valueOf(arg.substring(26)).booleanValue());
             } else if (arg.equals("-?") || arg.equals("-help")) {
                 usage();
                 System.exit(END_SUCCESS);
@@ -215,7 +217,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -serverType=value15 -basepackage=value16 -runtimepackage=value17 -genUtils=value18 -telegrampackage=value19 -impledir=value20 -genSkeleton=value21 -skeletonDelegateClass=value22 -skeletonDelegateInterface=value23 -lineSeparator=value24 -packageSuffix=value25 -overridePackage=value26 -overrideLocation=value27 -voPackageSuffix=value28 -voOverridePackage=value29 -telegramStyle=value30");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -serverType=value15 -basepackage=value16 -runtimepackage=value17 -genUtils=value18 -telegrampackage=value19 -impledir=value20 -genSkeleton=value21 -skeletonDelegateClass=value22 -skeletonDelegateInterface=value23 -lineSeparator=value24 -packageSuffix=value25 -overridePackage=value26 -overrideLocation=value27 -voPackageSuffix=value28 -voOverridePackage=value29 -telegramStyle=value30 -appendApplicationPackage=value31");
         System.out.println("    -verbose");
         System.out.println("      explanation[Whether to run in verbose mode.]");
         System.out.println("      type[boolean]");
@@ -322,6 +324,10 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("      explanation[電文の形式を指定します。\nblanco: 電文をCommonRequest/CommonResponseでくるみます。\nplain: 電文を直接 payload に乗せます。GET は第一階層がクエリ文字列として定義されます。]");
         System.out.println("      type[string]");
         System.out.println("      default value[blanco]");
+        System.out.println("    -appendApplicationPackage");
+        System.out.println("      explanation[Management クラスの package として、Controller クラスの package に application を追加したものを想定し、importします。]");
+        System.out.println("      type[boolean]");
+        System.out.println("      default value[true]");
         System.out.println("    -? , -help");
         System.out.println("      explanation[show the usage.]");
     }
