@@ -10,8 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 import blanco.cg.BlancoCgSupportedLang;
+import blanco.commons.util.BlancoStringUtil;
 import blanco.restgeneratorkt.resourcebundle.BlancoRestGeneratorKtResourceBundle;
 import blanco.restgeneratorkt.task.valueobject.BlancoRestGeneratorKtProcessInput;
+import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
 import blanco.valueobjectkt.BlancoValueObjectKtXmlParser;
 import blanco.valueobjectkt.valueobject.BlancoValueObjectKtClassStructure;
@@ -277,5 +279,25 @@ public class BlancoRestGeneratorKtUtil {
             }
         }
         return packageName;
+    }
+
+    static public boolean isStringArray(BlancoRestGeneratorKtTelegramFieldStructure fieldStructure) {
+        boolean yes =false;
+        String type = fieldStructure.getType();
+        if (BlancoStringUtil.null2Blank(fieldStructure.getTypeKt()).trim().length() > 0) {
+            type = fieldStructure.getTypeKt();
+        }
+        String generic = fieldStructure.getGeneric();
+        if (BlancoStringUtil.null2Blank(fieldStructure.getGenericKt()).trim().length() > 0) {
+            generic = fieldStructure.getGenericKt();
+        }
+        System.out.println("### isStringArray? " + type + "<" + generic +">");
+        if ("kotlin.collections.ArrayList".equalsIgnoreCase(type)
+        ) {
+            if ("kotlin.String".equalsIgnoreCase(generic)) {
+                yes = true;
+            }
+        }
+        return yes;
     }
 }

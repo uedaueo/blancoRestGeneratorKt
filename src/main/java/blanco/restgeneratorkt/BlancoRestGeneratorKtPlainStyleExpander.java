@@ -8,6 +8,7 @@ import java.util.Set;
 
 import blanco.cg.BlancoCgObjectFactory;
 import blanco.cg.transformer.BlancoCgTransformerFactory;
+import blanco.cg.util.BlancoCgSourceUtil;
 import blanco.cg.valueobject.BlancoCgField;
 import blanco.cg.valueobject.BlancoCgMethod;
 import blanco.cg.valueobject.BlancoCgParameter;
@@ -447,7 +448,13 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 } else {
                     methodAnnUri.append(",");
                 }
-                methodAnnUri.append(alias);
+                if (BlancoRestGeneratorKtUtil.isStringArray(field)) {
+                    /* Just adapt to StringArray yet now. */
+                    alias += "[]";
+                    methodAnnUri.append(alias + "*");
+                } else {
+                    methodAnnUri.append(alias);
+                }
             } else {
                 continue;
             }
@@ -465,6 +472,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 if (isPathVariable) {
                     throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
                 }
+                /* Optional parameter should be NotNull */
+                field.setNullable(false);
                 String paramTypeBk = paramType;
                 paramType = "Optional";
                 if (isFirstOptional) {
@@ -483,7 +492,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 paramType,
                 paramDescription
             );
-            queryParam.setNotnull(!isOptional);
+            queryParam.setNotnull(isOptional ? true : !field.getNullable());
             if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
                 queryParam.getType().setGenerics(paramGeneric);
             }
@@ -494,7 +503,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
 
             /* Copy value to bean */
             if ("Optional".equals(paramType)) {
-                requestBeanField.add("if (" + paramName + ".isPresent()) {");
+                requestBeanField.add("if (" + paramName + ".isPresent == true) {");
                 requestBeanField.add("argRequestBean." + name + " = " + paramName + ".get()");
                 requestBeanField.add("}");
             } else {
@@ -738,7 +747,13 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 } else {
                     methodAnnUri.append(",");
                 }
-                methodAnnUri.append(alias);
+                if (BlancoRestGeneratorKtUtil.isStringArray(field)) {
+                    /* Just adapt to StringArray yet now. */
+                    alias += "[]";
+                    methodAnnUri.append(alias + "*");
+                } else {
+                    methodAnnUri.append(alias);
+                }
             }
 
             String paramType = field.getType();
@@ -754,6 +769,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 if (isPathVariable) {
                     throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
                 }
+                /* Optional parameter should be NotNull */
+                field.setNullable(false);
                 String paramTypeBk = paramType;
                 paramType = "Optional";
                 if (isFirstOptional) {
@@ -772,7 +789,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 paramType,
                 paramDescription
             );
-            queryParam.setNotnull(!isOptional);
+            queryParam.setNotnull(isOptional ? true : !field.getNullable());
             if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
                 queryParam.getType().setGenerics(paramGeneric);
             }
@@ -796,13 +813,13 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                     defaultValue = field.getDefaultKt();
                 }
                 if ("Optional".equals(paramType)) {
-                    requestBeanConst.add(name + " = if (" + paramName + "?.isPresent == true) " + paramName + ".get() else " + defaultValue);
+                    requestBeanConst.add(name + " = if (" + paramName + ".isPresent == true) " + paramName + ".get() else " + defaultValue);
                 } else {
                     requestBeanConst.add(name + " = " + paramName);
                 }
             } else {
                 if ("Optional".equals(paramType)) {
-                    requestBeanField.add("if (" + paramName + "?.isPresent == true) {");
+                    requestBeanField.add("if (" + paramName + ".isPresent == true) {");
                     requestBeanField.add("requestBean." + name + " = " + paramName + ".get()");
                     requestBeanField.add("}");
                 } else {
