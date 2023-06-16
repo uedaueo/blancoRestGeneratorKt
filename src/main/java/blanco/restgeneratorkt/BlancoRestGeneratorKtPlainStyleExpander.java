@@ -455,6 +455,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 } else {
                     methodAnnUri.append(alias);
                 }
+                /* query parameters are always nullable (Optional) */
+                field.setNullable(true);
             } else {
                 continue;
             }
@@ -467,7 +469,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             if (BlancoStringUtil.null2Blank(field.getGenericKt()).trim().length() > 0) {
                 paramGeneric = field.getGenericKt();
             }
-            boolean isOptional = (field.getNullable() == null || field.getNullable());
+            boolean isOptional = (field.getNullable() != null && field.getNullable());
             if (isOptional) {
                 if (isPathVariable) {
                     throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
@@ -754,6 +756,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 } else {
                     methodAnnUri.append(alias);
                 }
+                /* query parameters are always nullable (Optional) */
+                field.setNullable(true);
             }
 
             String paramType = field.getType();
@@ -764,7 +768,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             if (BlancoStringUtil.null2Blank(field.getGenericKt()).trim().length() > 0) {
                 paramGeneric = field.getGenericKt();
             }
-            boolean isOptional = (field.getNullable() == null || field.getNullable());
+            boolean isOptional = (field.getNullable() != null && field.getNullable());
             if (isOptional) {
                 if (isPathVariable) {
                     throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
