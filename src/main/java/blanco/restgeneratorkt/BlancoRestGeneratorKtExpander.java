@@ -19,7 +19,7 @@ import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStru
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
 
 public abstract class BlancoRestGeneratorKtExpander implements BlancoRestGeneratorKtExpanderInterface {
-    
+
     private boolean fVerbose = false;
     public void setVerbose(boolean argVerbose) {
         this.fVerbose = argVerbose;

@@ -175,7 +175,7 @@ public class BlancoRestGeneratorKtXmlParser {
             !BlancoRestGeneratorKtUtil.isTelegramStylePlain && BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_ERROR.equals(telegramType)
         )) {
             System.out.println("BlancoRestGeneratorKtXmlParser#parseTelegramSheet !!! Error sheet is skipped !!! " + name);
-            return telegramStructure;            
+            return telegramStructure;
         }
 
         if (this.isVerbose()) {
@@ -1219,13 +1219,18 @@ public class BlancoRestGeneratorKtXmlParser {
             if ("float".equalsIgnoreCase(phpType)) {
                 kotlinType = "kotlin.Double";
             } else
-            if ("string".equalsIgnoreCase(phpType)) {
+            if ("string".equalsIgnoreCase(phpType) ||
+                    "java.lang.string".equalsIgnoreCase(phpType)
+            ) {
                 kotlinType = "kotlin.String";
             } else
             if ("datetime".equalsIgnoreCase(phpType)) {
                 kotlinType = "java.util.Date";
             } else
-            if ("array".equalsIgnoreCase(phpType)) {
+            if ("array".equalsIgnoreCase(phpType) ||
+                    "arraylist".equalsIgnoreCase(phpType) ||
+                    "java.util.arraylist".equalsIgnoreCase(phpType)
+            ) {
                 if (isGeneric) {
                     throw new IllegalArgumentException("Cannot use array for Generics.");
                 } else {
