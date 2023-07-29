@@ -229,19 +229,17 @@ public class BlancoRestGeneratorKtXmlParser {
             this.parseTelegramFields(elementListRoot, bodyTelegram);
 
             // remove query params from bodyTelegram
-            if (telegramStructure.getHasQueryParams()) {
-                List<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = bodyTelegram.getListField();
-                ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> newList = new ArrayList<>();
-                for (BlancoRestGeneratorKtTelegramFieldStructure fieldStructure : fieldStructureList) {
-                    if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().length() == 0) {
-                        newList.add(fieldStructure);
-                    }
+            List<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = bodyTelegram.getListField();
+            ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> newList = new ArrayList<>();
+            for (BlancoRestGeneratorKtTelegramFieldStructure fieldStructure : fieldStructureList) {
+                if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().length() == 0) {
+                    newList.add(fieldStructure);
                 }
-                if (!newList.isEmpty()) {
-                    bodyTelegram.setListField(newList);
-                    bodyTelegram.setName(bodyTelegram.getName() + "Body");
-                    telegramStructure.setBodyTelegram(bodyTelegram);
-                }
+            }
+            if (!newList.isEmpty()) {
+                bodyTelegram.setListField(newList);
+                bodyTelegram.setName(bodyTelegram.getName() + "Body");
+                telegramStructure.setBodyTelegram(bodyTelegram);
             }
         }
 
