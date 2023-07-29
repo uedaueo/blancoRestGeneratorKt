@@ -35,7 +35,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 BlancoRestGeneratorKtTelegramStructure telegramStructure = kindMap.get(kindKey);
                 generateTelegram(telegramStructure, argDirectoryTarget);
                  if (BlancoRestGeneratorKtConstants.TELEGRAM_INPUT.equals(kindKey) &&
-                 telegramStructure.getHasQueryParams() &&
+                 /* telegramStructure.getHasQueryParams() && */
                  (
                      BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(methodKey) ||
                      BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(methodKey)
