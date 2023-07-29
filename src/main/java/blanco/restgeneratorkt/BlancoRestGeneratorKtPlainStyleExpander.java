@@ -452,15 +452,6 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             }
 
             /* Copy value to bean */
-//            if ("Optional".equals(paramType)) {
-//                requestBeanField.add("if (" + paramName + ".isPresent == true) {");
-//                requestBeanField.add("argRequestBean." + name + " = " + paramName + ".get()");
-//                requestBeanField.add("}");
-//            } else {
-//                requestBeanField.add("argRequestBean." + name + " = " + paramName);
-//            }
-
-            /* Copy value to bean */
             if (field.getConstArg()) {
                 if (isFirstConstArg) {
                     isFirstConstArg = false;
@@ -605,13 +596,6 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         listLine.add("");
 
         /*
-         * Add request bean creation.
-         */
-//        listLine.add("");
-//        listLine.addAll(requestBeanField);
-//        listLine.add("");
-
-        /*
          * Whether the API requires authentication.
          */
         String noAuthentication = argNoAuthentication ? "true" : "false";
@@ -651,7 +635,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         listLine.add("");
 
         listLine.add("/* Stores the RequestBean with its type determined */");
-        listLine.add("httpCommonRequest.commonRequest = argRequestBean");
+        listLine.add("httpCommonRequest.commonRequest = requestBean");
         listLine.add("");
 
         listLine.add("/* Performs preprocessing (validation, etc.) */");
