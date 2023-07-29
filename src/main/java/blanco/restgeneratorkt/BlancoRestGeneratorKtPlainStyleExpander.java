@@ -34,21 +34,18 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             for (String kindKey : kindKeys) {
                 BlancoRestGeneratorKtTelegramStructure telegramStructure = kindMap.get(kindKey);
                 generateTelegram(telegramStructure, argDirectoryTarget);
-                // if (BlancoRestGeneratorKtConstants.TELEGRAM_INPUT.equals(kindKey) &&
-                // telegramStructure.getHasQueryParams() &&
-                // (
-                //     BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(methodKey) ||
-                //     BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(methodKey)
-                // )) {
-                //     BlancoRestGeneratorKtTelegramStructure partialStructure = makeQueryParamsStructure(telegramStructure);
-                //     if (partialStructure != null) {
-                //         generateTelegram(partialStructure, argDirectoryTarget);
-                //     }
-                //     partialStructure = makeBodyJsonStructure(telegramStructure);
-                //     if (partialStructure != null) {
-                //         generateTelegram(partialStructure, argDirectoryTarget);
-                //     }
-                // }
+                 if (BlancoRestGeneratorKtConstants.TELEGRAM_INPUT.equals(kindKey) &&
+                 telegramStructure.getHasQueryParams() &&
+                 (
+                     BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.equals(methodKey) ||
+                     BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.equals(methodKey)
+                 )) {
+                     BlancoRestGeneratorKtTelegramStructure partialStructure = telegramStructure.getBodyTelegram();
+                     if (partialStructure != null) {
+                         /* Generate body telegram. */
+                         generateTelegram(partialStructure, argDirectoryTarget);
+                     }
+                 }
             }
             /* Generate Error Telegrams if telegramType is plain. */
             List<BlancoRestGeneratorKtTelegramStructure> errorTelegrams = argProcessStructure.getErrorTelegrams().get(methodKey);
@@ -99,71 +96,6 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (BlancoRestGeneratorKtUtil.client){
             generateClientInterface(argProcessStructure, argDirectoryTarget);
         }
-    }
-
-    /**
-     * make telegram structure for query parameters.
-     * @param argTelegramStructure
-     * @return
-     */
-    private BlancoRestGeneratorKtTelegramStructure makeQueryParamsStructure(BlancoRestGeneratorKtTelegramStructure argTelegramStructure) {
-
-        BlancoRestGeneratorKtTelegramStructure queryParamsStructure = null;
-        ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = new ArrayList<>();
-
-        for (BlancoRestGeneratorKtTelegramFieldStructure field : argTelegramStructure.getListField()) {
-            String queryKind = field.getQueryKind();
-            if (BlancoStringUtil.null2Blank(queryKind).trim().length() > 0 &&
-                (BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_PATH.equals(queryKind) ||
-                BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_QUERY.equals(queryKind)
-                )) {
-                    fieldStructureList.add(field);
-            }
-        }
-
-        if (fieldStructureList.size() > 0) {
-            queryParamsStructure = new BlancoRestGeneratorKtTelegramStructure();
-            argTelegramStructure.copyTo(queryParamsStructure);
-
-            String name = queryParamsStructure.getName() + "Query";
-            queryParamsStructure.setName(name);
-            queryParamsStructure.setListField(fieldStructureList);
-        }
-
-        return queryParamsStructure;
-    }
-
-    /**
-     * make telegram structure for body json.
-     * @param argTelegramStructure
-     * @return
-     */
-    private BlancoRestGeneratorKtTelegramStructure makeBodyJsonStructure(BlancoRestGeneratorKtTelegramStructure argTelegramStructure) {
-
-        BlancoRestGeneratorKtTelegramStructure bodyJsonStructure = null;
-
-        ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = new ArrayList<>();
-
-        for (BlancoRestGeneratorKtTelegramFieldStructure field : argTelegramStructure.getListField()) {
-            String queryKind = field.getQueryKind();
-            if (BlancoStringUtil.null2Blank(queryKind).trim().length() == 0 ||
-                (!BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_PATH.equals(queryKind) &&
-                !BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_QUERY.equals(queryKind)
-                )) {
-                    fieldStructureList.add(field);
-            }
-        }
-
-        if (fieldStructureList.size() > 0) {
-            bodyJsonStructure = new BlancoRestGeneratorKtTelegramStructure();
-            argTelegramStructure.copyTo(bodyJsonStructure);
-
-            String name = bodyJsonStructure.getName() + "Body";
-            bodyJsonStructure.setName(name);
-            bodyJsonStructure.setListField(fieldStructureList);
-        }
-
-        return bodyJsonStructure;
     }
 
     /**
@@ -398,8 +330,18 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          */
         BlancoRestGeneratorKtTelegramStructure inputTelegram = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_INPUT);
         String requestId = inputTelegram.getCalculatedPackage() + "." + inputTelegram.getName();
+
+        BlancoRestGeneratorKtTelegramStructure bodyTelegram = inputTelegram.getBodyTelegram();
+        Boolean hasBodyTelegram = false;
+        String bodyTelegramId = "";
+        if (bodyTelegram != null && bodyTelegram.getName().equals(inputTelegram.getName() + "Body")) {
+            hasBodyTelegram = true;
+            bodyTelegramId = requestId + "Body";
+        }
+
         if (this.isVerbose()) {
             System.out.println("### requestId = " + requestId);
+            System.out.println("### bodyTelegramId = " + bodyTelegramId);
         }
 
         String additionalPath = inputTelegram.getAdditionalPath();
@@ -415,12 +357,15 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         boolean hasQueryParams = false;
         boolean isFirstQuery = true;
         boolean isFirstOptional = true;
+        boolean isFirstConstArg = true;
         StringBuffer methodAnnUri = new StringBuffer();
         List<BlancoCgParameter> queryParmeters = new ArrayList<>();
         if (isAdditionalPath) {
             methodAnnUri.append(additionalPath);
         }
         List<String> requestBeanField = new ArrayList<>();
+        List<String> requestBeanConst = new ArrayList<>();
+        requestBeanConst.add("val requestBean = " + requestId + "(");
         for (BlancoRestGeneratorKtTelegramFieldStructure field : inputTelegram.getListField()) {
             String queryKind = BlancoStringUtil.null2Blank(field.getQueryKind());
             String name = field.getName();
@@ -435,6 +380,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             */
             String paramAnn = "QueryValue";
             boolean isPathVariable = false;
+            Boolean isBodyProp = false;
             if (BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_PATH.equals(queryKind)) {
                 methodAnnUri.append("/{" + alias + "}");
                 hasPathVariable = true;
@@ -458,61 +404,104 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 /* query parameters are always nullable (Optional) */
                 field.setNullable(true);
             } else {
-                continue;
+                isBodyProp = true;
             }
 
             String paramType = field.getType();
             if (BlancoStringUtil.null2Blank(field.getTypeKt()).trim().length() > 0) {
                 paramType = field.getTypeKt();
             }
-            String paramGeneric = field.getGeneric();
-            if (BlancoStringUtil.null2Blank(field.getGenericKt()).trim().length() > 0) {
-                paramGeneric = field.getGenericKt();
-            }
-            boolean isOptional = (field.getNullable() != null && field.getNullable());
-            if (isOptional) {
-                if (isPathVariable) {
-                    throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
+            final String paramName = "arg" + BlancoNameAdjuster.toClassName(name);
+            if (!isBodyProp) {
+                String paramGeneric = field.getGeneric();
+                if (BlancoStringUtil.null2Blank(field.getGenericKt()).trim().length() > 0) {
+                    paramGeneric = field.getGenericKt();
                 }
-                /* Optional parameter should be NotNull */
-                field.setNullable(false);
-                String paramTypeBk = paramType;
-                paramType = "Optional";
-                if (isFirstOptional) {
-                    fCgSourceFile.getImportList().add("java.util.Optional");
-                    isFirstOptional = false;
+                boolean isOptional = (field.getNullable() != null && field.getNullable());
+                if (isOptional) {
+                    if (isPathVariable) {
+                        throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
+                    }
+                    /* Optional parameter should be NotNull */
+                    field.setNullable(false);
+                    String paramTypeBk = paramType;
+                    paramType = "Optional";
+                    if (isFirstOptional) {
+                        fCgSourceFile.getImportList().add("java.util.Optional");
+                        isFirstOptional = false;
+                    }
+                    if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
+                        paramTypeBk = paramTypeBk + "<" + paramGeneric + ">";
+                    }
+                    paramGeneric = paramTypeBk;
                 }
+                String paramDescription = field.getDescription();
+                BlancoCgParameter queryParam = fCgFactory.createParameter(
+                        paramName,
+                        paramType,
+                        paramDescription
+                );
+                queryParam.setNotnull(isOptional ? true : !field.getNullable());
                 if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
-                    paramTypeBk = paramTypeBk + "<" + paramGeneric + ">";
+                    queryParam.getType().setGenerics(paramGeneric);
                 }
-                paramGeneric = paramTypeBk;
+                /* Always specify alias */
+                paramAnn = paramAnn + "(\"" + alias + "\")";
+                queryParam.getAnnotationList().add(paramAnn);
+                queryParmeters.add(queryParam);
             }
-            String paramDescription = field.getDescription();
-            String paramName = "arg" + BlancoNameAdjuster.toClassName(name);
-            BlancoCgParameter queryParam = fCgFactory.createParameter(
-                paramName,
-                paramType,
-                paramDescription
-            );
-            queryParam.setNotnull(isOptional ? true : !field.getNullable());
-            if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
-                queryParam.getType().setGenerics(paramGeneric);
-            }
-            /* Always specify alias */
-            paramAnn = paramAnn + "(\"" + alias + "\")";
-            queryParam.getAnnotationList().add(paramAnn);
-            queryParmeters.add(queryParam);
 
             /* Copy value to bean */
-            if ("Optional".equals(paramType)) {
-                requestBeanField.add("if (" + paramName + ".isPresent == true) {");
-                requestBeanField.add("argRequestBean." + name + " = " + paramName + ".get()");
-                requestBeanField.add("}");
+//            if ("Optional".equals(paramType)) {
+//                requestBeanField.add("if (" + paramName + ".isPresent == true) {");
+//                requestBeanField.add("argRequestBean." + name + " = " + paramName + ".get()");
+//                requestBeanField.add("}");
+//            } else {
+//                requestBeanField.add("argRequestBean." + name + " = " + paramName);
+//            }
+
+            /* Copy value to bean */
+            if (field.getConstArg()) {
+                if (isFirstConstArg) {
+                    isFirstConstArg = false;
+                } else {
+                    int last = requestBeanConst.size();
+                    String lastString = requestBeanConst.get(last - 1);
+                    lastString = lastString + ",";
+                    requestBeanConst.set(last - 1, lastString);
+                }
+                String defaultValue = field.getDefault();
+                if (BlancoStringUtil.null2Blank(field.getDefaultKt()).trim().length() > 0) {
+                    defaultValue = field.getDefaultKt();
+                }
+                if (isBodyProp) {
+                    requestBeanConst.add(name + " = argRequestBean." + name);
+                } else {
+                    if ("Optional".equals(paramType)) {
+                        requestBeanConst.add(name + " = if (" + paramName + ".isPresent == true) " + paramName + ".get() else " + defaultValue);
+                    } else {
+                        requestBeanConst.add(name + " = " + paramName);
+                    }
+                }
             } else {
-                requestBeanField.add("argRequestBean." + name + " = " + paramName);
+                if (isBodyProp) {
+                    requestBeanField.add("requestBean." + name + " = argRequestBean." + name);
+                } else {
+                    if ("Optional".equals(paramType)) {
+                        requestBeanField.add("if (" + paramName + ".isPresent == true) {");
+                        requestBeanField.add("requestBean." + name + " = " + paramName + ".get()");
+                        requestBeanField.add("}");
+                    } else {
+                        requestBeanField.add("requestBean." + name + " = " + paramName);
+                    }
+                }
             }
         }
-       if (!isFirstQuery) {
+        requestBeanConst.add(")");
+        if (requestBeanField.size() > 0) {
+            requestBeanConst.addAll(requestBeanField);
+        }
+        if (!isFirstQuery) {
             methodAnnUri.append("}");
         }
         if (hasPathVariable) {
@@ -559,17 +548,19 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         cgExecutorMethod.getParameterList().addAll(queryParmeters);
 
         /*
-         * bind body json to bean
+         * bind body json to bean if exist.
          */
-        BlancoCgParameter body = fCgFactory.createParameter(
-            "argRequestBean",
-            requestId,
-            "bean that body json is binded to"
-        );
-        cgExecutorMethod.getParameterList().add(body);
-        body.setNotnull(true);
-        body.getAnnotationList().add("Body");
-        fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
+        if (hasBodyTelegram) {
+            BlancoCgParameter body = fCgFactory.createParameter(
+                    "argRequestBean",
+                    bodyTelegramId,
+                    "bean that body json is binded to"
+            );
+            cgExecutorMethod.getParameterList().add(body);
+            body.setNotnull(true);
+            body.getAnnotationList().add("Body");
+            fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
+        }
 
         /*
          * Sets the Return type.
@@ -610,8 +601,15 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Add request bean creation.
          */
         listLine.add("");
-        listLine.addAll(requestBeanField);
+        listLine.addAll(requestBeanConst);
         listLine.add("");
+
+        /*
+         * Add request bean creation.
+         */
+//        listLine.add("");
+//        listLine.addAll(requestBeanField);
+//        listLine.add("");
 
         /*
          * Whether the API requires authentication.

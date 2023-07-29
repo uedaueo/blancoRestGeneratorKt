@@ -234,6 +234,13 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fCalculatedPackage;
 
     /**
+     * PathとQueryで指定されるプロパティを除いた、bodyにJSONとして乗せられるプロパティだけを集約した電文です。
+     *
+     * フィールド: [bodyTelegram]。
+     */
+    private BlancoRestGeneratorKtTelegramStructure fBodyTelegram;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -908,6 +915,28 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [bodyTelegram] の値を設定します。
+     *
+     * フィールドの説明: [PathとQueryで指定されるプロパティを除いた、bodyにJSONとして乗せられるプロパティだけを集約した電文です。]。
+     *
+     * @param argBodyTelegram フィールド[bodyTelegram]に設定する値。
+     */
+    public void setBodyTelegram(final BlancoRestGeneratorKtTelegramStructure argBodyTelegram) {
+        fBodyTelegram = argBodyTelegram;
+    }
+
+    /**
+     * フィールド [bodyTelegram] の値を取得します。
+     *
+     * フィールドの説明: [PathとQueryで指定されるプロパティを除いた、bodyにJSONとして乗せられるプロパティだけを集約した電文です。]。
+     *
+     * @return フィールド[bodyTelegram]から取得した値。
+     */
+    public BlancoRestGeneratorKtTelegramStructure getBodyTelegram() {
+        return fBodyTelegram;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -952,6 +981,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",paramPreferred=" + fParamPreferred);
         buf.append(",hasQueryParams=" + fHasQueryParams);
         buf.append(",calculatedPackage=" + fCalculatedPackage);
+        buf.append(",bodyTelegram=" + fBodyTelegram);
         buf.append("]");
         return buf.toString();
     }
@@ -1064,5 +1094,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fCalculatedPackage
         // Type: java.lang.String
         target.fCalculatedPackage = this.fCalculatedPackage;
+        // Name: fBodyTelegram
+        // Type: blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure
+        // Field[fBodyTelegram] is an unsupported type[blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure].
     }
 }

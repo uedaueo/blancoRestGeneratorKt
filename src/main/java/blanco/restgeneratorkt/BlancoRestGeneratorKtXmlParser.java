@@ -182,16 +182,23 @@ public class BlancoRestGeneratorKtXmlParser {
             System.out.println("BlancoRestGeneratorKtXmlParser#parseTelegramSheet name = " + name);
         }
 
+        // create bodyTelegram
+        BlancoRestGeneratorKtTelegramStructure bodyTelegram = new BlancoRestGeneratorKtTelegramStructure();
+
         // First, it sets the Package overwrite options.
         telegramStructure.setPackageSuffix(BlancoRestGeneratorKtUtil.packageSuffix);
         telegramStructure.setOverridePackage(BlancoRestGeneratorKtUtil.overridePackage);
+        bodyTelegram.setPackageSuffix(BlancoRestGeneratorKtUtil.packageSuffix);
+        bodyTelegram.setOverridePackage(BlancoRestGeneratorKtUtil.overridePackage);
         // There is no location in telegram.
 
         // TelegramDefinition common
         this.parseTelegramCommon(elementCommon, telegramStructure);
+        this.parseTelegramCommon(elementCommon, bodyTelegram);
 
         // TelegramDefinition inheritance
         this.parseTelegramExtends(telegramStructure);
+        this.parseTelegramExtends(bodyTelegram);
 
         // TelegramDefinition implementation
         final List<BlancoXmlElement> interfaceList = BlancoXmlBindingUtil
@@ -200,6 +207,7 @@ public class BlancoRestGeneratorKtXmlParser {
         if (interfaceList != null && interfaceList.size() != 0) {
             final BlancoXmlElement elementInterfaceRoot = interfaceList.get(0);
             this.parseTelegramImplements(elementInterfaceRoot, telegramStructure);
+            this.parseTelegramImplements(elementInterfaceRoot, bodyTelegram);
         }
 
         // TelegramDefinition import
@@ -209,6 +217,7 @@ public class BlancoRestGeneratorKtXmlParser {
         if (importList != null && importList.size() != 0) {
             final BlancoXmlElement elementImportRoot = importList.get(0);
             this.parseTelegramImport(elementImportRoot, telegramStructure);
+            this.parseTelegramImport(elementImportRoot, bodyTelegram);
         }
 
         // Gets the list information.
@@ -217,6 +226,23 @@ public class BlancoRestGeneratorKtXmlParser {
         if (listList != null && listList.size() != 0) {
             final BlancoXmlElement elementListRoot = listList.get(0);
             this.parseTelegramFields(elementListRoot, telegramStructure);
+            this.parseTelegramFields(elementListRoot, bodyTelegram);
+
+            // remove query params from bodyTelegram
+            if (telegramStructure.getHasQueryParams()) {
+                List<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = bodyTelegram.getListField();
+                ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> newList = new ArrayList<>();
+                for (BlancoRestGeneratorKtTelegramFieldStructure fieldStructure : fieldStructureList) {
+                    if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().length() == 0) {
+                        newList.add(fieldStructure);
+                    }
+                }
+                if (!newList.isEmpty()) {
+                    bodyTelegram.setListField(newList);
+                    bodyTelegram.setName(bodyTelegram.getName() + "Body");
+                    telegramStructure.setBodyTelegram(bodyTelegram);
+                }
+            }
         }
 
         return telegramStructure;
