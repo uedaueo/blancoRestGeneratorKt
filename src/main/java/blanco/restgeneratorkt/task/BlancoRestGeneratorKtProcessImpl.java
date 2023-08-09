@@ -134,6 +134,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.clientAnnotation = input.getClientAnnotation();
             BlancoRestGeneratorKtUtil.overrideClientAnnotation = input.getOverrideClientAnnotation();
             BlancoRestGeneratorKtUtil.isAppendApplicationPackage = input.getAppendApplicationPackage();
+            BlancoRestGeneratorKtUtil.isSerdeable = input.getSerdeable();
 
             if (!BlancoRestGeneratorKtUtil.serverType.equals(BlancoRestGeneratorKtConstants.SERVER_TYPE_MICRONAUT)) {
                 throw new IllegalArgumentException(fBundle.getBlancorestServerTypeError());

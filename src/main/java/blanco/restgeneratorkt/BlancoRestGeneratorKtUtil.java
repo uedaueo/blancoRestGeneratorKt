@@ -76,6 +76,7 @@ public class BlancoRestGeneratorKtUtil {
     public static boolean isTelegramStyleBlanco = true;
     public static boolean isTelegramStylePlain = false;
     public static boolean isAppendApplicationPackage = true;
+    public static boolean isSerdeable = false;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {

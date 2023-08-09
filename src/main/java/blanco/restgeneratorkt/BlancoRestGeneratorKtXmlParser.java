@@ -300,8 +300,27 @@ public class BlancoRestGeneratorKtXmlParser {
         if (BlancoRestGeneratorKtUtil.isServerTypeMicronaut) {
             argTelegramStructure.getAnnotationList().add("Introspected");
             argTelegramStructure.getImportList().add("io.micronaut.core.annotation.Introspected");
-        }
 
+            /* Add @Serdeable annotation */
+            if (BlancoRestGeneratorKtUtil.isSerdeable) {
+                if (this.isVerbose()) {
+                    System.out.println("parseTelegramCommon: @Serdeable annotaion is requested for " + argTelegramStructure.getName());
+                }
+                /* Check already added */
+                Boolean found = false;
+                for (String ann : argTelegramStructure.getAnnotationList()) {
+                    if (ann.contains("Serdeable")) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    System.out.println("@Serdeable already exists. SKIP : " + argTelegramStructure.getName());
+                } else {
+                    argTelegramStructure.getAnnotationList().add("Serdeable");
+                    argTelegramStructure.getImportList().add("io.micronaut.serde.annotation.Serdeable");
+                }
+            }
+        }
         argTelegramStructure.setCreateImportList("true"
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                         "createImportList")));

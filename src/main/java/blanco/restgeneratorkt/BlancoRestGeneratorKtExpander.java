@@ -229,7 +229,7 @@ public abstract class BlancoRestGeneratorKtExpander implements BlancoRestGenerat
         }
 
         if (this.isVerbose()) {
-            System.out.println("BlancoRestGeneratorKtXml2SourceFile: Start create properties : " + argTelegramStructure.getName());
+            System.out.println("BlancoRestGeneratorKtExpander: Start create properties : " + argTelegramStructure.getName());
         }
 
         // TelegramDefinition list.
