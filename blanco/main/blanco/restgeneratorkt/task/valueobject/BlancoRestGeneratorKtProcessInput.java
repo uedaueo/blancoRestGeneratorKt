@@ -245,6 +245,14 @@ public class BlancoRestGeneratorKtProcessInput {
     private boolean fSerdeable = false;
 
     /**
+     * 電文クラスに@JsonIgnoreProperties(ignoreunknow = true)アノテーションを付与します。
+     *
+     * フィールド: [ignoreUnknown]。
+     * デフォルト: [false]。
+     */
+    private boolean fIgnoreUnknown = false;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [Whether to run in verbose mode.]。
@@ -965,6 +973,29 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [ignoreUnknown] の値を設定します。
+     *
+     * フィールドの説明: [電文クラスに@JsonIgnoreProperties(ignoreunknow = true)アノテーションを付与します。]。
+     *
+     * @param argIgnoreUnknown フィールド[ignoreUnknown]に設定する値。
+     */
+    public void setIgnoreUnknown(final boolean argIgnoreUnknown) {
+        fIgnoreUnknown = argIgnoreUnknown;
+    }
+
+    /**
+     * フィールド [ignoreUnknown] の値を取得します。
+     *
+     * フィールドの説明: [電文クラスに@JsonIgnoreProperties(ignoreunknow = true)アノテーションを付与します。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[ignoreUnknown]から取得した値。
+     */
+    public boolean getIgnoreUnknown() {
+        return fIgnoreUnknown;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1011,6 +1042,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",telegramStyle=" + fTelegramStyle);
         buf.append(",appendApplicationPackage=" + fAppendApplicationPackage);
         buf.append(",serdeable=" + fSerdeable);
+        buf.append(",ignoreUnknown=" + fIgnoreUnknown);
         buf.append("]");
         return buf.toString();
     }
@@ -1129,5 +1161,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fSerdeable
         // Type: boolean
         target.fSerdeable = this.fSerdeable;
+        // Name: fIgnoreUnknown
+        // Type: boolean
+        target.fIgnoreUnknown = this.fIgnoreUnknown;
     }
 }

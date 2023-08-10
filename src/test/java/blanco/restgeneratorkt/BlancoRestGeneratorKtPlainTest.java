@@ -88,6 +88,7 @@ public class BlancoRestGeneratorKtPlainTest {
         inputRestGenerator.setTelegramStyle("plain");
         inputRestGenerator.setAppendApplicationPackage(false);
         inputRestGenerator.setSerdeable(true);
+        inputRestGenerator.setIgnoreUnknown(true);
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);

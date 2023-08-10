@@ -307,7 +307,7 @@ public class BlancoRestGeneratorKtXmlParser {
                     System.out.println("parseTelegramCommon: @Serdeable annotaion is requested for " + argTelegramStructure.getName());
                 }
                 /* Check already added */
-                Boolean found = false;
+                boolean found = false;
                 for (String ann : argTelegramStructure.getAnnotationList()) {
                     if (ann.contains("Serdeable")) {
                         found = true;
@@ -318,6 +318,26 @@ public class BlancoRestGeneratorKtXmlParser {
                 } else {
                     argTelegramStructure.getAnnotationList().add("Serdeable");
                     argTelegramStructure.getImportList().add("io.micronaut.serde.annotation.Serdeable");
+                }
+            }
+
+            /* Add @JsonIgnoreProperties(ignoreUnknown = true) annotation */
+            if (BlancoRestGeneratorKtUtil.isIgnoreUnknown) {
+                if (this.isVerbose()) {
+                    System.out.println("parseTelegramCommon: ignoreUnknow annotaion is requested for " + argTelegramStructure.getName());
+                }
+                /* Check already added */
+                boolean found = false;
+                for (String ann : argTelegramStructure.getAnnotationList()) {
+                    if (ann.contains("JsonIgnoreProperties")) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    System.out.println("@JsonIgnoreProperties already exists. SKIP : " + argTelegramStructure.getName());
+                } else {
+                    argTelegramStructure.getAnnotationList().add("JsonIgnoreProperties(ignoreUnknown = true)");
+                    argTelegramStructure.getImportList().add("com.fasterxml.jackson.annotation.*");
                 }
             }
         }
