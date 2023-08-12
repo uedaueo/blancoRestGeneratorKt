@@ -306,19 +306,13 @@ public class BlancoRestGeneratorKtXmlParser {
                 if (this.isVerbose()) {
                     System.out.println("parseTelegramCommon: @Serdeable annotaion is requested for " + argTelegramStructure.getName());
                 }
-                /* Check already added */
-                boolean found = false;
-                for (String ann : argTelegramStructure.getAnnotationList()) {
-                    if (ann.contains("Serdeable")) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    System.out.println("@Serdeable already exists. SKIP : " + argTelegramStructure.getName());
-                } else {
-                    argTelegramStructure.getAnnotationList().add("Serdeable");
-                    argTelegramStructure.getImportList().add("io.micronaut.serde.annotation.Serdeable");
-                }
+                BlancoRestGeneratorKtUtil.addNewAnnotation(
+                        "Serdeable",
+                        "Serdeable",
+                        "io.micronaut.serde.annotation.Serdeable",
+                        argTelegramStructure.getAnnotationList(),
+                        argTelegramStructure.getImportList()
+                );
             }
 
             /* Add @JsonIgnoreProperties(ignoreUnknown = true) annotation */
@@ -326,19 +320,13 @@ public class BlancoRestGeneratorKtXmlParser {
                 if (this.isVerbose()) {
                     System.out.println("parseTelegramCommon: ignoreUnknow annotaion is requested for " + argTelegramStructure.getName());
                 }
-                /* Check already added */
-                boolean found = false;
-                for (String ann : argTelegramStructure.getAnnotationList()) {
-                    if (ann.contains("JsonIgnoreProperties")) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    System.out.println("@JsonIgnoreProperties already exists. SKIP : " + argTelegramStructure.getName());
-                } else {
-                    argTelegramStructure.getAnnotationList().add("JsonIgnoreProperties(ignoreUnknown = true)");
-                    argTelegramStructure.getImportList().add("com.fasterxml.jackson.annotation.*");
-                }
+                BlancoRestGeneratorKtUtil.addNewAnnotation(
+                        "JsonIgnoreProperties",
+                        "JsonIgnoreProperties(ignoreUnknown = true)",
+                        "com.fasterxml.jackson.annotation.*",
+                        argTelegramStructure.getAnnotationList(),
+                        argTelegramStructure.getImportList()
+                );
             }
         }
         argTelegramStructure.setCreateImportList("true"
@@ -565,8 +553,21 @@ public class BlancoRestGeneratorKtXmlParser {
             }
             fieldStructure.setRequired("true".equals(required));
             if (fieldStructure.getRequired()) {
-                fieldStructure.getAnnotationList().add("field:NotNull");
-                argTelegramStructure.getImportList().add("javax.validation.constraints.NotNull");
+                BlancoRestGeneratorKtUtil.addNewAnnotation(
+                        "field:NotNull",
+                        "field:NotNull",
+                        "javax.validation.constraints.NotNull",
+                        fieldStructure.getAnnotationList(),
+                        argTelegramStructure.getImportList()
+                );
+            } else if (BlancoRestGeneratorKtUtil.isNullAnnotation) {
+                BlancoRestGeneratorKtUtil.addNewAnnotation(
+                        "Nullable",
+                        "Nullable",
+                        "io.micronaut.core.annotation.Nullable",
+                        fieldStructure.getAnnotationList(),
+                        argTelegramStructure.getImportList()
+                );
             }
 
             // Supports Nullable.
