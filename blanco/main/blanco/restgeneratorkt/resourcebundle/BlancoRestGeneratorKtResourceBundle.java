@@ -1674,7 +1674,7 @@ public class BlancoRestGeneratorKtResourceBundle {
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.09]
      *
-     * [クエリ種別Pathは必須です。Nullは許容しません。 [{0}] のパラメータ  [{1}] の設定を確認してください。] (ja)<br>
+     * [【注意】 [{0}] パラメータ  [{1}] のクエリ種別PathがNullableで指定されています。これが意図した物かどうか確認してください。] (ja)<br>
      *
      * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @param arg1 置換文字列{1}を置換する値。java.lang.String型を与えてください。
@@ -1682,7 +1682,7 @@ public class BlancoRestGeneratorKtResourceBundle {
      */
     public String getBlancorestErrorMsg09(final String arg0, final String arg1) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "クエリ種別Pathは必須です。Nullは許容しません。 [{0}] のパラメータ  [{1}] の設定を確認してください。";
+        String strFormat = "【注意】 [{0}] パラメータ  [{1}] のクエリ種別PathがNullableで指定されています。これが意図した物かどうか確認してください。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.09");
