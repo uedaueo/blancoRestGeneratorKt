@@ -9,11 +9,7 @@ import java.util.Set;
 import blanco.cg.BlancoCgObjectFactory;
 import blanco.cg.transformer.BlancoCgTransformerFactory;
 import blanco.cg.util.BlancoCgSourceUtil;
-import blanco.cg.valueobject.BlancoCgField;
-import blanco.cg.valueobject.BlancoCgMethod;
-import blanco.cg.valueobject.BlancoCgParameter;
-import blanco.cg.valueobject.BlancoCgReturn;
-import blanco.cg.valueobject.BlancoCgType;
+import blanco.cg.valueobject.*;
 import blanco.commons.util.BlancoNameAdjuster;
 import blanco.commons.util.BlancoStringUtil;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure;
@@ -354,6 +350,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Generate method paramters issue.
          */
         boolean hasPathVariable = false;
+        boolean hasPathQueryFormat = false;
+        String pathQueryFormats = null;
         boolean hasQueryParams = false;
         boolean isFirstQuery = true;
         boolean isFirstOptional = true;
@@ -363,6 +361,12 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (isAdditionalPath) {
             methodAnnUri.append(additionalPath);
         }
+
+        if (!BlancoStringUtil.null2Blank(inputTelegram.getPathQueryFormat()).trim().isEmpty()) {
+            hasPathQueryFormat = true;
+            pathQueryFormats = inputTelegram.getPathQueryFormat();
+        }
+
         List<String> requestBeanField = new ArrayList<>();
         List<String> requestBeanConst = new ArrayList<>();
         requestBeanConst.add("val requestBean = " + requestId + "(");
@@ -382,10 +386,17 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             boolean isPathVariable = false;
             Boolean isBodyProp = false;
             if (BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_PATH.equals(queryKind)) {
-                methodAnnUri.append("/{" + alias + "}");
                 hasPathVariable = true;
                 isPathVariable = true;
                 paramAnn = "PathVariable";
+                String expectedPath = "/{" + alias + "}";
+                if (hasPathQueryFormat) {
+                    if (pathQueryFormats.indexOf(expectedPath) == -1) {
+                        throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg10(alias));
+                    }
+                } else {
+                    methodAnnUri.append(expectedPath);
+                }
             } else if (BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_QUERY.equals(queryKind)) {
                 hasQueryParams = true;
                 if (isFirstQuery) {
@@ -420,7 +431,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 boolean isOptional = (field.getNullable() != null && field.getNullable());
                 if (isOptional) {
                     if (isPathVariable) {
-                        System.out.println(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
+                        throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
                     }
                     /* Optional parameter should be NotNull */
                     field.setNullable(false);
@@ -501,7 +512,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (hasQueryParams) {
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.QueryValue");
         }
-        if (methodAnnUri.length() > 0) {
+
+        if (hasPathQueryFormat) {
+            methodAnn = methodAnn + "(\"" + pathQueryFormats + methodAnnUri.toString() + "\")";
+        } else if (methodAnnUri.length() > 0) {
             methodAnn = methodAnn + "(\"" + methodAnnUri.toString() + "\")";
         }
 
@@ -692,6 +706,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Generate method paramters issue.
          */
         boolean hasPathVariable = false;
+        boolean hasPathQueryFormat = false;
+        String pathQueryFormats = null;
         boolean hasQueryParams = false;
         boolean isFirstQuery = true;
         boolean isFirstOptional = true;
@@ -701,6 +717,12 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (isAdditionalPath) {
             methodAnnUri.append(additionalPath);
         }
+
+        if (!BlancoStringUtil.null2Blank(inputTelegram.getPathQueryFormat()).trim().isEmpty()) {
+            hasPathQueryFormat = true;
+            pathQueryFormats = inputTelegram.getPathQueryFormat();
+        }
+
         List<String> requestBeanConst = new ArrayList<>();
         List<String> requestBeanField = new ArrayList<>();
         requestBeanConst.add("val requestBean = " + requestId + "(");
@@ -719,10 +741,17 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             String paramAnn = "QueryValue";
             boolean isPathVariable = false;
             if (BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_PATH.equals(queryKind)) {
-                methodAnnUri.append("/{" + alias + "}");
                 hasPathVariable = true;
                 isPathVariable = true;
                 paramAnn = "PathVariable";
+                String expectedPath = "/{" + alias + "}";
+                if (hasPathQueryFormat) {
+                    if (pathQueryFormats.indexOf(expectedPath) == -1) {
+                        throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg10(alias));
+                    }
+                } else {
+                    methodAnnUri.append(expectedPath);
+                }
             } else {
                 hasQueryParams = true;
                 if (isFirstQuery) {
@@ -753,7 +782,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             boolean isOptional = (field.getNullable() != null && field.getNullable());
             if (isOptional) {
                 if (isPathVariable) {
-                    System.out.println(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
+                    throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
                 }
                 /* Optional parameter should be NotNull */
                 field.setNullable(false);
@@ -826,7 +855,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (hasQueryParams) {
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.QueryValue");
         }
-        if (methodAnnUri.length() > 0) {
+        if (hasPathQueryFormat) {
+            methodAnn = methodAnn + "(\"" + pathQueryFormats + methodAnnUri.toString() + "\")";
+        } else if (methodAnnUri.length() > 0) {
             methodAnn = methodAnn + "(\"" + methodAnnUri.toString() + "\")";
         }
 

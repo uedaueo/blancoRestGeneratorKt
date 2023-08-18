@@ -26,6 +26,9 @@
                 <propertykey name="additionalPath" waitX="2">
                     <value>追加パス</value>
                 </propertykey>
+                <propertykey name="pathQueryFormat" waitX="2">
+                    <value>Pathクエリ書式</value>
+                </propertykey>
 <!--                <propertykey name="superClass" waitX="2">-->
 <!--                    <value>電文の親クラス</value>-->
 <!--                </propertykey>-->

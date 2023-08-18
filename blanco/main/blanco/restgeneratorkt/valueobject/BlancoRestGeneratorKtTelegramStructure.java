@@ -241,6 +241,14 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private BlancoRestGeneratorKtTelegramStructure fBodyTelegram;
 
     /**
+     * Path部分に指定されるクエリの書式です。クエリは field の No. で #1 指定します。
+     *
+     * フィールド: [pathQueryFormat]。
+     * デフォルト: [&quot;&quot;]。
+     */
+    private String fPathQueryFormat = "";
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -937,6 +945,29 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [pathQueryFormat] の値を設定します。
+     *
+     * フィールドの説明: [Path部分に指定されるクエリの書式です。クエリは field の No. で #1 指定します。]。
+     *
+     * @param argPathQueryFormat フィールド[pathQueryFormat]に設定する値。
+     */
+    public void setPathQueryFormat(final String argPathQueryFormat) {
+        fPathQueryFormat = argPathQueryFormat;
+    }
+
+    /**
+     * フィールド [pathQueryFormat] の値を取得します。
+     *
+     * フィールドの説明: [Path部分に指定されるクエリの書式です。クエリは field の No. で #1 指定します。]。
+     * デフォルト: [&quot;&quot;]。
+     *
+     * @return フィールド[pathQueryFormat]から取得した値。
+     */
+    public String getPathQueryFormat() {
+        return fPathQueryFormat;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -982,6 +1013,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",hasQueryParams=" + fHasQueryParams);
         buf.append(",calculatedPackage=" + fCalculatedPackage);
         buf.append(",bodyTelegram=" + fBodyTelegram);
+        buf.append(",pathQueryFormat=" + fPathQueryFormat);
         buf.append("]");
         return buf.toString();
     }
@@ -1097,5 +1129,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fBodyTelegram
         // Type: blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure
         // Field[fBodyTelegram] is an unsupported type[blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure].
+        // Name: fPathQueryFormat
+        // Type: java.lang.String
+        target.fPathQueryFormat = this.fPathQueryFormat;
     }
 }

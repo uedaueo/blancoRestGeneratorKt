@@ -1674,7 +1674,7 @@ public class BlancoRestGeneratorKtResourceBundle {
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.09]
      *
-     * [【注意】 [{0}] パラメータ  [{1}] のクエリ種別PathがNullableで指定されています。これが意図した物かどうか確認してください。] (ja)<br>
+     * [クエリ種別Pathは常に必須です。Nullableも許容されません。[{0}] のパラメータ  [{1}] を確認してください。] (ja)<br>
      *
      * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @param arg1 置換文字列{1}を置換する値。java.lang.String型を与えてください。
@@ -1682,7 +1682,7 @@ public class BlancoRestGeneratorKtResourceBundle {
      */
     public String getBlancorestErrorMsg09(final String arg0, final String arg1) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "【注意】 [{0}] パラメータ  [{1}] のクエリ種別PathがNullableで指定されています。これが意図した物かどうか確認してください。";
+        String strFormat = "クエリ種別Pathは常に必須です。Nullableも許容されません。[{0}] のパラメータ  [{1}] を確認してください。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.09");
@@ -1693,6 +1693,30 @@ public class BlancoRestGeneratorKtResourceBundle {
         final StringBuffer strbuf = new StringBuffer();
         // 与えられた引数を元に置換文字列を置き換えます。
         messageFormat.format(new Object[] {arg0, arg1}, strbuf, null);
+        return strbuf.toString();
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.10]
+     *
+     * [Pathクエリ書式に [{0}] が指定されていません。] (ja)<br>
+     *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
+     * @return key[BLANCOREST.ERROR.MSG.10]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getBlancorestErrorMsg10(final String arg0) {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "Pathクエリ書式に [{0}] が指定されていません。";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.10");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0}, strbuf, null);
         return strbuf.toString();
     }
 
