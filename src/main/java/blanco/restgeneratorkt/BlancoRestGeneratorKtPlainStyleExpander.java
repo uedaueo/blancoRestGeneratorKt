@@ -543,6 +543,13 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * With the Kotlin transformer, the "<>" of the first layer of generics is automatically added and the package is removed.
          */
         String requestGenerics = requestId;
+        /*
+         * To inject httpRequest object as bean,
+         * do not specify Request Telegram type if no body expected.
+         */
+        if (!hasBodyTelegram) {
+            requestGenerics = "*";
+        }
         httpRequest.getType().setGenerics(
                 requestGenerics
         );
@@ -637,8 +644,14 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Merge queryString bean and body json bean
          */
 
-
-        listLine.add("val httpCommonRequest = HttpCommonRequest<" + requestId + ">(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
+        if (!hasBodyTelegram) {
+            /* May exception occurs here if some illegal body is specified. */
+            listLine.add("@Suppress(\"UNCHECKED_CAST\")");
+            listLine.add("val typedHttpRequest = argHttpRequest as HttpRequest<" + requestId + ">");
+            listLine.add("val httpCommonRequest = HttpCommonRequest(typedHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
+        } else {
+            listLine.add("val httpCommonRequest = HttpCommonRequest<" + requestId + ">(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
+        }
 
         /*
          * Whether or not auxiliary authentication is required.
@@ -884,7 +897,13 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         /*
          * With the Kotlin transformer, the "<>" of the first layer of generics is automatically added and the package is removed.
          */
-        String requestGenerics = requestId;
+//        String requestGenerics = requestId;
+        /*
+         * Because Get and Put method never has body json,
+         * we cannot specify Type to HttpRequest's generics
+         * to inject HttpRequest bean.
+         */
+        String requestGenerics = "*";
         httpRequest.getType().setGenerics(
                 requestGenerics
         );
@@ -960,7 +979,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             metaIdList = sb.toString();
         }
 
-        listLine.add("val httpCommonRequest = HttpCommonRequest<" + requestId + ">(argHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
+        /* May exception occurs here if some illegal body is specified. */
+        listLine.add("@Suppress(\"UNCHECKED_CAST\")");
+        listLine.add("val typedHttpRequest = argHttpRequest as HttpRequest<" + requestId + ">");
+        listLine.add("val httpCommonRequest = HttpCommonRequest(typedHttpRequest, " + noAuthentication + ", listOf(" + metaIdList + "), null)");
 
         /*
          * Whether or not auxiliary authentication is required.
