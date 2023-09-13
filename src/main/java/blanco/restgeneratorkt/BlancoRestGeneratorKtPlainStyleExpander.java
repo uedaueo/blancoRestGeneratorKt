@@ -430,7 +430,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 if (BlancoStringUtil.null2Blank(field.getGenericKt()).trim().length() > 0) {
                     paramGeneric = field.getGenericKt();
                 }
-                boolean isOptional = (field.getNullable() != null && field.getNullable());
+                boolean isOptional = (field.getNullable() != null && field.getNullable() && !BlancoRestGeneratorKtUtil.isStringArray(field));
                 if (isOptional) {
                     if (isPathVariable) {
                         throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
@@ -796,7 +796,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             if (BlancoStringUtil.null2Blank(field.getGenericKt()).trim().length() > 0) {
                 paramGeneric = field.getGenericKt();
             }
-            boolean isOptional = (field.getNullable() != null && field.getNullable());
+            boolean isOptional = (field.getNullable() != null && field.getNullable() && !BlancoRestGeneratorKtUtil.isStringArray(field));
             if (isOptional) {
                 if (isPathVariable) {
                     throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg09(inputTelegram.getName(), field.getName()));
