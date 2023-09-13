@@ -407,7 +407,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 }
                 if (BlancoRestGeneratorKtUtil.isStringArray(field)) {
                     /* Just adapt to StringArray yet now. */
-                    alias += "[]";
+                    if (!inputTelegram.getArrayNoBracket()) {
+                        alias += "[]";
+                    }
                     methodAnnUri.append(alias + "*");
                 } else {
                     methodAnnUri.append(alias);
@@ -775,7 +777,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 }
                 if (BlancoRestGeneratorKtUtil.isStringArray(field)) {
                     /* Just adapt to StringArray yet now. */
-                    alias += "[]";
+                    if (!inputTelegram.getArrayNoBracket()) {
+                        alias += "[]";
+                    }
                     methodAnnUri.append(alias + "*");
                 } else {
                     methodAnnUri.append(alias);

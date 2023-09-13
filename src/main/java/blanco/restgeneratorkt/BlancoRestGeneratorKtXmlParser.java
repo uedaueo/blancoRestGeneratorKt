@@ -284,6 +284,10 @@ public class BlancoRestGeneratorKtXmlParser {
         argTelegramStructure.setParamPreferred(BlancoXmlBindingUtil.getTextContent(argElementCommon, "paramPreferred"));
         // Pathクエリ書式
         argTelegramStructure.setPathQueryFormat(BlancoXmlBindingUtil.getTextContent(argElementCommon, "pathQueryFormat"));
+        // 配列クエリパラメータに[]を付与しない
+        argTelegramStructure.setArrayNoBracket("true"
+                .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
+                        "arrayNoBracket")));
 
         // basedir
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));

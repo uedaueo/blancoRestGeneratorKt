@@ -249,6 +249,14 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fPathQueryFormat = "";
 
     /**
+     * クエリパラメータが配列でもパラメータに[]を付与しません。
+     *
+     * フィールド: [arrayNoBracket]。
+     * デフォルト: [false]。
+     */
+    private Boolean fArrayNoBracket = false;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -968,6 +976,29 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [arrayNoBracket] の値を設定します。
+     *
+     * フィールドの説明: [クエリパラメータが配列でもパラメータに[]を付与しません。]。
+     *
+     * @param argArrayNoBracket フィールド[arrayNoBracket]に設定する値。
+     */
+    public void setArrayNoBracket(final Boolean argArrayNoBracket) {
+        fArrayNoBracket = argArrayNoBracket;
+    }
+
+    /**
+     * フィールド [arrayNoBracket] の値を取得します。
+     *
+     * フィールドの説明: [クエリパラメータが配列でもパラメータに[]を付与しません。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[arrayNoBracket]から取得した値。
+     */
+    public Boolean getArrayNoBracket() {
+        return fArrayNoBracket;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1014,6 +1045,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",calculatedPackage=" + fCalculatedPackage);
         buf.append(",bodyTelegram=" + fBodyTelegram);
         buf.append(",pathQueryFormat=" + fPathQueryFormat);
+        buf.append(",arrayNoBracket=" + fArrayNoBracket);
         buf.append("]");
         return buf.toString();
     }
@@ -1132,5 +1164,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fPathQueryFormat
         // Type: java.lang.String
         target.fPathQueryFormat = this.fPathQueryFormat;
+        // Name: fArrayNoBracket
+        // Type: java.lang.Boolean
+        target.fArrayNoBracket = this.fArrayNoBracket;
     }
 }

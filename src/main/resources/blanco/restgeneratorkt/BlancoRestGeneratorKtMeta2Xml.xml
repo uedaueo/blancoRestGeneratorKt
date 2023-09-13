@@ -61,6 +61,9 @@
                 <propertykey name="paramPreferred" waitX="2">
                     <value>パラメータ優先</value>
                 </propertykey>
+                <propertykey name="arrayNoBracket" waitX="2">
+                    <value>配列クエリに[]をつけない</value>
+                </propertykey>
 
                 <valuemapping>
                     <result>Input</result>
