@@ -257,6 +257,14 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private Boolean fArrayNoBracket = false;
 
     /**
+     * ペイロードに電文の配列が載る
+     *
+     * フィールド: [arrayPayload]。
+     * デフォルト: [false]。
+     */
+    private Boolean fArrayPayload = false;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -999,6 +1007,29 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [arrayPayload] の値を設定します。
+     *
+     * フィールドの説明: [ペイロードに電文の配列が載る]。
+     *
+     * @param argArrayPayload フィールド[arrayPayload]に設定する値。
+     */
+    public void setArrayPayload(final Boolean argArrayPayload) {
+        fArrayPayload = argArrayPayload;
+    }
+
+    /**
+     * フィールド [arrayPayload] の値を取得します。
+     *
+     * フィールドの説明: [ペイロードに電文の配列が載る]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[arrayPayload]から取得した値。
+     */
+    public Boolean getArrayPayload() {
+        return fArrayPayload;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1046,6 +1077,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",bodyTelegram=" + fBodyTelegram);
         buf.append(",pathQueryFormat=" + fPathQueryFormat);
         buf.append(",arrayNoBracket=" + fArrayNoBracket);
+        buf.append(",arrayPayload=" + fArrayPayload);
         buf.append("]");
         return buf.toString();
     }
@@ -1167,5 +1199,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fArrayNoBracket
         // Type: java.lang.Boolean
         target.fArrayNoBracket = this.fArrayNoBracket;
+        // Name: fArrayPayload
+        // Type: java.lang.Boolean
+        target.fArrayPayload = this.fArrayPayload;
     }
 }

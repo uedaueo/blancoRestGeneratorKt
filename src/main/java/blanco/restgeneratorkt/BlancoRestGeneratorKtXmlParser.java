@@ -288,6 +288,10 @@ public class BlancoRestGeneratorKtXmlParser {
         argTelegramStructure.setArrayNoBracket("true"
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                         "arrayNoBracket")));
+        // ペイロードに電文の配列が載る
+        argTelegramStructure.setArrayPayload("true"
+                .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
+                        "arrayPayload")));
 
         // basedir
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));

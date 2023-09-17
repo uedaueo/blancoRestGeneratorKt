@@ -590,6 +590,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         cgExecutorMethod.setReturn(cgReturn);
 
         String responseGenerics = responseId;
+        if (outputTelegram.getArrayPayload()) {
+            responseGenerics = "List<" + responseId + ">";
+        }
         cgReturn.getType().setGenerics(
                 responseGenerics
         );
@@ -674,7 +677,11 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         listLine.add("val httpResponse = " + argInjectedParameterId + "." + argExecuteMethodId + "(httpCommonRequest)");
         listLine.add("");
         listLine.add("/* Postprocessing */");
-        listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
+        if (outputTelegram.getArrayPayload()) {
+            listLine.add(argInjectedParameterId + ".finishArray(httpResponse, httpCommonRequest)");
+        } else {
+            listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
+        }
         listLine.add("");
         listLine.add("return httpResponse");
 
@@ -931,6 +938,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         cgExecutorMethod.setReturn(cgReturn);
 
         String responseGenerics = responseId;
+        if (outputTelegram.getArrayPayload()) {
+            responseGenerics = "List<" + responseId + ">";
+        }
         cgReturn.getType().setGenerics(
                 responseGenerics
         );
@@ -1007,7 +1017,11 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         listLine.add("val httpResponse = " + argInjectedParameterId + "." + argExecuteMethodId + "(httpCommonRequest)");
         listLine.add("");
         listLine.add("/* Postprocessing */");
-        listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
+        if (outputTelegram.getArrayPayload()) {
+            listLine.add(argInjectedParameterId + ".finishArray(httpResponse, httpCommonRequest)");
+        } else {
+            listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
+        }
         listLine.add("");
         listLine.add("return httpResponse");
 
@@ -1087,6 +1101,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         fCgSourceFile.getImportList().add(responseId);
 
         String responseGenerics = responseIdSimple;
+        if (responseStructure.getArrayPayload()) {
+            responseGenerics = "List<" + responseIdSimple + ">";
+        }
         cgReturn.getType().setGenerics(responseGenerics);
 
         if (isSkelton) {
@@ -1186,6 +1203,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         fCgSourceFile.getImportList().add(responseId);
 
         String responseGenerics = responseIdSimple;
+        if (responseStructure.getArrayPayload()) {
+            responseGenerics = "List<" + responseId + ">";
+        }
         cgReturn.getType().setGenerics(responseGenerics);
 
         return cgExecutorMethod;

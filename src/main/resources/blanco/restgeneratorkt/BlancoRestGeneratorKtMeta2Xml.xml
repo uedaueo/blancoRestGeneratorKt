@@ -64,6 +64,9 @@
                 <propertykey name="arrayNoBracket" waitX="2">
                     <value>配列クエリに[]をつけない</value>
                 </propertykey>
+                <propertykey name="arrayPayload" waitX="2">
+                    <value>電文が配列</value>
+                </propertykey>
 
                 <valuemapping>
                     <result>Input</result>
