@@ -67,6 +67,9 @@
                 <propertykey name="arrayPayload" waitX="2">
                     <value>電文が配列</value>
                 </propertykey>
+                <propertykey name="primitivePayload" waitX="2">
+                    <value>電文がPrimitive</value>
+                </propertykey>
 
                 <valuemapping>
                     <result>Input</result>

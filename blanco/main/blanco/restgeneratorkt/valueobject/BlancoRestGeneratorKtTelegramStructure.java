@@ -265,6 +265,14 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private Boolean fArrayPayload = false;
 
     /**
+     * ペイロードにprimitive (非JSON）が載る
+     *
+     * フィールド: [primitivePayload]。
+     * デフォルト: [&quot;&quot;]。
+     */
+    private String fPrimitivePayload = "";
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -1030,6 +1038,29 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [primitivePayload] の値を設定します。
+     *
+     * フィールドの説明: [ペイロードにprimitive (非JSON）が載る]。
+     *
+     * @param argPrimitivePayload フィールド[primitivePayload]に設定する値。
+     */
+    public void setPrimitivePayload(final String argPrimitivePayload) {
+        fPrimitivePayload = argPrimitivePayload;
+    }
+
+    /**
+     * フィールド [primitivePayload] の値を取得します。
+     *
+     * フィールドの説明: [ペイロードにprimitive (非JSON）が載る]。
+     * デフォルト: [&quot;&quot;]。
+     *
+     * @return フィールド[primitivePayload]から取得した値。
+     */
+    public String getPrimitivePayload() {
+        return fPrimitivePayload;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1078,6 +1109,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",pathQueryFormat=" + fPathQueryFormat);
         buf.append(",arrayNoBracket=" + fArrayNoBracket);
         buf.append(",arrayPayload=" + fArrayPayload);
+        buf.append(",primitivePayload=" + fPrimitivePayload);
         buf.append("]");
         return buf.toString();
     }
@@ -1202,5 +1234,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fArrayPayload
         // Type: java.lang.Boolean
         target.fArrayPayload = this.fArrayPayload;
+        // Name: fPrimitivePayload
+        // Type: java.lang.String
+        target.fPrimitivePayload = this.fPrimitivePayload;
     }
 }

@@ -292,6 +292,16 @@ public class BlancoRestGeneratorKtXmlParser {
         argTelegramStructure.setArrayPayload("true"
                 .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
                         "arrayPayload")));
+        // ペイロードがprimitive
+        String phpType = BlancoXmlBindingUtil.getTextContent(argElementCommon, "primitivePayload");
+        if (!BlancoStringUtil.null2Blank(phpType).isEmpty()) {
+            String kotlinType = parsePhpTypes(phpType, false, argTelegramStructure);
+            argTelegramStructure.setPrimitivePayload(kotlinType);
+            /* TODO Implement for Input telegram */
+            if (!BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_OUTPUT.equalsIgnoreCase(argTelegramStructure.getTelegramType())) {
+                System.out.println("[WARNING] Primitive Payload is NIY for request telegram.");
+            }
+        }
 
         // basedir
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));

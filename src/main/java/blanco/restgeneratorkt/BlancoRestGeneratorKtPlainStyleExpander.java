@@ -581,6 +581,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          */
         BlancoRestGeneratorKtTelegramStructure outputTelegram = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_OUTPUT);
         String responseId = outputTelegram.getCalculatedPackage() + "." + outputTelegram.getName();
+        if (!BlancoStringUtil.null2Blank(outputTelegram.getPrimitivePayload()).isEmpty()) {
+            responseId =outputTelegram.getPrimitivePayload();
+        }
         if (this.isVerbose()) {
             System.out.println("### responseId = " + responseId);
         }
@@ -679,6 +682,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         listLine.add("/* Postprocessing */");
         if (outputTelegram.getArrayPayload()) {
             listLine.add(argInjectedParameterId + ".finishArray(httpResponse, httpCommonRequest)");
+//        } else if (!BlancoStringUtil.null2Blank(outputTelegram.getPrimitivePayload()).isEmpty()) {
+//            listLine.add(argInjectedParameterId + ".finishPrimitive(httpResponse, httpCommonRequest)");
         } else {
             listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
         }
@@ -929,6 +934,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          */
         BlancoRestGeneratorKtTelegramStructure outputTelegram = argTelegrams.get(BlancoRestGeneratorKtConstants.TELEGRAM_OUTPUT);
         String responseId = outputTelegram.getCalculatedPackage() + "." + outputTelegram.getName();
+        if (!BlancoStringUtil.null2Blank(outputTelegram.getPrimitivePayload()).isEmpty()) {
+            responseId = outputTelegram.getPrimitivePayload();
+        }
         if (this.isVerbose()) {
             System.out.println("### responseId = " + responseId);
         }
@@ -1019,6 +1027,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         listLine.add("/* Postprocessing */");
         if (outputTelegram.getArrayPayload()) {
             listLine.add(argInjectedParameterId + ".finishArray(httpResponse, httpCommonRequest)");
+//        } else if (!BlancoStringUtil.null2Blank(outputTelegram.getPrimitivePayload()).isEmpty()) {
+//            listLine.add(argInjectedParameterId + ".finishPrimitive(httpResponse, httpCommonRequest)");
         } else {
             listLine.add(argInjectedParameterId + ".finish(httpResponse, httpCommonRequest)");
         }
@@ -1099,6 +1109,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         String responseIdPackage = overridePackage;
         String responseId = responseIdPackage + "." + responseIdSimple;
         fCgSourceFile.getImportList().add(responseId);
+
+        if (!BlancoStringUtil.null2Blank(responseStructure.getPrimitivePayload()).isEmpty()) {
+            responseIdSimple = responseStructure.getPrimitivePayload();
+        }
 
         String responseGenerics = responseIdSimple;
         if (responseStructure.getArrayPayload()) {
@@ -1201,6 +1215,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         String responseIdPackage = overridePackage;
         String responseId = responseIdPackage + "." + responseIdSimple;
         fCgSourceFile.getImportList().add(responseId);
+
+        if (!BlancoStringUtil.null2Blank(responseStructure.getPrimitivePayload()).isEmpty()) {
+            responseIdSimple = responseStructure.getPrimitivePayload();
+        }
 
         String responseGenerics = responseIdSimple;
         if (responseStructure.getArrayPayload()) {
