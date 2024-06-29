@@ -134,6 +134,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         // Imports kinds of a telegram.
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
+        if (argProcessStructure.getHasPrimitiveRequest()) {
+            fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequestEx");
+        }
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonRequest");
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
 
@@ -308,6 +311,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
      * @param argNoAuthentication
      * @param argNoAuxiliaryAuthentication
      * @param argMetaIdList
+     * @param argExecuteMethodId
+     * @param argMethodAnn
+     * @param argStrMethodName
+     * @return
      */
     private BlancoCgMethod createPostPutMethod(
             final HashMap<String, BlancoRestGeneratorKtTelegramStructure> argTelegrams,
@@ -328,11 +335,21 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         String requestId = inputTelegram.getCalculatedPackage() + "." + inputTelegram.getName();
 
         BlancoRestGeneratorKtTelegramStructure bodyTelegram = inputTelegram.getBodyTelegram();
-        Boolean hasBodyTelegram = false;
+        boolean hasBodyTelegram = false;
+        boolean isBodyPrimitive = !BlancoStringUtil.null2Blank(inputTelegram.getPrimitivePayload()).trim().isEmpty();
+        boolean isBodyArray = inputTelegram.getArrayPayload();
         String bodyTelegramId = "";
         if (bodyTelegram != null && bodyTelegram.getName().equals(inputTelegram.getName() + "Body")) {
             hasBodyTelegram = true;
             bodyTelegramId = requestId + "Body";
+        } else if (isBodyPrimitive) {
+            bodyTelegramId = inputTelegram.getPrimitivePayload();
+        }
+        if (isBodyArray) {
+            bodyTelegramId = "List<" + bodyTelegramId + ">";
+        }
+        if (isBodyArray || isBodyPrimitive) {
+            bodyTelegramId = "Optional<" + bodyTelegramId + ">";
         }
 
         if (this.isVerbose()) {
@@ -341,10 +358,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         }
 
         String additionalPath = inputTelegram.getAdditionalPath();
-        Boolean isAdditionalPath = false;
-        if (BlancoStringUtil.null2Blank(additionalPath).trim().length() > 0) {
-            isAdditionalPath = true;
-        }
+        boolean isAdditionalPath = !BlancoStringUtil.null2Blank(additionalPath).trim().isEmpty();
 
         /*
          * Generate method paramters issue.
@@ -374,7 +388,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             String queryKind = BlancoStringUtil.null2Blank(field.getQueryKind());
             String name = field.getName();
             String alias = field.getAlias();
-            if (BlancoStringUtil.null2Blank(alias).trim().length() == 0) {
+            if (BlancoStringUtil.null2Blank(alias).trim().isEmpty()) {
                 alias = name;
             }
 
@@ -384,14 +398,14 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             */
             String paramAnn = "QueryValue";
             boolean isPathVariable = false;
-            Boolean isBodyProp = false;
+            boolean isBodyProp = false;
             if (BlancoRestGeneratorKtConstants.TELEGRAM_QUERY_KIND_PATH.equals(queryKind)) {
                 hasPathVariable = true;
                 isPathVariable = true;
                 paramAnn = "PathVariable";
                 String expectedPath = "/{" + alias + "}";
                 if (hasPathQueryFormat) {
-                    if (pathQueryFormats.indexOf(expectedPath) == -1) {
+                    if (!pathQueryFormats.contains(expectedPath)) {
                         throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg10(alias));
                     }
                 } else {
@@ -410,7 +424,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                     if (!inputTelegram.getArrayNoBracket()) {
                         alias += "[]";
                     }
-                    methodAnnUri.append(alias + "*");
+                    methodAnnUri.append(alias).append("*");
                 } else {
                     methodAnnUri.append(alias);
                 }
@@ -421,13 +435,13 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             }
 
             String paramType = field.getType();
-            if (BlancoStringUtil.null2Blank(field.getTypeKt()).trim().length() > 0) {
+            if (!BlancoStringUtil.null2Blank(field.getTypeKt()).trim().isEmpty()) {
                 paramType = field.getTypeKt();
             }
             final String paramName = "arg" + BlancoNameAdjuster.toClassName(name);
             if (!isBodyProp) {
                 String paramGeneric = field.getGeneric();
-                if (BlancoStringUtil.null2Blank(field.getGenericKt()).trim().length() > 0) {
+                if (!BlancoStringUtil.null2Blank(field.getGenericKt()).trim().isEmpty()) {
                     paramGeneric = field.getGenericKt();
                 }
                 boolean isOptional = (field.getNullable() != null && field.getNullable() && !BlancoRestGeneratorKtUtil.isStringArray(field));
@@ -443,7 +457,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                         fCgSourceFile.getImportList().add("java.util.Optional");
                         isFirstOptional = false;
                     }
-                    if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
+                    if (!BlancoStringUtil.null2Blank(paramGeneric).trim().isEmpty()) {
                         paramTypeBk = paramTypeBk + "<" + paramGeneric + ">";
                     }
                     paramGeneric = paramTypeBk;
@@ -454,8 +468,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                         paramType,
                         paramDescription
                 );
-                queryParam.setNotnull(isOptional ? true : !field.getNullable());
-                if (BlancoStringUtil.null2Blank(paramGeneric).trim().length() > 0) {
+                queryParam.setNotnull(isOptional || !field.getNullable());
+                if (!BlancoStringUtil.null2Blank(paramGeneric).trim().isEmpty()) {
                     queryParam.getType().setGenerics(paramGeneric);
                 }
                 /* Always specify alias */
@@ -475,11 +489,16 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                     requestBeanConst.set(last - 1, lastString);
                 }
                 String defaultValue = field.getDefault();
-                if (BlancoStringUtil.null2Blank(field.getDefaultKt()).trim().length() > 0) {
+                if (!BlancoStringUtil.null2Blank(field.getDefaultKt()).trim().isEmpty()) {
                     defaultValue = field.getDefaultKt();
                 }
                 if (isBodyProp) {
-                    requestBeanConst.add(name + " = argRequestBean." + name);
+                    if (isBodyArray || isBodyPrimitive) {
+                        /* always optional */
+                        requestBeanConst.add(name + " = if (argRequestBean.isPresent == true) argRequestBean.get()." + name + " else " + defaultValue);
+                    } else {
+                        requestBeanConst.add(name + " = argRequestBean." + name);
+                    }
                 } else {
                     if ("Optional".equals(paramType)) {
                         requestBeanConst.add(name + " = if (" + paramName + ".isPresent == true) " + paramName + ".get() else " + defaultValue);
@@ -489,7 +508,14 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 }
             } else {
                 if (isBodyProp) {
-                    requestBeanField.add("requestBean." + name + " = argRequestBean." + name);
+                    if (isBodyArray || isBodyPrimitive) {
+                        /* always optional */
+                        requestBeanField.add("if (requestBean.isPresent == true) {");
+                        requestBeanField.add("requestBean." + name + " = argRequestBean.get()");
+                        requestBeanField.add("}");
+                    } else {
+                        requestBeanField.add("requestBean." + name + " = argRequestBean." + name);
+                    }
                 } else {
                     if ("Optional".equals(paramType)) {
                         requestBeanField.add("if (" + paramName + ".isPresent == true) {");
@@ -502,7 +528,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             }
         }
         requestBeanConst.add(")");
-        if (requestBeanField.size() > 0) {
+        if (!requestBeanField.isEmpty()) {
             requestBeanConst.addAll(requestBeanField);
         }
         if (!isFirstQuery) {
@@ -549,7 +575,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * To inject httpRequest object as bean,
          * do not specify Request Telegram type if no body expected.
          */
-        if (!hasBodyTelegram) {
+        if (!hasBodyTelegram || isBodyPrimitive || isBodyArray) {
             requestGenerics = "*";
         }
         httpRequest.getType().setGenerics(
@@ -564,13 +590,18 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         /*
          * bind body json to bean if exist.
          */
-        if (hasBodyTelegram) {
+        if (hasBodyTelegram || isBodyPrimitive) {
             BlancoCgParameter body = fCgFactory.createParameter(
                     "argRequestBean",
                     bodyTelegramId,
                     "bean that body json is binded to"
             );
             cgExecutorMethod.getParameterList().add(body);
+            if (isFirstOptional) {
+                /* body is always optional */
+                fCgSourceFile.getImportList().add("java.util.Optional");
+                isFirstOptional = false;
+            }
             body.setNotnull(true);
             body.getAnnotationList().add("Body");
             fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Body");
@@ -652,7 +683,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Merge queryString bean and body json bean
          */
 
-        if (!hasBodyTelegram) {
+        if (!hasBodyTelegram || isBodyPrimitive || isBodyArray) {
             /* May exception occurs here if some illegal body is specified. */
             listLine.add("@Suppress(\"UNCHECKED_CAST\")");
             listLine.add("val typedHttpRequest = argHttpRequest as HttpRequest<" + requestId + ">");
@@ -1277,6 +1308,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         // Imports kinds of a telegram.
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
+        if (argProcessStructure.getHasPrimitiveRequest()) {
+            fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequestEx");
+        }
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonRequest");
         fCgSourceFile.getImportList().add(telegramPkg + ".CommonResponse");
 
@@ -1447,6 +1481,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         String telegramPkg = BlancoRestGeneratorKtUtil.telegramPackage;
         String runtimePkg = BlancoRestGeneratorKtUtil.runtimePackage;
         fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequest");
+        if (argProcessStructure.getHasPrimitiveRequest() || argProcessStructure.getHasArrayRequest()) {
+            fCgSourceFile.getImportList().add(telegramPkg + ".HttpCommonRequestEx");
+        }
         fCgSourceFile.getImportList().add(runtimePkg + ".util.BlancoRestGeneratorKtRequestDeserializer");
 
         // Creates a class.

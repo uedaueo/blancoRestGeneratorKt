@@ -230,19 +230,54 @@ public class BlancoRestGeneratorKtXmlParser {
 
             // remove query params from bodyTelegram
             List<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = bodyTelegram.getListField();
-            ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> newList = new ArrayList<>();
+            ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> bodyFields = new ArrayList<>();
+            ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> queryPathFields = new ArrayList<>();
             for (BlancoRestGeneratorKtTelegramFieldStructure fieldStructure : fieldStructureList) {
-                if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().length() == 0) {
-                    newList.add(fieldStructure);
+                if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().isEmpty()) {
+                    bodyFields.add(fieldStructure);
+                } else {
+                    queryPathFields.add(fieldStructure);
                 }
             }
-            if (!newList.isEmpty()) {
-                bodyTelegram.setListField(newList);
+            boolean hasPrimitivePayload = !BlancoStringUtil.null2Blank(telegramStructure.getPrimitivePayload()).trim().isEmpty();
+            if (!bodyFields.isEmpty()) {
+                /* Error on both primitive payload and field list is specified. */
+                if (hasPrimitivePayload) {
+                    throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg11(telegramStructure.getPrimitivePayload()));
+                }
+                bodyTelegram.setListField(bodyFields);
                 bodyTelegram.setName(bodyTelegram.getName() + "Body");
                 telegramStructure.setBodyTelegram(bodyTelegram);
+                if (telegramStructure.getArrayPayload()) {
+                    BlancoRestGeneratorKtTelegramFieldStructure arrayFieldStructure = new BlancoRestGeneratorKtTelegramFieldStructure();
+                    String num = "" + (queryPathFields.size() + 1);
+                    arrayFieldStructure.setNo(num);
+                    arrayFieldStructure.setName("arrayBody");
+                    arrayFieldStructure.setType("ArrayList");
+                    arrayFieldStructure.setGeneric(bodyTelegram.getName());
+                    arrayFieldStructure.setNullable(true);
+                    arrayFieldStructure.setDescription(bodyTelegram.getDescription());
+                    queryPathFields.add(arrayFieldStructure);
+                    telegramStructure.setListField(queryPathFields);
+                }
+            } else if (hasPrimitivePayload) {
+                BlancoRestGeneratorKtTelegramFieldStructure arrayFieldStructure = new BlancoRestGeneratorKtTelegramFieldStructure();
+                String num = "" + (queryPathFields.size() + 1);
+                arrayFieldStructure.setNo(num);
+                arrayFieldStructure.setName("primitiveBody");
+                String type = telegramStructure.getPrimitivePayload();
+                if (telegramStructure.getArrayPayload()) {
+                    type = "ArrayList";
+                    String generic = telegramStructure.getPrimitivePayload();
+                    arrayFieldStructure.setGenericKt(generic);
+                }
+                arrayFieldStructure.setType(type);
+                arrayFieldStructure.setNullable(true);
+                arrayFieldStructure.setDescription(telegramStructure.getDescription());
+                queryPathFields.add(arrayFieldStructure);
+                telegramStructure.setListField(queryPathFields);
             }
         }
-
         return telegramStructure;
     }
 
@@ -297,10 +332,6 @@ public class BlancoRestGeneratorKtXmlParser {
         if (!BlancoStringUtil.null2Blank(phpType).isEmpty()) {
             String kotlinType = parsePhpTypes(phpType, false, argTelegramStructure);
             argTelegramStructure.setPrimitivePayload(kotlinType);
-            /* TODO Implement for Input telegram */
-            if (!BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_OUTPUT.equalsIgnoreCase(argTelegramStructure.getTelegramType())) {
-                System.out.println("[WARNING] Primitive Payload is NIY for request telegram.");
-            }
         }
 
         // basedir
@@ -1212,6 +1243,14 @@ public class BlancoRestGeneratorKtXmlParser {
                         argTelegramStructureMap.get(telegramId);
                 if (telegramStructure != null) {
                     telegrams.put(kindKey, telegramStructure);
+                    /* Check primitive body request exists or not */
+                    if (!telegramStructure.getPrimitivePayload().isEmpty()) {
+                        argProcessStructure.setHasPrimitiveRequest(true);
+                    }
+                    /* Check array body request exists or not */
+                    if (!telegramStructure.getArrayPayload()) {
+                        argProcessStructure.setHasArrayRequest(true);
+                    }
                 }
             }
 

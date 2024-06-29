@@ -205,6 +205,22 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private Map<String, List<BlancoRestGeneratorKtTelegramStructure>> fErrorTelegrams = new java.util.HashMap<>();
 
     /**
+     * bodyにprimitiveを期待しているリクエストがある
+     *
+     * フィールド: [hasPrimitiveRequest]。
+     * デフォルト: [false]。
+     */
+    private Boolean fHasPrimitiveRequest = false;
+
+    /**
+     * bodyにTopレベルが配列JSONを期待しているリクエストがある
+     *
+     * フィールド: [hasArrayRequest]。
+     * デフォルト: [false]。
+     */
+    private Boolean fHasArrayRequest = false;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -793,6 +809,52 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [hasPrimitiveRequest] の値を設定します。
+     *
+     * フィールドの説明: [bodyにprimitiveを期待しているリクエストがある]。
+     *
+     * @param argHasPrimitiveRequest フィールド[hasPrimitiveRequest]に設定する値。
+     */
+    public void setHasPrimitiveRequest(final Boolean argHasPrimitiveRequest) {
+        fHasPrimitiveRequest = argHasPrimitiveRequest;
+    }
+
+    /**
+     * フィールド [hasPrimitiveRequest] の値を取得します。
+     *
+     * フィールドの説明: [bodyにprimitiveを期待しているリクエストがある]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[hasPrimitiveRequest]から取得した値。
+     */
+    public Boolean getHasPrimitiveRequest() {
+        return fHasPrimitiveRequest;
+    }
+
+    /**
+     * フィールド [hasArrayRequest] の値を設定します。
+     *
+     * フィールドの説明: [bodyにTopレベルが配列JSONを期待しているリクエストがある]。
+     *
+     * @param argHasArrayRequest フィールド[hasArrayRequest]に設定する値。
+     */
+    public void setHasArrayRequest(final Boolean argHasArrayRequest) {
+        fHasArrayRequest = argHasArrayRequest;
+    }
+
+    /**
+     * フィールド [hasArrayRequest] の値を取得します。
+     *
+     * フィールドの説明: [bodyにTopレベルが配列JSONを期待しているリクエストがある]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[hasArrayRequest]から取得した値。
+     */
+    public Boolean getHasArrayRequest() {
+        return fHasArrayRequest;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -833,6 +895,8 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",overridePackage=" + fOverridePackage);
         buf.append(",overrideLocation=" + fOverrideLocation);
         buf.append(",errorTelegrams=" + fErrorTelegrams);
+        buf.append(",hasPrimitiveRequest=" + fHasPrimitiveRequest);
+        buf.append(",hasArrayRequest=" + fHasArrayRequest);
         buf.append("]");
         return buf.toString();
     }
@@ -933,5 +997,11 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fErrorTelegrams
         // Type: java.util.Map
         // Field[fErrorTelegrams] is an unsupported type[java.util.Mapjava.lang.String, java.util.List<blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure>].
+        // Name: fHasPrimitiveRequest
+        // Type: java.lang.Boolean
+        target.fHasPrimitiveRequest = this.fHasPrimitiveRequest;
+        // Name: fHasArrayRequest
+        // Type: java.lang.Boolean
+        target.fHasArrayRequest = this.fHasArrayRequest;
     }
 }
