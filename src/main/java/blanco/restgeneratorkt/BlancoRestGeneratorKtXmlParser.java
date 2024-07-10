@@ -164,7 +164,7 @@ public class BlancoRestGeneratorKtXmlParser {
 
         final String httpMethod = BlancoXmlBindingUtil.getTextContent(
                 elementCommon, "telegramMethod");
-        if (BlancoStringUtil.null2Blank(httpMethod).trim().length() == 0) {
+        if (BlancoStringUtil.null2Blank(httpMethod).trim().isEmpty()) {
             // If httpMethod is empty, skips the process.
             // System.out.println("BlancoRestXmlSourceFile#process !!! NO NAME !!!");
             return telegramStructure;
@@ -195,6 +195,10 @@ public class BlancoRestGeneratorKtXmlParser {
         // TelegramDefinition common
         this.parseTelegramCommon(elementCommon, telegramStructure);
         this.parseTelegramCommon(elementCommon, bodyTelegram);
+
+        /* Check Telegram Method */
+        boolean isPostPutRequest = (httpMethod.equalsIgnoreCase("POST") ||
+                httpMethod.equalsIgnoreCase("PUT")) && "Input".equals(telegramStructure.getTelegramType());
 
         // TelegramDefinition inheritance
         this.parseTelegramExtends(telegramStructure);
@@ -228,54 +232,69 @@ public class BlancoRestGeneratorKtXmlParser {
             this.parseTelegramFields(elementListRoot, telegramStructure);
             this.parseTelegramFields(elementListRoot, bodyTelegram);
 
-            // remove query params from bodyTelegram
-            List<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = bodyTelegram.getListField();
-            ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> bodyFields = new ArrayList<>();
-            ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> queryPathFields = new ArrayList<>();
-            for (BlancoRestGeneratorKtTelegramFieldStructure fieldStructure : fieldStructureList) {
-                if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().isEmpty()) {
-                    bodyFields.add(fieldStructure);
-                } else {
-                    queryPathFields.add(fieldStructure);
+            if (isPostPutRequest) {
+                // remove query params from bodyTelegram
+                List<BlancoRestGeneratorKtTelegramFieldStructure> fieldStructureList = bodyTelegram.getListField();
+                ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> bodyFields = new ArrayList<>();
+                ArrayList<BlancoRestGeneratorKtTelegramFieldStructure> queryPathFields = new ArrayList<>();
+                for (BlancoRestGeneratorKtTelegramFieldStructure fieldStructure : fieldStructureList) {
+                    if (BlancoStringUtil.null2Blank(fieldStructure.getQueryKind()).trim().isEmpty()) {
+                        bodyFields.add(fieldStructure);
+                    } else {
+                        queryPathFields.add(fieldStructure);
+                    }
                 }
-            }
-            boolean hasPrimitivePayload = !BlancoStringUtil.null2Blank(telegramStructure.getPrimitivePayload()).trim().isEmpty();
-            if (!bodyFields.isEmpty()) {
-                /* Error on both primitive payload and field list is specified. */
-                if (hasPrimitivePayload) {
-                    throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg11(telegramStructure.getPrimitivePayload()));
-                }
-                bodyTelegram.setListField(bodyFields);
-                bodyTelegram.setName(bodyTelegram.getName() + "Body");
-                telegramStructure.setBodyTelegram(bodyTelegram);
-                if (telegramStructure.getArrayPayload()) {
-                    BlancoRestGeneratorKtTelegramFieldStructure arrayFieldStructure = new BlancoRestGeneratorKtTelegramFieldStructure();
-                    String num = "" + (queryPathFields.size() + 1);
-                    arrayFieldStructure.setNo(num);
-                    arrayFieldStructure.setName("arrayBody");
-                    arrayFieldStructure.setType("ArrayList");
-                    arrayFieldStructure.setGeneric(bodyTelegram.getName());
-                    arrayFieldStructure.setNullable(true);
-                    arrayFieldStructure.setDescription(bodyTelegram.getDescription());
-                    queryPathFields.add(arrayFieldStructure);
+
+
+                boolean hasPrimitivePayload = !BlancoStringUtil.null2Blank(telegramStructure.getPrimitivePayload()).trim().isEmpty();
+                boolean arrayPayload = telegramStructure.getArrayPayload();
+                boolean optionalPayload = telegramStructure.getOptionalPayload();
+
+                BlancoRestGeneratorKtTelegramFieldStructure bodyFieldStructure = new BlancoRestGeneratorKtTelegramFieldStructure();
+                String num = "" + (queryPathFields.size() + 1);
+                bodyFieldStructure.setNo(num);
+                bodyFieldStructure.setName("argBody");
+                if (!bodyFields.isEmpty()) {
+                    /* Error on both primitive payload and field list is specified. */
+                    if (hasPrimitivePayload) {
+                        throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg11(telegramStructure.getName(), telegramStructure.getPrimitivePayload()));
+                    }
+                    bodyTelegram.setListField(bodyFields);
+                    bodyTelegram.setName(bodyTelegram.getName() + "Body");
+                    telegramStructure.setBodyTelegram(bodyTelegram);
+
+                    if (arrayPayload || optionalPayload) {
+                        String type = bodyTelegram.getName();
+                        if (arrayPayload) {
+                            bodyFieldStructure.setGeneric(type);
+                            type = "List";
+                        }
+                        if (optionalPayload) {
+                            bodyFieldStructure.setNullable(true);
+                        }
+                        bodyFieldStructure.setType(type);
+                        bodyFieldStructure.setDescription(bodyTelegram.getDescription());
+                        bodyFieldStructure.setConstArg(true);
+                        queryPathFields.add(bodyFieldStructure);
+                        telegramStructure.setListField(queryPathFields);
+                    }
+                } else if (hasPrimitivePayload) {
+                    String type = telegramStructure.getPrimitivePayload();
+                    String generics = telegramStructure.getPrimitivePayload();
+
+                    if (arrayPayload) {
+                        bodyFieldStructure.setGeneric(type);
+                        type = "List";
+                    }
+                    if (optionalPayload) {
+                        bodyFieldStructure.setNullable(true);
+                    }
+                    bodyFieldStructure.setType(type);
+                    bodyFieldStructure.setConstArg(true);
+                    bodyFieldStructure.setDescription(telegramStructure.getDescription());
+                    queryPathFields.add(bodyFieldStructure);
                     telegramStructure.setListField(queryPathFields);
                 }
-            } else if (hasPrimitivePayload) {
-                BlancoRestGeneratorKtTelegramFieldStructure arrayFieldStructure = new BlancoRestGeneratorKtTelegramFieldStructure();
-                String num = "" + (queryPathFields.size() + 1);
-                arrayFieldStructure.setNo(num);
-                arrayFieldStructure.setName("primitiveBody");
-                String type = telegramStructure.getPrimitivePayload();
-                if (telegramStructure.getArrayPayload()) {
-                    type = "ArrayList";
-                    String generic = telegramStructure.getPrimitivePayload();
-                    arrayFieldStructure.setGenericKt(generic);
-                }
-                arrayFieldStructure.setType(type);
-                arrayFieldStructure.setNullable(true);
-                arrayFieldStructure.setDescription(telegramStructure.getDescription());
-                queryPathFields.add(arrayFieldStructure);
-                telegramStructure.setListField(queryPathFields);
             }
         }
         return telegramStructure;
@@ -308,7 +327,7 @@ public class BlancoRestGeneratorKtXmlParser {
         if (BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_ERROR.equals(argTelegramStructure.getTelegramType())) {
             String statusCode = BlancoXmlBindingUtil.getTextContent(argElementCommon, "statusCode");
             if (BlancoStringUtil.null2Blank(statusCode).trim().length() == 0) {
-                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeRequired());
+                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeRequired(argTelegramStructure.getName()));
             }
             argTelegramStructure.setStatusCode("\"" + statusCode + "\"");
         }
@@ -333,6 +352,10 @@ public class BlancoRestGeneratorKtXmlParser {
             String kotlinType = parsePhpTypes(phpType, false, argTelegramStructure);
             argTelegramStructure.setPrimitivePayload(kotlinType);
         }
+        // ペイロード電文を省略可能
+        argTelegramStructure.setOptionalPayload("true"
+                .equals(BlancoXmlBindingUtil.getTextContent(argElementCommon,
+                        "optionalPayload")));
 
         // basedir
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));
@@ -537,7 +560,7 @@ public class BlancoRestGeneratorKtXmlParser {
             /* if telegramStyle is plain, statusCode is reserved. */
             if (BlancoRestGeneratorKtConstants.TELEGRAM_TYPE_ERROR.equals(argTelegramStructure.getTelegramType()) &&
                 BlancoRestGeneratorKtConstants.TELEGRAM_STATUS_CODE.equals(fieldStructure.getName())) {
-                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeReserved());
+                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeReserved(argTelegramStructure.getName()));
             }
 
             /*
@@ -604,10 +627,14 @@ public class BlancoRestGeneratorKtXmlParser {
             }
             fieldStructure.setRequired("true".equals(required));
             if (fieldStructure.getRequired()) {
+                String importNotNull = "javax.validation.constraints.NotNull";
+                if (BlancoRestGeneratorKtUtil.isTargetJakartaEE) {
+                    importNotNull = "jakarta.validation.constraints.NotNull";
+                }
                 BlancoRestGeneratorKtUtil.addNewAnnotation(
                         "field:NotNull",
                         "field:NotNull",
-                        "javax.validation.constraints.NotNull",
+                        importNotNull,
                         fieldStructure.getAnnotationList(),
                         argTelegramStructure.getImportList()
                 );
@@ -741,7 +768,7 @@ public class BlancoRestGeneratorKtXmlParser {
             fieldStructure.setValue(true);
             String statusCode = argTelegramStructure.getStatusCode();
             if (BlancoStringUtil.null2Blank(statusCode).trim().length() == 0) {
-                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeRequired());
+                throw new IllegalArgumentException(fBundle.getBlancorestTelegramStylePlainStatusCodeRequired(argTelegramStructure.getName()));
             }
             fieldStructure.setDefault(statusCode);
             fieldStructure.setDefaultKt(statusCode);

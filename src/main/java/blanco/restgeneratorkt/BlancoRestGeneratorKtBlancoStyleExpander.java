@@ -142,7 +142,11 @@ public class BlancoRestGeneratorKtBlancoStyleExpander extends BlancoRestGenerato
         fCgClass.setAccess("public");
         // It is always @Singleton.
         fCgClass.getAnnotationList().add("Singleton");
-        fCgSourceFile.getImportList().add("javax.inject.Singleton");
+        if (BlancoRestGeneratorKtUtil.isTargetJakartaEE) {
+            fCgSourceFile.getImportList().add("jakarta.inject.Singleton");
+        } else {
+            fCgSourceFile.getImportList().add("javax.inject.Singleton");
+        }
 
         // Replaces the package name if the replace package name option is specified.
         // If there is Suffix, that is the priority.

@@ -273,6 +273,14 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fPrimitivePayload = "";
 
     /**
+     * ペイロード電文を省略可能
+     *
+     * フィールド: [optionalPayload]。
+     * デフォルト: [false]。
+     */
+    private Boolean fOptionalPayload = false;
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -1061,6 +1069,29 @@ public class BlancoRestGeneratorKtTelegramStructure {
     }
 
     /**
+     * フィールド [optionalPayload] の値を設定します。
+     *
+     * フィールドの説明: [ペイロード電文を省略可能]。
+     *
+     * @param argOptionalPayload フィールド[optionalPayload]に設定する値。
+     */
+    public void setOptionalPayload(final Boolean argOptionalPayload) {
+        fOptionalPayload = argOptionalPayload;
+    }
+
+    /**
+     * フィールド [optionalPayload] の値を取得します。
+     *
+     * フィールドの説明: [ペイロード電文を省略可能]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[optionalPayload]から取得した値。
+     */
+    public Boolean getOptionalPayload() {
+        return fOptionalPayload;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1110,6 +1141,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",arrayNoBracket=" + fArrayNoBracket);
         buf.append(",arrayPayload=" + fArrayPayload);
         buf.append(",primitivePayload=" + fPrimitivePayload);
+        buf.append(",optionalPayload=" + fOptionalPayload);
         buf.append("]");
         return buf.toString();
     }
@@ -1237,5 +1269,8 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fPrimitivePayload
         // Type: java.lang.String
         target.fPrimitivePayload = this.fPrimitivePayload;
+        // Name: fOptionalPayload
+        // Type: java.lang.Boolean
+        target.fOptionalPayload = this.fOptionalPayload;
     }
 }

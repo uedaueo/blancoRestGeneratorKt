@@ -90,6 +90,7 @@ public class BlancoRestGeneratorKtPlainTest {
         inputRestGenerator.setSerdeable(true);
         inputRestGenerator.setIgnoreUnknown(false);
         inputRestGenerator.setNullableAnnotation(true);
+        inputRestGenerator.setIsTargetJaraktaEE(true);
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);

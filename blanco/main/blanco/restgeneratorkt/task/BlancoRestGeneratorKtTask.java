@@ -194,6 +194,11 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldNullableAnnotationProcessed = false;
 
     /**
+     * フィールド [isTargetJaraktaEE] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldIsTargetJaraktaEEProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -1060,6 +1065,32 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[isTargetJaraktaEE]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 34<br>
+     * target が JVM17 以降の開発環境で利用する場合、J2EE の代わりに JakartaEE を使用する。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setIsTargetJaraktaEE(final boolean arg) {
+        fInput.setIsTargetJaraktaEE(arg);
+        fIsFieldIsTargetJaraktaEEProcessed = true;
+    }
+
+    /**
+     * Antタスクの[isTargetJaraktaEE]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 34<br>
+     * target が JVM17 以降の開発環境で利用する場合、J2EE の代わりに JakartaEE を使用する。<br>
+     * デフォルト値[false]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public boolean getIsTargetJaraktaEE() {
+        return fInput.getIsTargetJaraktaEE();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -1112,6 +1143,7 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- serdeable:[" + getSerdeable() + "]");
             System.out.println("- ignoreUnknown:[" + getIgnoreUnknown() + "]");
             System.out.println("- nullableAnnotation:[" + getNullableAnnotation() + "]");
+            System.out.println("- isTargetJaraktaEE:[" + getIsTargetJaraktaEE() + "]");
         }
 
         try {

@@ -29,6 +29,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             Set<String> kindKeys = kindMap.keySet(); // It should not be null because it is checked at time of parse.
             for (String kindKey : kindKeys) {
                 BlancoRestGeneratorKtTelegramStructure telegramStructure = kindMap.get(kindKey);
+                if (BlancoRestGeneratorKtUtil.isVerbose) {
+                    System.out.println("processing " + telegramStructure.getName());
+                }
                 generateTelegram(telegramStructure, argDirectoryTarget);
                  if (BlancoRestGeneratorKtConstants.TELEGRAM_INPUT.equals(kindKey) &&
                  /* telegramStructure.getHasQueryParams() && */
@@ -161,7 +164,11 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         fCgClass.setAccess("public");
         // It is always @Singleton.
         fCgClass.getAnnotationList().add("Singleton");
-        fCgSourceFile.getImportList().add("javax.inject.Singleton");
+        if (BlancoRestGeneratorKtUtil.isTargetJakartaEE) {
+            fCgSourceFile.getImportList().add("jakarta.inject.Singleton");
+        } else {
+            fCgSourceFile.getImportList().add("javax.inject.Singleton");
+        }
 
         // Replaces the package name if the replace package name option is specified.
         // If there is Suffix, that is the priority.
@@ -338,6 +345,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         boolean hasBodyTelegram = false;
         boolean isBodyPrimitive = !BlancoStringUtil.null2Blank(inputTelegram.getPrimitivePayload()).trim().isEmpty();
         boolean isBodyArray = inputTelegram.getArrayPayload();
+        boolean isBodyOption = inputTelegram.getOptionalPayload();
         String bodyTelegramId = "";
         if (bodyTelegram != null && bodyTelegram.getName().equals(inputTelegram.getName() + "Body")) {
             hasBodyTelegram = true;
@@ -348,7 +356,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (isBodyArray) {
             bodyTelegramId = "List<" + bodyTelegramId + ">";
         }
-        if (isBodyArray || isBodyPrimitive) {
+        if (isBodyOption) {
             bodyTelegramId = "Optional<" + bodyTelegramId + ">";
         }
 
@@ -390,6 +398,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             String alias = field.getAlias();
             if (BlancoStringUtil.null2Blank(alias).trim().isEmpty()) {
                 alias = name;
+            }
+
+            if (this.isVerbose()) {
+                System.out.println("### name =  " + name);
             }
 
             /*
@@ -494,8 +506,11 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 }
                 if (isBodyProp) {
                     if (isBodyArray || isBodyPrimitive) {
-                        /* always optional */
-                        requestBeanConst.add(name + " = if (argRequestBean.isPresent == true) argRequestBean.get()." + name + " else " + defaultValue);
+                        if (isBodyOption) {
+                            requestBeanConst.add(name + " = if (argRequestBean.isPresent == true) argRequestBean.get() else " + defaultValue);
+                        } else {
+                            requestBeanConst.add(name + " = argRequestBean");
+                        }
                     } else {
                         requestBeanConst.add(name + " = argRequestBean." + name);
                     }
@@ -510,7 +525,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 if (isBodyProp) {
                     if (isBodyArray || isBodyPrimitive) {
                         /* always optional */
-                        requestBeanField.add("if (requestBean.isPresent == true) {");
+                        requestBeanField.add("if (argRequestBean.isPresent == true) {");
                         requestBeanField.add("requestBean." + name + " = argRequestBean.get()");
                         requestBeanField.add("}");
                     } else {
@@ -1514,7 +1529,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
 
         /* Sets the annotation for the class. */
         List<String> annotationList = argProcessStructure.getAnnotationList();
-        if (annotationList != null && annotationList.size() > 0) {
+        if (annotationList != null && !annotationList.isEmpty()) {
             fCgClass.getAnnotationList().addAll(argProcessStructure.getAnnotationList());
             /* tueda DEBUG */
             if (this.isVerbose()) {

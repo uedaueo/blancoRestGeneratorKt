@@ -126,6 +126,8 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setIgnoreUnknown(Boolean.valueOf(arg.substring(15)).booleanValue());
             } else if (arg.startsWith("-nullableAnnotation=")) {
                 input.setNullableAnnotation(Boolean.valueOf(arg.substring(20)).booleanValue());
+            } else if (arg.startsWith("-isTargetJaraktaEE=")) {
+                input.setIsTargetJaraktaEE(Boolean.valueOf(arg.substring(19)).booleanValue());
             } else if (arg.equals("-?") || arg.equals("-help")) {
                 usage();
                 System.exit(END_SUCCESS);
@@ -223,7 +225,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -serverType=value15 -basepackage=value16 -runtimepackage=value17 -genUtils=value18 -telegrampackage=value19 -impledir=value20 -genSkeleton=value21 -skeletonDelegateClass=value22 -skeletonDelegateInterface=value23 -lineSeparator=value24 -packageSuffix=value25 -overridePackage=value26 -overrideLocation=value27 -voPackageSuffix=value28 -voOverridePackage=value29 -telegramStyle=value30 -appendApplicationPackage=value31 -serdeable=value32 -ignoreUnknown=value33 -nullableAnnotation=value34");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -serverType=value15 -basepackage=value16 -runtimepackage=value17 -genUtils=value18 -telegrampackage=value19 -impledir=value20 -genSkeleton=value21 -skeletonDelegateClass=value22 -skeletonDelegateInterface=value23 -lineSeparator=value24 -packageSuffix=value25 -overridePackage=value26 -overrideLocation=value27 -voPackageSuffix=value28 -voOverridePackage=value29 -telegramStyle=value30 -appendApplicationPackage=value31 -serdeable=value32 -ignoreUnknown=value33 -nullableAnnotation=value34 -isTargetJaraktaEE=value35");
         System.out.println("    -verbose");
         System.out.println("      explanation[Whether to run in verbose mode.]");
         System.out.println("      type[boolean]");
@@ -344,6 +346,10 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("      default value[false]");
         System.out.println("    -nullableAnnotation");
         System.out.println("      explanation[「必須」が指定されていないパラメータに@Nullableアノテーションを強制します]");
+        System.out.println("      type[boolean]");
+        System.out.println("      default value[false]");
+        System.out.println("    -isTargetJaraktaEE");
+        System.out.println("      explanation[target が JVM17 以降の開発環境で利用する場合、J2EE の代わりに JakartaEE を使用する。]");
         System.out.println("      type[boolean]");
         System.out.println("      default value[false]");
         System.out.println("    -? , -help");

@@ -385,7 +385,7 @@ public abstract class BlancoRestGeneratorKtExpander implements BlancoRestGenerat
                 /*
                  * The java.util.Date type does not allow default values.
                  */
-                throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg06());
+                throw new IllegalArgumentException(fBundle.getBlancorestErrorMsg06(argClassStructure.getName()));
             }
 
             /*
@@ -398,13 +398,13 @@ public abstract class BlancoRestGeneratorKtExpander implements BlancoRestGenerat
              * If there is a defaultKt, it will take precedence.
              */
             String defaultRawValue = argFieldStructure.getDefaultKt();
-            if (!isKtPreferred && (defaultRawValue == null || defaultRawValue.length() == 0)) {
+            if (!isKtPreferred && defaultRawValue == null) {
                 defaultRawValue = argFieldStructure.getDefault();
             }
-            if (!(isConstArg != null && isConstArg) && (defaultRawValue == null || defaultRawValue.length() <= 0)) {
+            if (!(isConstArg != null && isConstArg) && (defaultRawValue == null)) {
                 System.err.println("/* tueda */ The field does not have a default value. blancoValueObjectKt will not support abstract fields for the time being, so be sure to set the default value.");
                 throw new IllegalArgumentException(fBundle
-                        .getBlancorestErrorMsg07());
+                        .getBlancorestErrorMsg07(argClassStructure.getName(), argFieldStructure.getName()));
             }
 
             // Sets the default value for the field.

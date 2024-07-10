@@ -261,6 +261,14 @@ public class BlancoRestGeneratorKtProcessInput {
     private boolean fNullableAnnotation = false;
 
     /**
+     * target が JVM17 以降の開発環境で利用する場合、J2EE の代わりに JakartaEE を使用する。
+     *
+     * フィールド: [isTargetJaraktaEE]。
+     * デフォルト: [false]。
+     */
+    private boolean fIsTargetJaraktaEE = false;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [Whether to run in verbose mode.]。
@@ -1027,6 +1035,29 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [isTargetJaraktaEE] の値を設定します。
+     *
+     * フィールドの説明: [target が JVM17 以降の開発環境で利用する場合、J2EE の代わりに JakartaEE を使用する。]。
+     *
+     * @param argIsTargetJaraktaEE フィールド[isTargetJaraktaEE]に設定する値。
+     */
+    public void setIsTargetJaraktaEE(final boolean argIsTargetJaraktaEE) {
+        fIsTargetJaraktaEE = argIsTargetJaraktaEE;
+    }
+
+    /**
+     * フィールド [isTargetJaraktaEE] の値を取得します。
+     *
+     * フィールドの説明: [target が JVM17 以降の開発環境で利用する場合、J2EE の代わりに JakartaEE を使用する。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[isTargetJaraktaEE]から取得した値。
+     */
+    public boolean getIsTargetJaraktaEE() {
+        return fIsTargetJaraktaEE;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1075,6 +1106,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",serdeable=" + fSerdeable);
         buf.append(",ignoreUnknown=" + fIgnoreUnknown);
         buf.append(",nullableAnnotation=" + fNullableAnnotation);
+        buf.append(",isTargetJaraktaEE=" + fIsTargetJaraktaEE);
         buf.append("]");
         return buf.toString();
     }
@@ -1199,5 +1231,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fNullableAnnotation
         // Type: boolean
         target.fNullableAnnotation = this.fNullableAnnotation;
+        // Name: fIsTargetJaraktaEE
+        // Type: boolean
+        target.fIsTargetJaraktaEE = this.fIsTargetJaraktaEE;
     }
 }

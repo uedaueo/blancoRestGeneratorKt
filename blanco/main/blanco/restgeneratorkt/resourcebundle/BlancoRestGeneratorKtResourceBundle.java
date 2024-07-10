@@ -1501,35 +1501,40 @@ public class BlancoRestGeneratorKtResourceBundle {
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.01]
      *
-     * [リクエストがnullです] (ja)<br>
+     * [電文 [ {0} ] のリクエストがnullです] (ja)<br>
      *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.ERROR.MSG.01]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestErrorMsg01() {
+    public String getBlancorestErrorMsg01(final String arg0) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "リクエストがnullです";
+        String strFormat = "電文 [ {0} ] のリクエストがnullです";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.01");
             }
         } catch (MissingResourceException ex) {
         }
-        // 置換文字列はひとつもありません。
-        return strFormat;
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0}, strbuf, null);
+        return strbuf.toString();
     }
 
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.02]
      *
-     * [期待されるリクエストの型[{0}]に対して[{1}]が渡されました] (ja)<br>
+     * [電文 [ {0} ] で、期待されるリクエストの型[ {1} ]に対して[ {2} ]が渡されました] (ja)<br>
      *
      * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @param arg1 置換文字列{1}を置換する値。java.lang.String型を与えてください。
+     * @param arg2 置換文字列{2}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.ERROR.MSG.02]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestErrorMsg02(final String arg0, final String arg1) {
+    public String getBlancorestErrorMsg02(final String arg0, final String arg1, final String arg2) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "期待されるリクエストの型[{0}]に対して[{1}]が渡されました";
+        String strFormat = "電文 [ {0} ] で、期待されるリクエストの型[ {1} ]に対して[ {2} ]が渡されました";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.02");
@@ -1539,28 +1544,32 @@ public class BlancoRestGeneratorKtResourceBundle {
         final MessageFormat messageFormat = new MessageFormat(strFormat);
         final StringBuffer strbuf = new StringBuffer();
         // 与えられた引数を元に置換文字列を置き換えます。
-        messageFormat.format(new Object[] {arg0, arg1}, strbuf, null);
+        messageFormat.format(new Object[] {arg0, arg1, arg2}, strbuf, null);
         return strbuf.toString();
     }
 
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.03]
      *
-     * [レスポンスの内容が空です] (ja)<br>
+     * [電文 [ {0} ] で、レスポンスの内容が空です] (ja)<br>
      *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.ERROR.MSG.03]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestErrorMsg03() {
+    public String getBlancorestErrorMsg03(final String arg0) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "レスポンスの内容が空です";
+        String strFormat = "電文 [ {0} ] で、レスポンスの内容が空です";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.03");
             }
         } catch (MissingResourceException ex) {
         }
-        // 置換文字列はひとつもありません。
-        return strFormat;
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0}, strbuf, null);
+        return strbuf.toString();
     }
 
     /**
@@ -1614,67 +1623,80 @@ public class BlancoRestGeneratorKtResourceBundle {
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.06]
      *
-     * [java.util.Date 型ではデフォルト値を許容しません。] (ja)<br>
+     * [java.util.Date 型ではデフォルト値を許容しません。（電文 [ {0} ]）] (ja)<br>
      *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.ERROR.MSG.06]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestErrorMsg06() {
+    public String getBlancorestErrorMsg06(final String arg0) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "java.util.Date 型ではデフォルト値を許容しません。";
+        String strFormat = "java.util.Date 型ではデフォルト値を許容しません。（電文 [ {0} ]）";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.06");
             }
         } catch (MissingResourceException ex) {
         }
-        // 置換文字列はひとつもありません。
-        return strFormat;
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0}, strbuf, null);
+        return strbuf.toString();
     }
 
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.07]
      *
-     * [フィールドにデフォルト値が設定されていません。blancoValueObjectKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。] (ja)<br>
+     * [電文 [ {0} ] のフィールド [ {1} ] にデフォルト値が設定されていません。blancoRestGeneratorKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。] (ja)<br>
      *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
+     * @param arg1 置換文字列{1}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.ERROR.MSG.07]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestErrorMsg07() {
+    public String getBlancorestErrorMsg07(final String arg0, final String arg1) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "フィールドにデフォルト値が設定されていません。blancoValueObjectKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。";
+        String strFormat = "電文 [ {0} ] のフィールド [ {1} ] にデフォルト値が設定されていません。blancoRestGeneratorKtは当面の間、abstractフィールドはサポートしませんので、必ずデフォルト値を設定してください。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.07");
             }
         } catch (MissingResourceException ex) {
         }
-        // 置換文字列はひとつもありません。
-        return strFormat;
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0, arg1}, strbuf, null);
+        return strbuf.toString();
     }
 
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.08]
      *
-     * [電文のメソッドタイプが設定されていません。電文はGet/Delete/Post/Putのいずれかでなければなりません。] (ja)<br>
+     * [電文 [ {0} ] でメソッドタイプが設定されていません。電文はGet/Delete/Post/Putのいずれかでなければなりません。] (ja)<br>
      *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.ERROR.MSG.08]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestErrorMsg08() {
+    public String getBlancorestErrorMsg08(final String arg0) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "電文のメソッドタイプが設定されていません。電文はGet/Delete/Post/Putのいずれかでなければなりません。";
+        String strFormat = "電文 [ {0} ] でメソッドタイプが設定されていません。電文はGet/Delete/Post/Putのいずれかでなければなりません。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.08");
             }
         } catch (MissingResourceException ex) {
         }
-        // 置換文字列はひとつもありません。
-        return strFormat;
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0}, strbuf, null);
+        return strbuf.toString();
     }
 
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.09]
      *
-     * [クエリ種別Pathは常に必須です。Nullableも許容されません。[{0}] のパラメータ  [{1}] を確認してください。] (ja)<br>
+     * [クエリ種別Pathは常に必須です。Nullableも許容されません。電文 [{0}] のパラメータ  [{1}] を確認してください。] (ja)<br>
      *
      * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @param arg1 置換文字列{1}を置換する値。java.lang.String型を与えてください。
@@ -1682,7 +1704,7 @@ public class BlancoRestGeneratorKtResourceBundle {
      */
     public String getBlancorestErrorMsg09(final String arg0, final String arg1) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "クエリ種別Pathは常に必須です。Nullableも許容されません。[{0}] のパラメータ  [{1}] を確認してください。";
+        String strFormat = "クエリ種別Pathは常に必須です。Nullableも許容されません。電文 [{0}] のパラメータ  [{1}] を確認してください。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.09");
@@ -1723,14 +1745,15 @@ public class BlancoRestGeneratorKtResourceBundle {
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.ERROR.MSG.11]
      *
-     * [電文のペイロードにはプリミティブ型 [{0}] が期待されていますが電文定義・一覧にクエリ文字列以外のプロパティが存在します。] (ja)<br>
+     * [電文 [ {0} ] のペイロードにはプリミティブ型 [ {1} ] が期待されていますが電文定義・一覧にクエリ文字列以外のプロパティが存在します。] (ja)<br>
      *
      * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
+     * @param arg1 置換文字列{1}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.ERROR.MSG.11]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestErrorMsg11(final String arg0) {
+    public String getBlancorestErrorMsg11(final String arg0, final String arg1) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "電文のペイロードにはプリミティブ型 [{0}] が期待されていますが電文定義・一覧にクエリ文字列以外のプロパティが存在します。";
+        String strFormat = "電文 [ {0} ] のペイロードにはプリミティブ型 [ {1} ] が期待されていますが電文定義・一覧にクエリ文字列以外のプロパティが存在します。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.ERROR.MSG.11");
@@ -1740,7 +1763,7 @@ public class BlancoRestGeneratorKtResourceBundle {
         final MessageFormat messageFormat = new MessageFormat(strFormat);
         final StringBuffer strbuf = new StringBuffer();
         // 与えられた引数を元に置換文字列を置き換えます。
-        messageFormat.format(new Object[] {arg0}, strbuf, null);
+        messageFormat.format(new Object[] {arg0, arg1}, strbuf, null);
         return strbuf.toString();
     }
 
@@ -1847,41 +1870,49 @@ public class BlancoRestGeneratorKtResourceBundle {
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.TELEGRAM_STYLE_PLAIN.STATUS_CODE_RESERVED]
      *
-     * [エラー電文では statusCode プロパティは予約されています。] (ja)<br>
+     * [エラー電文 [ {0} ] では statusCode プロパティは予約されています。] (ja)<br>
      *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.TELEGRAM_STYLE_PLAIN.STATUS_CODE_RESERVED]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestTelegramStylePlainStatusCodeReserved() {
+    public String getBlancorestTelegramStylePlainStatusCodeReserved(final String arg0) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "エラー電文では statusCode プロパティは予約されています。";
+        String strFormat = "エラー電文 [ {0} ] では statusCode プロパティは予約されています。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.TELEGRAM_STYLE_PLAIN.STATUS_CODE_RESERVED");
             }
         } catch (MissingResourceException ex) {
         }
-        // 置換文字列はひとつもありません。
-        return strFormat;
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0}, strbuf, null);
+        return strbuf.toString();
     }
 
     /**
      * bundle[BlancoRestGeneratorKt], key[BLANCOREST.TELEGRAM_STYLE_PLAIN.STATUS_CODE_REQUIRED]
      *
-     * [エラー電文では statusCode は必須です。] (ja)<br>
+     * [エラー電文 [ {0} ] では statusCode は必須です。] (ja)<br>
      *
+     * @param arg0 置換文字列{0}を置換する値。java.lang.String型を与えてください。
      * @return key[BLANCOREST.TELEGRAM_STYLE_PLAIN.STATUS_CODE_REQUIRED]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
      */
-    public String getBlancorestTelegramStylePlainStatusCodeRequired() {
+    public String getBlancorestTelegramStylePlainStatusCodeRequired(final String arg0) {
         // 初期値として定義書の値を利用します。
-        String strFormat = "エラー電文では statusCode は必須です。";
+        String strFormat = "エラー電文 [ {0} ] では statusCode は必須です。";
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("BLANCOREST.TELEGRAM_STYLE_PLAIN.STATUS_CODE_REQUIRED");
             }
         } catch (MissingResourceException ex) {
         }
-        // 置換文字列はひとつもありません。
-        return strFormat;
+        final MessageFormat messageFormat = new MessageFormat(strFormat);
+        final StringBuffer strbuf = new StringBuffer();
+        // 与えられた引数を元に置換文字列を置き換えます。
+        messageFormat.format(new Object[] {arg0}, strbuf, null);
+        return strbuf.toString();
     }
 
     /**

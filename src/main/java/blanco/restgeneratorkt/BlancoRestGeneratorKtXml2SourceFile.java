@@ -166,6 +166,9 @@ public class BlancoRestGeneratorKtXml2SourceFile {
         for (int index = 0; index < processStructures.length; index++) {
             BlancoRestGeneratorKtTelegramProcessStructure processStructure = processStructures[index];
             // Generates Kotlin code from the obtained information.
+            if (BlancoRestGeneratorKtUtil.isVerbose) {
+                System.out.println("BlancoRestGeneratorKt: style = " + BlancoRestGeneratorKtUtil.telegramStyle + ", processing " + processStructure.getName());
+            }
             expander.expand(processStructure, argDirectoryTarget);
         }
     }
