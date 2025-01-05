@@ -1219,6 +1219,66 @@ public class BlancoRestGeneratorKtResourceBundle {
     }
 
     /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.FINISH.DESCRIPTION]
+     *
+     * [API実装クラスが実装すべき後処理メソッドです] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.FINISH.DESCRIPTION]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileFinishDescription() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "API実装クラスが実装すべき後処理メソッドです";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.FINISH.DESCRIPTION");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.FINISHARRAY.DESCRIPTION]
+     *
+     * [API実装クラスが実装すべき後処理メソッド（配列対応版）です] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.FINISHARRAY.DESCRIPTION]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileFinisharrayDescription() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "API実装クラスが実装すべき後処理メソッド（配列対応版）です";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.FINISHARRAY.DESCRIPTION");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.IS.SPOILED.DESCRIPTION]
+     *
+     * [API実装クラスが実装すべき、APIが呼び出し可能かどうかを返すメソッドです] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.IS.SPOILED.DESCRIPTION]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileIsSpoiledDescription() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "API実装クラスが実装すべき、APIが呼び出し可能かどうかを返すメソッドです";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.IS.SPOILED.DESCRIPTION");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
      * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.EXECUTOR.DESCRIPTION]
      *
      * [APIベースクラスから呼ばれる実行メソッドです] (ja)<br>
@@ -1311,6 +1371,66 @@ public class BlancoRestGeneratorKtResourceBundle {
         try {
             if (fResourceBundle != null) {
                 strFormat = fResourceBundle.getString("XML2SOURCE_FILE.EXECUTOR.RETURN.LANGDOC");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.VIRTUAL.PARAMETER.LANGDOC]
+     *
+     * [仮想パラメータです] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.VIRTUAL.PARAMETER.LANGDOC]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileVirtualParameterLangdoc() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "仮想パラメータです";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.VIRTUAL.PARAMETER.LANGDOC");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.IS.SPOILED.METHOD.LANGDOC]
+     *
+     * [実行可能かどうかを確認するHTTPメソッド名です] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.IS.SPOILED.METHOD.LANGDOC]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileIsSpoiledMethodLangdoc() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "実行可能かどうかを確認するHTTPメソッド名です";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.IS.SPOILED.METHOD.LANGDOC");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
+     * bundle[BlancoRestGeneratorKt], key[XML2SOURCE_FILE.IS.SPOILED.METHOD.RETURN.DESCRIPTION]
+     *
+     * [実行可能でなければTRUEを返します。] (ja)<br>
+     *
+     * @return key[XML2SOURCE_FILE.IS.SPOILED.METHOD.RETURN.DESCRIPTION]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getXml2sourceFileIsSpoiledMethodReturnDescription() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "実行可能でなければTRUEを返します。";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("XML2SOURCE_FILE.IS.SPOILED.METHOD.RETURN.DESCRIPTION");
             }
         } catch (MissingResourceException ex) {
         }

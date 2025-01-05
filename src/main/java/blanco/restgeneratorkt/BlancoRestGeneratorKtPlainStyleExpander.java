@@ -310,6 +310,145 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
     }
 
     /**
+     * Create abstract methods that will be implemnted in ApiBase.
+     * They are just for Application Interfaces.
+     */
+    private void createApiBaseMethods() {
+        /* prepare */
+        final BlancoCgMethod cgPrepareMethod = fCgFactory.createMethod(
+                "prepare", fBundle.getXml2sourceFileInitializerDescription());
+        cgPrepareMethod.setFinal(true);
+        fCgInterface.getMethodList().add(cgPrepareMethod);
+
+        final BlancoCgParameter cgPrepareParameter = fCgFactory.createParameter(
+                "httpRequest",
+                "blanco.restgenerator.valueobject.HttpCommonRequest",
+                fBundle.getXml2sourceFileExecutorArgLangdoc(),
+                true
+        );
+        cgPrepareMethod.getParameterList().add(cgPrepareParameter);
+        BlancoCgType cgPrepareType = cgPrepareParameter.getType();
+        cgPrepareType.setGenerics("T");
+
+        BlancoCgVirtualParameter cgPrepareVirtualParameter = fCgFactory.createVirtualParameter(
+                "typeT",
+                "T",
+                fBundle.getXml2sourceFileVirtualParameterLangdoc()
+        );
+        cgPrepareMethod.getVirtualParameterList().add(cgPrepareVirtualParameter);
+
+        /* finish */
+        final BlancoCgMethod cgFinishMethod = fCgFactory.createMethod(
+                "finish", fBundle.getXml2sourceFileFinishDescription()
+        );
+        cgFinishMethod.setFinal(true);
+        fCgInterface.getMethodList().add(cgFinishMethod);
+
+        final BlancoCgParameter cgFinishParameter1 = fCgFactory.createParameter(
+                "httpResponse",
+                "io.micronaut.http.HttpResponse",
+                fBundle.getXml2sourceFileProsessorReturnLangdoc(),
+                true
+        );
+        cgFinishMethod.getParameterList().add(cgFinishParameter1);
+        BlancoCgType cgFinishType1 = cgFinishParameter1.getType();
+        cgFinishType1.setGenerics("T1");
+
+        final BlancoCgParameter cgFinishParameter2 = fCgFactory.createParameter(
+                "httpRequest",
+                "blanco.restgenerator.valueobject.HttpCommonRequest",
+                fBundle.getXml2sourceFileProsessorArgLangdoc(),
+                true
+        );
+        cgFinishMethod.getParameterList().add(cgFinishParameter2);
+        BlancoCgType cgFinishType2 = cgFinishParameter2.getType();
+        cgFinishType2.setGenerics("T2");
+
+        BlancoCgVirtualParameter cgFinishVirtualParameter1 = fCgFactory.createVirtualParameter(
+                "typeT1",
+                "T1",
+                fBundle.getXml2sourceFileVirtualParameterLangdoc()
+        );
+        BlancoCgVirtualParameter cgFinishVirtualParameter2 = fCgFactory.createVirtualParameter(
+                "typeT2",
+                "T2 : ApiTelegram",
+                fBundle.getXml2sourceFileVirtualParameterLangdoc()
+        );
+        cgFinishMethod.getVirtualParameterList().add(cgFinishVirtualParameter1);
+        cgFinishMethod.getVirtualParameterList().add(cgFinishVirtualParameter2);
+        fCgSourceFile.getImportList().add("blanco.restgenerator.valueobject.ApiTelegram");
+
+        /* finishArray */
+        final BlancoCgMethod cgFinishArrayMethod = fCgFactory.createMethod(
+                "finishArray", fBundle.getXml2sourceFileFinisharrayDescription()
+        );
+        cgFinishArrayMethod.setFinal(true);
+        fCgInterface.getMethodList().add(cgFinishArrayMethod);
+
+        final BlancoCgParameter cgFinishArrayParameter1 = fCgFactory.createParameter(
+                "httpResponse",
+                "io.micronaut.http.HttpResponse",
+                fBundle.getXml2sourceFileProsessorReturnLangdoc(),
+                true
+        );
+        cgFinishArrayMethod.getParameterList().add(cgFinishArrayParameter1);
+
+        BlancoCgType cgFinishArrayType1 = cgFinishArrayParameter1.getType();
+        BlancoCgType cgFinishArrayGeneric11 = fCgFactory.createType(
+                "List"
+        );
+        cgFinishArrayType1.getGenericsTree().add(cgFinishArrayGeneric11);
+        BlancoCgType cgFinishArrayGeneric12 = fCgFactory.createType(
+                "T1"
+        );
+        cgFinishArrayGeneric11.getGenericsTree().add(cgFinishArrayGeneric12);
+
+        final BlancoCgParameter cgFinishArrayParameter2 = fCgFactory.createParameter(
+                "httpRequest",
+                "blanco.restgenerator.valueobject.HttpCommonRequest",
+                fBundle.getXml2sourceFileProsessorArgLangdoc(),
+                true
+        );
+        cgFinishArrayMethod.getParameterList().add(cgFinishArrayParameter2);
+
+        BlancoCgType cgFinishArrayType2 = cgFinishArrayParameter2.getType();
+        cgFinishArrayType2.setGenerics("T2");
+
+        BlancoCgVirtualParameter cgFinishArrayVirtualParameter1 = fCgFactory.createVirtualParameter(
+                "typeT1",
+                "T1",
+                fBundle.getXml2sourceFileVirtualParameterLangdoc()
+        );
+        BlancoCgVirtualParameter cgFinishArrayVirtualParameter2 = fCgFactory.createVirtualParameter(
+                "typeT2",
+                "T2 : ApiTelegram",
+                fBundle.getXml2sourceFileVirtualParameterLangdoc()
+        );
+        cgFinishArrayMethod.getVirtualParameterList().add(cgFinishArrayVirtualParameter1);
+        cgFinishArrayMethod.getVirtualParameterList().add(cgFinishArrayVirtualParameter2);
+
+        /* isSpoiled */
+        BlancoCgMethod cgIsSpoiledMethod = fCgFactory.createMethod(
+                "isSpoiled", fBundle.getXml2sourceFileIsSpoiledDescription()
+        );
+        cgIsSpoiledMethod.setFinal(true);
+        fCgInterface.getMethodList().add(cgIsSpoiledMethod);
+
+        final BlancoCgParameter cgIsSpoiledParameter1 = fCgFactory.createParameter(
+                "method",
+                "String",
+                fBundle.getXml2sourceFileIsSpoiledMethodLangdoc(),
+                true
+        );
+        cgIsSpoiledMethod.getParameterList().add(cgIsSpoiledParameter1);
+        BlancoCgReturn cgIsSpoiledReturn = fCgFactory.createReturn(
+                "Boolean",
+                fBundle.getXml2sourceFileIsSpoiledMethodReturnDescription()
+        );
+        cgIsSpoiledMethod.setReturn(cgIsSpoiledReturn);
+    }
+
+    /**
      * Create Post execute methods for Controller
      *
      * @param argTelegrams
@@ -1352,6 +1491,11 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
 
         // Generates a ServiceMethod.
         createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true, false, false);
+
+        // Generate abstract methods for interface
+        if (BlancoRestGeneratorKtUtil.injectInterfaceToController) {
+            createApiBaseMethods();
+        }
 
         // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
