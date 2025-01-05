@@ -199,6 +199,11 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldIsTargetJaraktaEEProcessed = false;
 
     /**
+     * フィールド [injectInterfaceToController] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldInjectInterfaceToControllerProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -1091,6 +1096,32 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[injectInterfaceToController]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 35<br>
+     * Micronaut の Controller にManagement クラスの代わりに Interface を依存注入する。true にすると genSkelton と appendApplicationPackage は false を強制されます。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setInjectInterfaceToController(final boolean arg) {
+        fInput.setInjectInterfaceToController(arg);
+        fIsFieldInjectInterfaceToControllerProcessed = true;
+    }
+
+    /**
+     * Antタスクの[injectInterfaceToController]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 35<br>
+     * Micronaut の Controller にManagement クラスの代わりに Interface を依存注入する。true にすると genSkelton と appendApplicationPackage は false を強制されます。<br>
+     * デフォルト値[false]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public boolean getInjectInterfaceToController() {
+        return fInput.getInjectInterfaceToController();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -1144,6 +1175,7 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- ignoreUnknown:[" + getIgnoreUnknown() + "]");
             System.out.println("- nullableAnnotation:[" + getNullableAnnotation() + "]");
             System.out.println("- isTargetJaraktaEE:[" + getIsTargetJaraktaEE() + "]");
+            System.out.println("- injectInterfaceToController:[" + getInjectInterfaceToController() + "]");
         }
 
         try {

@@ -269,6 +269,14 @@ public class BlancoRestGeneratorKtProcessInput {
     private boolean fIsTargetJaraktaEE = false;
 
     /**
+     * Micronaut の Controller にManagement クラスの代わりに Interface を依存注入する。true にすると genSkelton と appendApplicationPackage は false を強制されます。
+     *
+     * フィールド: [injectInterfaceToController]。
+     * デフォルト: [false]。
+     */
+    private boolean fInjectInterfaceToController = false;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [Whether to run in verbose mode.]。
@@ -1058,6 +1066,29 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [injectInterfaceToController] の値を設定します。
+     *
+     * フィールドの説明: [Micronaut の Controller にManagement クラスの代わりに Interface を依存注入する。true にすると genSkelton と appendApplicationPackage は false を強制されます。]。
+     *
+     * @param argInjectInterfaceToController フィールド[injectInterfaceToController]に設定する値。
+     */
+    public void setInjectInterfaceToController(final boolean argInjectInterfaceToController) {
+        fInjectInterfaceToController = argInjectInterfaceToController;
+    }
+
+    /**
+     * フィールド [injectInterfaceToController] の値を取得します。
+     *
+     * フィールドの説明: [Micronaut の Controller にManagement クラスの代わりに Interface を依存注入する。true にすると genSkelton と appendApplicationPackage は false を強制されます。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[injectInterfaceToController]から取得した値。
+     */
+    public boolean getInjectInterfaceToController() {
+        return fInjectInterfaceToController;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1107,6 +1138,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",ignoreUnknown=" + fIgnoreUnknown);
         buf.append(",nullableAnnotation=" + fNullableAnnotation);
         buf.append(",isTargetJaraktaEE=" + fIsTargetJaraktaEE);
+        buf.append(",injectInterfaceToController=" + fInjectInterfaceToController);
         buf.append("]");
         return buf.toString();
     }
@@ -1234,5 +1266,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fIsTargetJaraktaEE
         // Type: boolean
         target.fIsTargetJaraktaEE = this.fIsTargetJaraktaEE;
+        // Name: fInjectInterfaceToController
+        // Type: boolean
+        target.fInjectInterfaceToController = this.fInjectInterfaceToController;
     }
 }

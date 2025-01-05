@@ -1002,12 +1002,15 @@ public class BlancoRestGeneratorKtBlancoStyleExpander extends BlancoRestGenerato
          * Injects the implementation class for each API.
          */
         String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
+        String injectedParameterId = BlancoNameAdjuster.toParameterName(applicationClassId);
+
         String applicationClassPackage = argProcessStructure.getPackage();
         if (BlancoRestGeneratorKtUtil.isAppendApplicationPackage) {
             applicationClassPackage += "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        } else if (BlancoRestGeneratorKtUtil.injectInterfaceToController) {
+            applicationClassId = "I" + applicationClassId;
+            applicationClassPackage += ".interfaces";
         }
-
-        String injectedParameterId = BlancoNameAdjuster.toParameterName(applicationClassId);
 
         BlancoCgField impleClass = fCgFactory.createField(
                 injectedParameterId,

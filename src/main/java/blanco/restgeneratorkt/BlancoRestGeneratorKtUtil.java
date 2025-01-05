@@ -80,6 +80,7 @@ public class BlancoRestGeneratorKtUtil {
     public static boolean isIgnoreUnknown = false;
     public static boolean isNullAnnotation = false;
     public static boolean isTargetJakartaEE = false;
+    public static boolean injectInterfaceToController = false;
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {

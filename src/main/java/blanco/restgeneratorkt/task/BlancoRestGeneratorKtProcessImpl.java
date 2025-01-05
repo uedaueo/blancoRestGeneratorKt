@@ -138,6 +138,11 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.isIgnoreUnknown = input.getIgnoreUnknown();
             BlancoRestGeneratorKtUtil.isNullAnnotation = input.getNullableAnnotation();
             BlancoRestGeneratorKtUtil.isTargetJakartaEE = input.getIsTargetJaraktaEE();
+            BlancoRestGeneratorKtUtil.injectInterfaceToController = input.getInjectInterfaceToController();
+            if (BlancoRestGeneratorKtUtil.injectInterfaceToController) {
+                BlancoRestGeneratorKtUtil.genSkeleton = false;
+                BlancoRestGeneratorKtUtil.isAppendApplicationPackage = false;
+            }
 
             if (!BlancoRestGeneratorKtUtil.serverType.equals(BlancoRestGeneratorKtConstants.SERVER_TYPE_MICRONAUT)) {
                 throw new IllegalArgumentException(fBundle.getBlancorestServerTypeError());

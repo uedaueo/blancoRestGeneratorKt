@@ -8,7 +8,6 @@ import java.util.Set;
 
 import blanco.cg.BlancoCgObjectFactory;
 import blanco.cg.transformer.BlancoCgTransformerFactory;
-import blanco.cg.util.BlancoCgSourceUtil;
 import blanco.cg.valueobject.*;
 import blanco.commons.util.BlancoNameAdjuster;
 import blanco.commons.util.BlancoStringUtil;
@@ -1561,12 +1560,15 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Injects the implementation class for each API.
          */
         String applicationClassId = argProcessStructure.getName() + BlancoRestGeneratorKtConstants.SUFFIX_MANAGER;
+        String injectedParameterId = BlancoNameAdjuster.toParameterName(applicationClassId);
+
         String applicationClassPackage = argProcessStructure.getPackage();
         if (BlancoRestGeneratorKtUtil.isAppendApplicationPackage) {
             applicationClassPackage += "." + BlancoRestGeneratorKtConstants.MANAGER_PACKAGE;
+        } else if (BlancoRestGeneratorKtUtil.injectInterfaceToController) {
+            applicationClassId = "I" + applicationClassId;
+            applicationClassPackage += ".interfaces";
         }
-
-        String injectedParameterId = BlancoNameAdjuster.toParameterName(applicationClassId);
 
         BlancoCgField impleClass = fCgFactory.createField(
                 injectedParameterId,
