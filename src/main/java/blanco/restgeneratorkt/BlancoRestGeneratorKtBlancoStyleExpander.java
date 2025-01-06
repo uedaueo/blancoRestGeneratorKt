@@ -796,6 +796,13 @@ public class BlancoRestGeneratorKtBlancoStyleExpander extends BlancoRestGenerato
         // Generates a ServiceMethod.
         createServiceMethods(argProcessStructure, "", requestHeaderIdSimple, responseHeaderIdSimple, true, false, false);
 
+        // Extends Interface with delegateInterface
+        if (BlancoRestGeneratorKtUtil.injectInterfaceToController
+                && BlancoRestGeneratorKtUtil.skeletonDelegateInterface != null) {
+            BlancoCgType apiBaseInterface = fCgFactory.createType(BlancoRestGeneratorKtUtil.skeletonDelegateInterface);
+            fCgInterface.getExtendClassList().add(apiBaseInterface);
+        }
+
         // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);
