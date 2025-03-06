@@ -79,6 +79,7 @@ public class BlancoRestGeneratorKtPlainTest {
         inputRestGenerator.setServerType("micronaut");
         inputRestGenerator.setBasepackage("blanco.restgenerator");
         inputRestGenerator.setTelegrampackage("blanco.restgenerator.valueobject");
+        inputRestGenerator.setDeserializerRequestHeader("blanco.restgenerator.valueobject.SampleRequestHeader");
         inputRestGenerator.setGenSkeleton(true);
         inputRestGenerator.setImpledir("sample/blanco/main/kotlin");
         inputRestGenerator.setSkeletonDelegateClass("blanco.restgenerator.application.ApiBase");

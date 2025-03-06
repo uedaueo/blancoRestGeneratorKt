@@ -285,6 +285,13 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fMicronautVersion = "3.0";
 
     /**
+     * 自動生成されるdeserializerに設定するRequestHeaderクラスを指定します
+     *
+     * フィールド: [deserializerRequestHeader]。
+     */
+    private String fDeserializerRequestHeader;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [Whether to run in verbose mode.]。
@@ -1120,6 +1127,28 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [deserializerRequestHeader] の値を設定します。
+     *
+     * フィールドの説明: [自動生成されるdeserializerに設定するRequestHeaderクラスを指定します]。
+     *
+     * @param argDeserializerRequestHeader フィールド[deserializerRequestHeader]に設定する値。
+     */
+    public void setDeserializerRequestHeader(final String argDeserializerRequestHeader) {
+        fDeserializerRequestHeader = argDeserializerRequestHeader;
+    }
+
+    /**
+     * フィールド [deserializerRequestHeader] の値を取得します。
+     *
+     * フィールドの説明: [自動生成されるdeserializerに設定するRequestHeaderクラスを指定します]。
+     *
+     * @return フィールド[deserializerRequestHeader]から取得した値。
+     */
+    public String getDeserializerRequestHeader() {
+        return fDeserializerRequestHeader;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1171,6 +1200,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",isTargetJaraktaEE=" + fIsTargetJaraktaEE);
         buf.append(",injectInterfaceToController=" + fInjectInterfaceToController);
         buf.append(",micronautVersion=" + fMicronautVersion);
+        buf.append(",deserializerRequestHeader=" + fDeserializerRequestHeader);
         buf.append("]");
         return buf.toString();
     }
@@ -1304,5 +1334,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fMicronautVersion
         // Type: java.lang.String
         target.fMicronautVersion = this.fMicronautVersion;
+        // Name: fDeserializerRequestHeader
+        // Type: java.lang.String
+        target.fDeserializerRequestHeader = this.fDeserializerRequestHeader;
     }
 }

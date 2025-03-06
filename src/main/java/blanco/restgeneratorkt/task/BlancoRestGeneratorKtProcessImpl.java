@@ -118,6 +118,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
             } else {
                 BlancoRestGeneratorKtUtil.telegramPackage = BlancoRestGeneratorKtUtil.basePackage + ".valueobject";
             }
+            BlancoRestGeneratorKtUtil.deserializerRequestHeader = input.getDeserializerRequestHeader();
             BlancoRestGeneratorKtUtil.genUtils = input.getGenUtils();
             BlancoRestGeneratorKtUtil.genSkeleton = input.getGenSkeleton();
             BlancoRestGeneratorKtUtil.impleDir = input.getImpledir();

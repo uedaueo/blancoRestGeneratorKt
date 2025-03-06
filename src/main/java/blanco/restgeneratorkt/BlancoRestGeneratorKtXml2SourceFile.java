@@ -194,6 +194,8 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 .getKotlinSourceTransformer();
         transformer.transform(new  BlancoRestGeneratorKtRequestDeserializerClass(fCgFactory,
                 BlancoRestGeneratorKtUtil.runtimePackage,
+                BlancoRestGeneratorKtUtil.telegramPackage,
+                BlancoRestGeneratorKtUtil.deserializerRequestHeader,
                 this.fEncoding,
                 this.fTabs).expand(), fileBlancoMain);
     }

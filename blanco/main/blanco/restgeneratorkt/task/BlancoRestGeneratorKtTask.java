@@ -209,6 +209,11 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldMicronautVersionProcessed = false;
 
     /**
+     * フィールド [deserializerRequestHeader] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldDeserializerRequestHeaderProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -1153,6 +1158,31 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[deserializerRequestHeader]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 37<br>
+     * 自動生成されるdeserializerに設定するRequestHeaderクラスを指定します<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setDeserializerRequestHeader(final String arg) {
+        fInput.setDeserializerRequestHeader(arg);
+        fIsFieldDeserializerRequestHeaderProcessed = true;
+    }
+
+    /**
+     * Antタスクの[deserializerRequestHeader]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 37<br>
+     * 自動生成されるdeserializerに設定するRequestHeaderクラスを指定します<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getDeserializerRequestHeader() {
+        return fInput.getDeserializerRequestHeader();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -1208,6 +1238,7 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- isTargetJaraktaEE:[" + getIsTargetJaraktaEE() + "]");
             System.out.println("- injectInterfaceToController:[" + getInjectInterfaceToController() + "]");
             System.out.println("- micronautVersion:[" + getMicronautVersion() + "]");
+            System.out.println("- deserializerRequestHeader:[" + getDeserializerRequestHeader() + "]");
         }
 
         try {

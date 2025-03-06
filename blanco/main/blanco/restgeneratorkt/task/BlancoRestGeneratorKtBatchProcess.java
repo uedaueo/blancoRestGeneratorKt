@@ -132,6 +132,8 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setInjectInterfaceToController(Boolean.valueOf(arg.substring(29)).booleanValue());
             } else if (arg.startsWith("-micronautVersion=")) {
                 input.setMicronautVersion(arg.substring(18));
+            } else if (arg.startsWith("-deserializerRequestHeader=")) {
+                input.setDeserializerRequestHeader(arg.substring(27));
             } else if (arg.equals("-?") || arg.equals("-help")) {
                 usage();
                 System.exit(END_SUCCESS);
@@ -229,7 +231,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -serverType=value15 -basepackage=value16 -runtimepackage=value17 -genUtils=value18 -telegrampackage=value19 -impledir=value20 -genSkeleton=value21 -skeletonDelegateClass=value22 -skeletonDelegateInterface=value23 -lineSeparator=value24 -packageSuffix=value25 -overridePackage=value26 -overrideLocation=value27 -voPackageSuffix=value28 -voOverridePackage=value29 -telegramStyle=value30 -appendApplicationPackage=value31 -serdeable=value32 -ignoreUnknown=value33 -nullableAnnotation=value34 -isTargetJaraktaEE=value35 -injectInterfaceToController=value36 -micronautVersion=value37");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -serverType=value15 -basepackage=value16 -runtimepackage=value17 -genUtils=value18 -telegrampackage=value19 -impledir=value20 -genSkeleton=value21 -skeletonDelegateClass=value22 -skeletonDelegateInterface=value23 -lineSeparator=value24 -packageSuffix=value25 -overridePackage=value26 -overrideLocation=value27 -voPackageSuffix=value28 -voOverridePackage=value29 -telegramStyle=value30 -appendApplicationPackage=value31 -serdeable=value32 -ignoreUnknown=value33 -nullableAnnotation=value34 -isTargetJaraktaEE=value35 -injectInterfaceToController=value36 -micronautVersion=value37 -deserializerRequestHeader=value38");
         System.out.println("    -verbose");
         System.out.println("      explanation[Whether to run in verbose mode.]");
         System.out.println("      type[boolean]");
@@ -364,6 +366,9 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("      explanation[想定する Micronaut の最低バージョンを指定します。バージョンによって若干の動作差異や不具合があるため、それに対応する目的です。]");
         System.out.println("      type[string]");
         System.out.println("      default value[3.0]");
+        System.out.println("    -deserializerRequestHeader");
+        System.out.println("      explanation[自動生成されるdeserializerに設定するRequestHeaderクラスを指定します]");
+        System.out.println("      type[string]");
         System.out.println("    -? , -help");
         System.out.println("      explanation[show the usage.]");
     }
