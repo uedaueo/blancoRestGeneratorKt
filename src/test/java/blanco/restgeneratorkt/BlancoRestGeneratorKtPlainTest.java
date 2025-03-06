@@ -92,6 +92,7 @@ public class BlancoRestGeneratorKtPlainTest {
         inputRestGenerator.setNullableAnnotation(true);
         inputRestGenerator.setIsTargetJaraktaEE(true);
         inputRestGenerator.setInjectInterfaceToController(true);
+        inputRestGenerator.setMicronautVersion("4.1");
 
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
         imple.execute(inputRestGenerator);

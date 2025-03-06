@@ -277,6 +277,14 @@ public class BlancoRestGeneratorKtProcessInput {
     private boolean fInjectInterfaceToController = false;
 
     /**
+     * 想定する Micronaut の最低バージョンを指定します。バージョンによって若干の動作差異や不具合があるため、それに対応する目的です。
+     *
+     * フィールド: [micronautVersion]。
+     * デフォルト: [3.0]。
+     */
+    private String fMicronautVersion = "3.0";
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [Whether to run in verbose mode.]。
@@ -1089,6 +1097,29 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [micronautVersion] の値を設定します。
+     *
+     * フィールドの説明: [想定する Micronaut の最低バージョンを指定します。バージョンによって若干の動作差異や不具合があるため、それに対応する目的です。]。
+     *
+     * @param argMicronautVersion フィールド[micronautVersion]に設定する値。
+     */
+    public void setMicronautVersion(final String argMicronautVersion) {
+        fMicronautVersion = argMicronautVersion;
+    }
+
+    /**
+     * フィールド [micronautVersion] の値を取得します。
+     *
+     * フィールドの説明: [想定する Micronaut の最低バージョンを指定します。バージョンによって若干の動作差異や不具合があるため、それに対応する目的です。]。
+     * デフォルト: [3.0]。
+     *
+     * @return フィールド[micronautVersion]から取得した値。
+     */
+    public String getMicronautVersion() {
+        return fMicronautVersion;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1139,6 +1170,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",nullableAnnotation=" + fNullableAnnotation);
         buf.append(",isTargetJaraktaEE=" + fIsTargetJaraktaEE);
         buf.append(",injectInterfaceToController=" + fInjectInterfaceToController);
+        buf.append(",micronautVersion=" + fMicronautVersion);
         buf.append("]");
         return buf.toString();
     }
@@ -1269,5 +1301,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fInjectInterfaceToController
         // Type: boolean
         target.fInjectInterfaceToController = this.fInjectInterfaceToController;
+        // Name: fMicronautVersion
+        // Type: java.lang.String
+        target.fMicronautVersion = this.fMicronautVersion;
     }
 }

@@ -81,6 +81,7 @@ public class BlancoRestGeneratorKtUtil {
     public static boolean isNullAnnotation = false;
     public static boolean isTargetJakartaEE = false;
     public static boolean injectInterfaceToController = false;
+    public static String micronautVersion = "3.0";
 
     static public void processValueObjects(final BlancoRestGeneratorKtProcessInput input) throws IOException {
         if (isVerbose) {
@@ -335,5 +336,43 @@ public class BlancoRestGeneratorKtUtil {
             argImportList.add(argImport);
         }
         return found;
+    }
+
+    /**
+     * Compare dot notated versions.
+     * do argVersion1 - argVersion2 and return -1, 0, +1
+     * @param argVersion1
+     * @param argVersion2
+     * @return
+     */
+    static public int dotVersionCompare(final String argVersion1, final String argVersion2) {
+        String [] v1 = argVersion1.split("\\.");
+        String [] v2 = argVersion2.split("\\.");
+        int minLen = Math.min(v1.length, v2.length);
+        int sub = 0;
+        for (int i = 0; i < minLen; i++) {
+            int v1Int = Integer.parseInt(v1[i]);
+            int v2Int = Integer.parseInt(v2[i]);
+            sub = v1Int - v2Int;
+            if (sub != 0) {
+                break;
+            }
+        }
+        if (sub == 0) {
+            if (minLen != v1.length) {
+                sub = +1;
+            } else if (minLen != v2.length) {
+                sub = -1;
+            }
+        } else if (sub < 0) {
+            sub = -1;
+        } else {
+            sub = +1;
+        }
+        return sub;
+    }
+
+    static public boolean forceArgRequestTypeWildcard() {
+         return dotVersionCompare(micronautVersion, "4.0") >= 0;
     }
 }

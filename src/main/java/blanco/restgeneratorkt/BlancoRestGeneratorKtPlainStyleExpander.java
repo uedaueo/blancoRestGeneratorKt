@@ -345,6 +345,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         boolean isBodyPrimitive = !BlancoStringUtil.null2Blank(inputTelegram.getPrimitivePayload()).trim().isEmpty();
         boolean isBodyArray = inputTelegram.getArrayPayload();
         boolean isBodyOption = inputTelegram.getOptionalPayload();
+        boolean isRequestTypeWildcard = BlancoRestGeneratorKtUtil.forceArgRequestTypeWildcard();
         String bodyTelegramId = "";
         if (bodyTelegram != null && bodyTelegram.getName().equals(inputTelegram.getName() + "Body")) {
             hasBodyTelegram = true;
@@ -504,12 +505,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                     defaultValue = field.getDefaultKt();
                 }
                 if (isBodyProp) {
-                    if (isBodyArray || isBodyPrimitive) {
-                        if (isBodyOption) {
-                            requestBeanConst.add(name + " = if (argRequestBean.isPresent == true) argRequestBean.get() else " + defaultValue);
-                        } else {
-                            requestBeanConst.add(name + " = argRequestBean");
-                        }
+                    if (isBodyOption) {
+                        requestBeanConst.add(name + " = if (argRequestBean.isPresent == true) argRequestBean.get() else " + defaultValue);
+                    } else if (isBodyArray || isBodyPrimitive) {
+                        requestBeanConst.add(name + " = argRequestBean");
                     } else {
                         requestBeanConst.add(name + " = argRequestBean." + name);
                     }
@@ -589,7 +588,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * To inject httpRequest object as bean,
          * do not specify Request Telegram type if no body expected.
          */
-        if (!hasBodyTelegram || isBodyPrimitive || isBodyArray) {
+        if (!hasBodyTelegram || isBodyPrimitive || isBodyArray || isRequestTypeWildcard) {
             requestGenerics = "*";
         }
         httpRequest.getType().setGenerics(
@@ -697,7 +696,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Merge queryString bean and body json bean
          */
 
-        if (!hasBodyTelegram || isBodyPrimitive || isBodyArray) {
+        if (!hasBodyTelegram || isBodyPrimitive || isBodyArray || isRequestTypeWildcard) {
             /* May exception occurs here if some illegal body is specified. */
             listLine.add("@Suppress(\"UNCHECKED_CAST\")");
             listLine.add("val typedHttpRequest = argHttpRequest as HttpRequest<" + requestId + ">");

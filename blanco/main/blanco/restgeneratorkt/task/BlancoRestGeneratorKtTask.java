@@ -204,6 +204,11 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldInjectInterfaceToControllerProcessed = false;
 
     /**
+     * フィールド [micronautVersion] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldMicronautVersionProcessed = false;
+
+    /**
      * verboseモードで動作させるかどうか。
      *
      * @param arg verboseモードで動作させるかどうか。
@@ -1122,6 +1127,32 @@ public class BlancoRestGeneratorKtTask extends Task {
     }
 
     /**
+     * Antタスクの[micronautVersion]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 36<br>
+     * 想定する Micronaut の最低バージョンを指定します。バージョンによって若干の動作差異や不具合があるため、それに対応する目的です。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setMicronautVersion(final String arg) {
+        fInput.setMicronautVersion(arg);
+        fIsFieldMicronautVersionProcessed = true;
+    }
+
+    /**
+     * Antタスクの[micronautVersion]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 36<br>
+     * 想定する Micronaut の最低バージョンを指定します。バージョンによって若干の動作差異や不具合があるため、それに対応する目的です。<br>
+     * デフォルト値[3.0]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public String getMicronautVersion() {
+        return fInput.getMicronautVersion();
+    }
+
+    /**
      * Antタスクのメイン処理。Apache Antから このメソッドが呼び出されます。
      *
      * @throws BuildException タスクとしての例外が発生した場合。
@@ -1176,6 +1207,7 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- nullableAnnotation:[" + getNullableAnnotation() + "]");
             System.out.println("- isTargetJaraktaEE:[" + getIsTargetJaraktaEE() + "]");
             System.out.println("- injectInterfaceToController:[" + getInjectInterfaceToController() + "]");
+            System.out.println("- micronautVersion:[" + getMicronautVersion() + "]");
         }
 
         try {

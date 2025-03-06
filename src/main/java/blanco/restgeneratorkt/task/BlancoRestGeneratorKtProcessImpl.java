@@ -143,6 +143,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
                 BlancoRestGeneratorKtUtil.genSkeleton = false;
                 BlancoRestGeneratorKtUtil.isAppendApplicationPackage = false;
             }
+            BlancoRestGeneratorKtUtil.micronautVersion = input.getMicronautVersion();
 
             if (!BlancoRestGeneratorKtUtil.serverType.equals(BlancoRestGeneratorKtConstants.SERVER_TYPE_MICRONAUT)) {
                 throw new IllegalArgumentException(fBundle.getBlancorestServerTypeError());
