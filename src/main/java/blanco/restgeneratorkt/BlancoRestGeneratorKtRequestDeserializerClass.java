@@ -58,7 +58,7 @@ public class BlancoRestGeneratorKtRequestDeserializerClass {
         cgClass.setFinal(true);
         cgClass.setAccess("");
 
-        String deserializerRequestHeader = fRuntimepackage + ".RequestHeader";
+        String deserializerRequestHeader = fTelegrampackage + ".RequestHeader";
         ;
         if (!BlancoStringUtil.null2Blank(fDeserializerRequestHeader).isEmpty()) {
             deserializerRequestHeader = fDeserializerRequestHeader;
