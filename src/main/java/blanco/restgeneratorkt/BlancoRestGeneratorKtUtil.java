@@ -58,6 +58,7 @@ public class BlancoRestGeneratorKtUtil {
     public static String runtimePackage = null;
     public static String telegramPackage = null;
     public static String deserializerRequestHeader = null;
+    public static String deserializerCommonRequest = null;
     public static boolean genUtils = true;
     public static boolean genSkeleton = false;
     public static String impleDir = null;

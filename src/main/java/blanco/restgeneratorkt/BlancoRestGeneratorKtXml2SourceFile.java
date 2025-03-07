@@ -196,6 +196,7 @@ public class BlancoRestGeneratorKtXml2SourceFile {
                 BlancoRestGeneratorKtUtil.runtimePackage,
                 BlancoRestGeneratorKtUtil.telegramPackage,
                 BlancoRestGeneratorKtUtil.deserializerRequestHeader,
+                BlancoRestGeneratorKtUtil.deserializerCommonRequest,
                 this.fEncoding,
                 this.fTabs).expand(), fileBlancoMain);
     }

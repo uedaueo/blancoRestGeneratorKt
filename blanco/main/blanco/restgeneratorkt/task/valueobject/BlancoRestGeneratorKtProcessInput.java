@@ -292,6 +292,13 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fDeserializerRequestHeader;
 
     /**
+     * 自動生成されるdeserializerに設定するCommonRequestクラスを指定します
+     *
+     * フィールド: [deserializerCommonRequest]。
+     */
+    private String fDeserializerCommonRequest;
+
+    /**
      * フィールド [verbose] の値を設定します。
      *
      * フィールドの説明: [Whether to run in verbose mode.]。
@@ -1149,6 +1156,28 @@ public class BlancoRestGeneratorKtProcessInput {
     }
 
     /**
+     * フィールド [deserializerCommonRequest] の値を設定します。
+     *
+     * フィールドの説明: [自動生成されるdeserializerに設定するCommonRequestクラスを指定します]。
+     *
+     * @param argDeserializerCommonRequest フィールド[deserializerCommonRequest]に設定する値。
+     */
+    public void setDeserializerCommonRequest(final String argDeserializerCommonRequest) {
+        fDeserializerCommonRequest = argDeserializerCommonRequest;
+    }
+
+    /**
+     * フィールド [deserializerCommonRequest] の値を取得します。
+     *
+     * フィールドの説明: [自動生成されるdeserializerに設定するCommonRequestクラスを指定します]。
+     *
+     * @return フィールド[deserializerCommonRequest]から取得した値。
+     */
+    public String getDeserializerCommonRequest() {
+        return fDeserializerCommonRequest;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -1201,6 +1230,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",injectInterfaceToController=" + fInjectInterfaceToController);
         buf.append(",micronautVersion=" + fMicronautVersion);
         buf.append(",deserializerRequestHeader=" + fDeserializerRequestHeader);
+        buf.append(",deserializerCommonRequest=" + fDeserializerCommonRequest);
         buf.append("]");
         return buf.toString();
     }
@@ -1337,5 +1367,8 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fDeserializerRequestHeader
         // Type: java.lang.String
         target.fDeserializerRequestHeader = this.fDeserializerRequestHeader;
+        // Name: fDeserializerCommonRequest
+        // Type: java.lang.String
+        target.fDeserializerCommonRequest = this.fDeserializerCommonRequest;
     }
 }
