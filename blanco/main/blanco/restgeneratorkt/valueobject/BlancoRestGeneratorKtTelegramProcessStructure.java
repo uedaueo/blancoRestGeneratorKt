@@ -128,6 +128,14 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private List<String> fImplementsList = new java.util.ArrayList<java.lang.String>();
 
     /**
+     * Managementクラスが実装すべき共通インタフェース(java.lang.String)の一覧。
+     *
+     * フィールド: [commonInterfaceList]。
+     * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
+     */
+    private List<String> fCommonInterfaceList = new java.util.ArrayList<java.lang.String>();
+
+    /**
      * importを指定します。
      *
      * フィールド: [importList]。
@@ -580,6 +588,29 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [commonInterfaceList] の値を設定します。
+     *
+     * フィールドの説明: [Managementクラスが実装すべき共通インタフェース(java.lang.String)の一覧。]。
+     *
+     * @param argCommonInterfaceList フィールド[commonInterfaceList]に設定する値。
+     */
+    public void setCommonInterfaceList(final List<String> argCommonInterfaceList) {
+        fCommonInterfaceList = argCommonInterfaceList;
+    }
+
+    /**
+     * フィールド [commonInterfaceList] の値を取得します。
+     *
+     * フィールドの説明: [Managementクラスが実装すべき共通インタフェース(java.lang.String)の一覧。]。
+     * デフォルト: [new java.util.ArrayList&lt;java.lang.String&gt;()]。
+     *
+     * @return フィールド[commonInterfaceList]から取得した値。
+     */
+    public List<String> getCommonInterfaceList() {
+        return fCommonInterfaceList;
+    }
+
+    /**
      * フィールド [importList] の値を設定します。
      *
      * フィールドの説明: [importを指定します。]。
@@ -885,6 +916,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",createImportList=" + fCreateImportList);
         buf.append(",extends=" + fExtends);
         buf.append(",implementsList=" + fImplementsList);
+        buf.append(",commonInterfaceList=" + fCommonInterfaceList);
         buf.append(",importList=" + fImportList);
         buf.append(",headerList=" + fHeaderList);
         buf.append(",getRequestBindList=" + fGetRequestBindList);
@@ -967,6 +999,9 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fImplementsList
         // Type: java.util.List
         // Field[fImplementsList] is an unsupported type[java.util.Listjava.lang.String].
+        // Name: fCommonInterfaceList
+        // Type: java.util.List
+        // Field[fCommonInterfaceList] is an unsupported type[java.util.Listjava.lang.String].
         // Name: fImportList
         // Type: java.util.List
         // Field[fImportList] is an unsupported type[java.util.Listjava.lang.String].

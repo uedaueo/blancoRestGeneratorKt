@@ -335,6 +335,18 @@ JavaDocに利用されます</value>
 
             </tableblock>
 
+            <tableblock name="blancotelegramprocess-commoninterface" waitY="2" titleheight="2" rowname="interface">
+                <startstring>電文処理定義・共通インタフェイス</startstring>
+
+                <tablecolumn name="no">
+                    <value>No.</value>
+                </tablecolumn>
+                <tablecolumn name="name">
+                    <value>インタフェース名</value>
+                </tablecolumn>
+
+            </tableblock>
+
             <tableblock name="blancotelegramprocess-import" waitY="2" titleheight="2" rowname="import">
                 <startstring>電文処理定義・インポート</startstring>
 

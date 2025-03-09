@@ -1359,6 +1359,14 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             fCgInterface.getExtendClassList().add(apiBaseInterface);
         }
 
+        // Extends Interface with specified interface
+        if (BlancoRestGeneratorKtUtil.isServerTypeMicronaut && !argProcessStructure.getCommonInterfaceList().isEmpty()) {
+            for (String strInterface : argProcessStructure.getCommonInterfaceList()) {
+                BlancoCgType commonInterface = fCgFactory.createType(strInterface);
+                fCgInterface.getExtendClassList().add(commonInterface);
+            }
+        }
+
         // Auto-generates the actual source code based on the collected information.
         BlancoCgTransformerFactory.getKotlinSourceTransformer().transform(
                 fCgSourceFile, fileBlancoMain);

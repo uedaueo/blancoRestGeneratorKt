@@ -951,6 +951,14 @@ public class BlancoRestGeneratorKtXmlParser {
             parseProcessImplements(elementInterfaceRoot, processStructure);
         }
 
+        // TelegramProcessDefinition commonInterface
+        final List<BlancoXmlElement> commonInterfaceList = BlancoXmlBindingUtil
+                .getElementsByTagName(argElementSheet, fBundle.getMeta2xmlProcessCommointerface());
+        if (commonInterfaceList != null && commonInterfaceList.size() != 0) {
+            final BlancoXmlElement elementCommonInterfaceRoot = commonInterfaceList.get(0);
+            parseProcessCommonInterface(elementCommonInterfaceRoot, processStructure);
+        }
+
         // TelegramProcessDefinition import
         final List<BlancoXmlElement> importList = BlancoXmlBindingUtil
                 .getElementsByTagName(argElementSheet, fBundle.getMeta2xmlProcessImport());
@@ -1158,6 +1166,50 @@ public class BlancoRestGeneratorKtXmlParser {
                 }
             }
             argProcessStructure.getImplementsList().add(fqInterface);
+        }
+    }
+
+    /**
+     * Parses an XML document in the form of an  intermediate XML file to get "TelegramDefinition commonInterface".
+     * @param argElementCommonInterfaceRoot
+     * @param argProcessStructure
+     */
+    private void parseProcessCommonInterface(
+            final BlancoXmlElement argElementCommonInterfaceRoot,
+            final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure) {
+
+        final List<BlancoXmlElement> listInterfaceChildNodes = BlancoXmlBindingUtil
+                .getElementsByTagName(argElementCommonInterfaceRoot, "interface");
+        for (int index = 0;
+             listInterfaceChildNodes != null &&
+                     index < listInterfaceChildNodes.size();
+             index++) {
+            final BlancoXmlElement elementList = listInterfaceChildNodes
+                    .get(index);
+
+            final String interfaceName = BlancoXmlBindingUtil
+                    .getTextContent(elementList, "name");
+            if (interfaceName == null || interfaceName.trim().length() == 0) {
+                continue;
+            }
+
+            /*
+             * Creates commonInterface information
+             */
+            String fqInterface = interfaceName;
+            String packageName = BlancoRestGeneratorKtUtil.getPackageName(interfaceName);
+            String className = BlancoRestGeneratorKtUtil.getSimpleClassName(interfaceName);
+            if (packageName.length() == 0) {
+                /*
+                 * Finds the package name for this class.
+                 */
+                packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(className);
+                if (packageName != null & packageName.length() > 0) {
+                    fqInterface = packageName + "." + className;
+                }
+            }
+            System.out.println("@@@ CommonInterface @@@ : " + fqInterface);
+            argProcessStructure.getCommonInterfaceList().add(fqInterface);
         }
     }
 

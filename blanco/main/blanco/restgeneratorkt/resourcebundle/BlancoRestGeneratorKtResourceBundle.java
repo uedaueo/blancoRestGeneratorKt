@@ -314,6 +314,26 @@ public class BlancoRestGeneratorKtResourceBundle {
     }
 
     /**
+     * bundle[BlancoRestGeneratorKt], key[META2XML.PROCESS_COMMOINTERFACE]
+     *
+     * [blancotelegramprocess-commoninterface] (ja)<br>
+     *
+     * @return key[META2XML.PROCESS_COMMOINTERFACE]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getMeta2xmlProcessCommointerface() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "blancotelegramprocess-commoninterface";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("META2XML.PROCESS_COMMOINTERFACE");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
      * bundle[BlancoRestGeneratorKt], key[META2XML.PROCESS_IMPORT]
      *
      * [blancotelegramprocess-import] (ja)<br>
