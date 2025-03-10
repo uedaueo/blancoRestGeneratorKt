@@ -200,9 +200,17 @@ public class BlancoRestGeneratorKtXmlParser {
         boolean isPostPutRequest = (httpMethod.equalsIgnoreCase("POST") ||
                 httpMethod.equalsIgnoreCase("PUT")) && "Input".equals(telegramStructure.getTelegramType());
 
-        // TelegramDefinition inheritance
-        this.parseTelegramExtends(telegramStructure);
-        this.parseTelegramExtends(bodyTelegram);
+        // TelegramDefinition inheritance, prefer defined in sheet.
+        final List<BlancoXmlElement> extendsList = BlancoXmlBindingUtil
+                .getElementsByTagName(argElementSheet, fBundle.getMeta2xmlTelegramExtends());
+        final BlancoXmlElement elementExtendsRoot = extendsList.isEmpty() ? null : extendsList.get(0);
+        if (elementExtendsRoot != null && !BlancoStringUtil.null2Blank(BlancoXmlBindingUtil.getTextContent(elementExtendsRoot, "name")).isEmpty()) {
+            parseTelegramExtends(elementExtendsRoot, telegramStructure);
+            parseTelegramExtends(elementExtendsRoot, bodyTelegram);
+        } else {
+            this.parseTelegramExtends(telegramStructure);
+            this.parseTelegramExtends(bodyTelegram);
+        }
 
         // TelegramDefinition implementation
         final List<BlancoXmlElement> interfaceList = BlancoXmlBindingUtil
@@ -422,6 +430,32 @@ public class BlancoRestGeneratorKtXmlParser {
         argTelegramStructure.setAdjustFieldName(true);
     }
 
+    private void parseTelegramExtends(
+            final BlancoXmlElement argElementExtendsRoot,
+            final BlancoRestGeneratorKtTelegramStructure argTelegramStructure
+    ) {
+        String className = BlancoXmlBindingUtil.getTextContent(argElementExtendsRoot, "name");
+        if (className != null) {
+            String classNameCanon = className;
+            String packageName = BlancoXmlBindingUtil.getTextContent(argElementExtendsRoot, "package");
+            if (packageName == null) {
+                /*
+                 * Finds the package name for this class.
+                 */
+                packageName = BlancoRestGeneratorKtUtil.searchPackageBySimpleName(className);
+            }
+            if (packageName != null) {
+                classNameCanon = packageName + "." + className;
+            }
+            if (isVerbose()) {
+                System.out.println("Telegram Extends : " + classNameCanon);
+            }
+            argTelegramStructure.setExtends(classNameCanon);
+        } else {
+            System.out.println("/* Extends Skip */ className is not specified!!!");
+        }
+    }
+
     /**
      * In blancoRestGenerator, a telegram always inherits from Api[Get|Post|Put|Delete]Telegram <- ApiTelegram.
      *
@@ -429,7 +463,6 @@ public class BlancoRestGeneratorKtXmlParser {
      */
     private void parseTelegramExtends(
             final BlancoRestGeneratorKtTelegramStructure argTelegramStructure) {
-
         // Null in a method is already checked in common.
         String method = argTelegramStructure.getTelegramMethod().toUpperCase();
         boolean isRequest = "Input".equals(argTelegramStructure.getTelegramType());
