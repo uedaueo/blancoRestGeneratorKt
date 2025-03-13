@@ -112,6 +112,14 @@ public class BlancoRestGeneratorKtProcessInput {
     private String fOverrideClientAnnotation;
 
     /**
+     * Clientモード時に、ClientInterface を生成しません。Request/Responseオブジェクトに仮想パラメータを付与した場合にClientInterfaceは正しく生成されません。
+     *
+     * フィールド: [noClientInterface]。
+     * デフォルト: [false]。
+     */
+    private boolean fNoClientInterface = false;
+
+    /**
      * Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。
      *
      * フィールド: [serverType]。
@@ -613,6 +621,29 @@ public class BlancoRestGeneratorKtProcessInput {
      */
     public String getOverrideClientAnnotation() {
         return fOverrideClientAnnotation;
+    }
+
+    /**
+     * フィールド [noClientInterface] の値を設定します。
+     *
+     * フィールドの説明: [Clientモード時に、ClientInterface を生成しません。Request/Responseオブジェクトに仮想パラメータを付与した場合にClientInterfaceは正しく生成されません。]。
+     *
+     * @param argNoClientInterface フィールド[noClientInterface]に設定する値。
+     */
+    public void setNoClientInterface(final boolean argNoClientInterface) {
+        fNoClientInterface = argNoClientInterface;
+    }
+
+    /**
+     * フィールド [noClientInterface] の値を取得します。
+     *
+     * フィールドの説明: [Clientモード時に、ClientInterface を生成しません。Request/Responseオブジェクトに仮想パラメータを付与した場合にClientInterfaceは正しく生成されません。]。
+     * デフォルト: [false]。
+     *
+     * @return フィールド[noClientInterface]から取得した値。
+     */
+    public boolean getNoClientInterface() {
+        return fNoClientInterface;
     }
 
     /**
@@ -1206,6 +1237,7 @@ public class BlancoRestGeneratorKtProcessInput {
         buf.append(",client=" + fClient);
         buf.append(",clientAnnotation=" + fClientAnnotation);
         buf.append(",overrideClientAnnotation=" + fOverrideClientAnnotation);
+        buf.append(",noClientInterface=" + fNoClientInterface);
         buf.append(",serverType=" + fServerType);
         buf.append(",basepackage=" + fBasepackage);
         buf.append(",runtimepackage=" + fRuntimepackage);
@@ -1295,6 +1327,9 @@ public class BlancoRestGeneratorKtProcessInput {
         // Name: fOverrideClientAnnotation
         // Type: java.lang.String
         target.fOverrideClientAnnotation = this.fOverrideClientAnnotation;
+        // Name: fNoClientInterface
+        // Type: boolean
+        target.fNoClientInterface = this.fNoClientInterface;
         // Name: fServerType
         // Type: java.lang.String
         target.fServerType = this.fServerType;

@@ -70,6 +70,7 @@ public class BlancoRestGeneratorKtUtil {
     public static String voPackageSuffix = null;
     public static String voOverridePackage = null;
     public static boolean client = false;
+    public static boolean noClientInterface = false;
     public static String serverType = null;
     public static boolean isServerTypeMicronaut = true;
     public static String clientAnnotation = null;

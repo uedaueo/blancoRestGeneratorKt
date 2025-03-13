@@ -131,6 +131,7 @@ public class BlancoRestGeneratorKtProcessImpl implements
             BlancoRestGeneratorKtUtil.voPackageSuffix = input.getVoPackageSuffix();
             BlancoRestGeneratorKtUtil.voOverridePackage = input.getVoOverridePackage();
             BlancoRestGeneratorKtUtil.client = input.getClient();
+            BlancoRestGeneratorKtUtil.noClientInterface = input.getNoClientInterface();
             BlancoRestGeneratorKtUtil.serverType = input.getServerType();
             BlancoRestGeneratorKtUtil.telegramStyle = input.getTelegramStyle();
             BlancoRestGeneratorKtUtil.clientAnnotation = input.getClientAnnotation();

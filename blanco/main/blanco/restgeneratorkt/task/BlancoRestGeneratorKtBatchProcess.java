@@ -85,6 +85,8 @@ public class BlancoRestGeneratorKtBatchProcess {
                 input.setClientAnnotation(arg.substring(18));
             } else if (arg.startsWith("-overrideClientAnnotation=")) {
                 input.setOverrideClientAnnotation(arg.substring(26));
+            } else if (arg.startsWith("-noClientInterface=")) {
+                input.setNoClientInterface(Boolean.valueOf(arg.substring(19)).booleanValue());
             } else if (arg.startsWith("-serverType=")) {
                 input.setServerType(arg.substring(12));
             } else if (arg.startsWith("-basepackage=")) {
@@ -233,7 +235,7 @@ public class BlancoRestGeneratorKtBatchProcess {
      */
     public static final void usage() {
         System.out.println("BlancoRestGeneratorKtBatchProcess: Usage:");
-        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -serverType=value15 -basepackage=value16 -runtimepackage=value17 -genUtils=value18 -telegrampackage=value19 -impledir=value20 -genSkeleton=value21 -skeletonDelegateClass=value22 -skeletonDelegateInterface=value23 -lineSeparator=value24 -packageSuffix=value25 -overridePackage=value26 -overrideLocation=value27 -voPackageSuffix=value28 -voOverridePackage=value29 -telegramStyle=value30 -appendApplicationPackage=value31 -serdeable=value32 -ignoreUnknown=value33 -nullableAnnotation=value34 -isTargetJaraktaEE=value35 -injectInterfaceToController=value36 -micronautVersion=value37 -deserializerRequestHeader=value38 -deserializerCommonRequest=value39");
+        System.out.println("  java blanco.restgeneratorkt.task.BlancoRestGeneratorKtBatchProcess -verbose=value1 -metadir=value2 -targetdir=value3 -tmpdir=value4 -searchTmpdir=value5 -nameAdjust=value6 -encoding=value7 -tabs=value8 -xmlrootelement=value9 -sheetType=value10 -targetStyle=value11 -client=value12 -clientAnnotation=value13 -overrideClientAnnotation=value14 -noClientInterface=value15 -serverType=value16 -basepackage=value17 -runtimepackage=value18 -genUtils=value19 -telegrampackage=value20 -impledir=value21 -genSkeleton=value22 -skeletonDelegateClass=value23 -skeletonDelegateInterface=value24 -lineSeparator=value25 -packageSuffix=value26 -overridePackage=value27 -overrideLocation=value28 -voPackageSuffix=value29 -voOverridePackage=value30 -telegramStyle=value31 -appendApplicationPackage=value32 -serdeable=value33 -ignoreUnknown=value34 -nullableAnnotation=value35 -isTargetJaraktaEE=value36 -injectInterfaceToController=value37 -micronautVersion=value38 -deserializerRequestHeader=value39 -deserializerCommonRequest=value40");
         System.out.println("    -verbose");
         System.out.println("      explanation[Whether to run in verbose mode.]");
         System.out.println("      type[boolean]");
@@ -286,6 +288,10 @@ public class BlancoRestGeneratorKtBatchProcess {
         System.out.println("    -overrideClientAnnotation");
         System.out.println("      explanation[Clientモード時に、接続先サーバ名を指定するためのアノテーションを記述します。定義書の記載よりも優先されます。現在の所、micronautのみが使用可能です。]");
         System.out.println("      type[string]");
+        System.out.println("    -noClientInterface");
+        System.out.println("      explanation[Clientモード時に、ClientInterface を生成しません。Request/Responseオブジェクトに仮想パラメータを付与した場合にClientInterfaceは正しく生成されません。]");
+        System.out.println("      type[boolean]");
+        System.out.println("      default value[false]");
         System.out.println("    -serverType");
         System.out.println("      explanation[Webアプリケーションサーバのタイプを指定します。現在の所、micronautのみが使用可能です。]");
         System.out.println("      type[string]");

@@ -94,6 +94,11 @@ public class BlancoRestGeneratorKtTask extends Task {
     protected boolean fIsFieldOverrideClientAnnotationProcessed = false;
 
     /**
+     * フィールド [noClientInterface] に値がセットされたかどうか。
+     */
+    protected boolean fIsFieldNoClientInterfaceProcessed = false;
+
+    /**
      * フィールド [serverType] に値がセットされたかどうか。
      */
     protected boolean fIsFieldServerTypeProcessed = false;
@@ -572,6 +577,32 @@ public class BlancoRestGeneratorKtTask extends Task {
      */
     public String getOverrideClientAnnotation() {
         return fInput.getOverrideClientAnnotation();
+    }
+
+    /**
+     * Antタスクの[noClientInterface]アトリビュートのセッターメソッド。
+     *
+     * 項目番号: 14<br>
+     * Clientモード時に、ClientInterface を生成しません。Request/Responseオブジェクトに仮想パラメータを付与した場合にClientInterfaceは正しく生成されません。<br>
+     *
+     * @param arg セットしたい値
+     */
+    public void setNoClientInterface(final boolean arg) {
+        fInput.setNoClientInterface(arg);
+        fIsFieldNoClientInterfaceProcessed = true;
+    }
+
+    /**
+     * Antタスクの[noClientInterface]アトリビュートのゲッターメソッド。
+     *
+     * 項目番号: 14<br>
+     * Clientモード時に、ClientInterface を生成しません。Request/Responseオブジェクトに仮想パラメータを付与した場合にClientInterfaceは正しく生成されません。<br>
+     * デフォルト値[false]が設定されています。Apache Antタスク上でアトリビュートの指定が無い場合には、デフォルト値が設定されます。<br>
+     *
+     * @return このフィールドの値
+     */
+    public boolean getNoClientInterface() {
+        return fInput.getNoClientInterface();
     }
 
     /**
@@ -1245,6 +1276,7 @@ public class BlancoRestGeneratorKtTask extends Task {
             System.out.println("- client:[" + getClient() + "]");
             System.out.println("- clientAnnotation:[" + getClientAnnotation() + "]");
             System.out.println("- overrideClientAnnotation:[" + getOverrideClientAnnotation() + "]");
+            System.out.println("- noClientInterface:[" + getNoClientInterface() + "]");
             System.out.println("- serverType:[" + getServerType() + "]");
             System.out.println("- basepackage:[" + getBasepackage() + "]");
             System.out.println("- runtimepackage:[" + getRuntimepackage() + "]");

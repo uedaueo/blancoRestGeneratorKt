@@ -91,7 +91,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Generates client-side telegram processing.
          * Normally, server-side code and client-side code are not generated in the same project, but just in case, we will assume that they are compatible.
          */
-        if (BlancoRestGeneratorKtUtil.client){
+        if (BlancoRestGeneratorKtUtil.client && !BlancoRestGeneratorKtUtil.noClientInterface){
             generateClientInterface(argProcessStructure, argDirectoryTarget);
         }
     }

@@ -85,6 +85,7 @@ public class BlancoRestGeneratorKtClientTest {
         inputRestGenerator.setPackageSuffix("blanco");
         inputRestGenerator.setOverrideLocation("/api/sample/blanco");
         inputRestGenerator.setClient(true);
+        inputRestGenerator.setNoClientInterface(true);
         inputRestGenerator.setClientAnnotation(
                 "@Client(value = \"{\\${target.url:`http://192.168.100.109:28000`}\", configuration = blanco.HttpClientConfiguration::class)");
         BlancoRestGeneratorKtProcessImpl imple = new BlancoRestGeneratorKtProcessImpl();
