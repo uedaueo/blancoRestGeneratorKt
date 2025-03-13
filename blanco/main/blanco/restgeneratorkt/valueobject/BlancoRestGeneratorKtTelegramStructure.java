@@ -59,6 +59,13 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fPackage;
 
     /**
+     * クラスの総称型を指定します。
+     *
+     * フィールド: [generic]。
+     */
+    private String fGeneric;
+
+    /**
      * 本番時にファイルを配置する歳のベースディレクトリ。主にTypeScriptのimport文生成時に使用する事を想定しています。
      *
      * フィールド: [basedir]。
@@ -432,6 +439,28 @@ public class BlancoRestGeneratorKtTelegramStructure {
      */
     public String getPackage() {
         return fPackage;
+    }
+
+    /**
+     * フィールド [generic] の値を設定します。
+     *
+     * フィールドの説明: [クラスの総称型を指定します。]。
+     *
+     * @param argGeneric フィールド[generic]に設定する値。
+     */
+    public void setGeneric(final String argGeneric) {
+        fGeneric = argGeneric;
+    }
+
+    /**
+     * フィールド [generic] の値を取得します。
+     *
+     * フィールドの説明: [クラスの総称型を指定します。]。
+     *
+     * @return フィールド[generic]から取得した値。
+     */
+    public String getGeneric() {
+        return fGeneric;
     }
 
     /**
@@ -1113,6 +1142,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",telegramSuperClass=" + fTelegramSuperClass);
         buf.append(",namespace=" + fNamespace);
         buf.append(",package=" + fPackage);
+        buf.append(",generic=" + fGeneric);
         buf.append(",basedir=" + fBasedir);
         buf.append(",annotationList=" + fAnnotationList);
         buf.append(",createImportList=" + fCreateImportList);
@@ -1185,6 +1215,9 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fPackage
         // Type: java.lang.String
         target.fPackage = this.fPackage;
+        // Name: fGeneric
+        // Type: java.lang.String
+        target.fGeneric = this.fGeneric;
         // Name: fBasedir
         // Type: java.lang.String
         target.fBasedir = this.fBasedir;

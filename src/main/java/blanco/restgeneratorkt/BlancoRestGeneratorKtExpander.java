@@ -210,9 +210,17 @@ public abstract class BlancoRestGeneratorKtExpander implements BlancoRestGenerat
         // Sets the JavaDoc for the class.
         fCgClass.setDescription(argTelegramStructure.getDescription());
 
+        // Supports generic types of classes
+        if (!BlancoStringUtil.null2Blank(argTelegramStructure.getGeneric()).isEmpty()) {
+            if (isVerbose()) {
+                System.out.println("Class Generics = " + argTelegramStructure.getGeneric());
+            }
+            fCgClass.setGenerics(argTelegramStructure.getGeneric());
+        }
+
         /* Sets the annotation for the class. */
         List<String> annotationList = argTelegramStructure.getAnnotationList();
-        if (annotationList != null && annotationList.size() > 0) {
+        if (annotationList != null && !annotationList.isEmpty()) {
             fCgClass.getAnnotationList().addAll(argTelegramStructure.getAnnotationList());
             /* tueda DEBUG */
             if (this.isVerbose()) {

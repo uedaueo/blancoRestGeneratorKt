@@ -368,6 +368,13 @@ public class BlancoRestGeneratorKtXmlParser {
         // basedir
         argTelegramStructure.setBasedir(BlancoXmlBindingUtil.getTextContent(argElementCommon, "basedir"));
 
+        /* Supports generic types of the class. */
+        String classGenerics = BlancoXmlBindingUtil.getTextContent(
+                argElementCommon, "generic");
+        if (!BlancoStringUtil.null2Blank(classGenerics).isEmpty()) {
+            argTelegramStructure.setGeneric(classGenerics);
+        }
+
         /* Supports class annotation. */
         String classAnnotation = BlancoXmlBindingUtil.getTextContent(
                 argElementCommon, "annotationKt");
