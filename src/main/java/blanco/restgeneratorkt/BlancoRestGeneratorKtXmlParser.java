@@ -375,6 +375,13 @@ public class BlancoRestGeneratorKtXmlParser {
             argTelegramStructure.setGeneric(classGenerics);
         }
 
+        /* Save virtualParams of generic, just for TypeReference. */
+        String virtualParams = BlancoXmlBindingUtil.getTextContent(
+                argElementCommon, "virtualParams");
+        if (!BlancoStringUtil.null2Blank(virtualParams).isEmpty()) {
+            argTelegramStructure.setVirtualParams(virtualParams);
+        }
+
         /* Supports class annotation. */
         String classAnnotation = BlancoXmlBindingUtil.getTextContent(
                 argElementCommon, "annotationKt");

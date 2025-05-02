@@ -66,6 +66,13 @@ public class BlancoRestGeneratorKtTelegramStructure {
     private String fGeneric;
 
     /**
+     * このクラスで使用されている仮想パラメータ（カンマ区切り、TypeReference作成用）
+     *
+     * フィールド: [virtualParams]。
+     */
+    private String fVirtualParams;
+
+    /**
      * 本番時にファイルを配置する歳のベースディレクトリ。主にTypeScriptのimport文生成時に使用する事を想定しています。
      *
      * フィールド: [basedir]。
@@ -461,6 +468,28 @@ public class BlancoRestGeneratorKtTelegramStructure {
      */
     public String getGeneric() {
         return fGeneric;
+    }
+
+    /**
+     * フィールド [virtualParams] の値を設定します。
+     *
+     * フィールドの説明: [このクラスで使用されている仮想パラメータ（カンマ区切り、TypeReference作成用）]。
+     *
+     * @param argVirtualParams フィールド[virtualParams]に設定する値。
+     */
+    public void setVirtualParams(final String argVirtualParams) {
+        fVirtualParams = argVirtualParams;
+    }
+
+    /**
+     * フィールド [virtualParams] の値を取得します。
+     *
+     * フィールドの説明: [このクラスで使用されている仮想パラメータ（カンマ区切り、TypeReference作成用）]。
+     *
+     * @return フィールド[virtualParams]から取得した値。
+     */
+    public String getVirtualParams() {
+        return fVirtualParams;
     }
 
     /**
@@ -1143,6 +1172,7 @@ public class BlancoRestGeneratorKtTelegramStructure {
         buf.append(",namespace=" + fNamespace);
         buf.append(",package=" + fPackage);
         buf.append(",generic=" + fGeneric);
+        buf.append(",virtualParams=" + fVirtualParams);
         buf.append(",basedir=" + fBasedir);
         buf.append(",annotationList=" + fAnnotationList);
         buf.append(",createImportList=" + fCreateImportList);
@@ -1218,6 +1248,9 @@ public class BlancoRestGeneratorKtTelegramStructure {
         // Name: fGeneric
         // Type: java.lang.String
         target.fGeneric = this.fGeneric;
+        // Name: fVirtualParams
+        // Type: java.lang.String
+        target.fVirtualParams = this.fVirtualParams;
         // Name: fBasedir
         // Type: java.lang.String
         target.fBasedir = this.fBasedir;
