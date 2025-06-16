@@ -12,6 +12,7 @@ import blanco.cg.valueobject.*;
 import blanco.commons.util.BlancoNameAdjuster;
 import blanco.commons.util.BlancoStringUtil;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure;
+import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramProcessStructure;
 import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
 
@@ -59,7 +60,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Generates a controller for micronaut for now.
          * In the future, abstract classes for tomcat will also be supported.
          */
-        if (BlancoRestGeneratorKtUtil.client != true) {
+        if (!BlancoRestGeneratorKtUtil.client) {
             /*
              * Server-side telegram processing.
              */
@@ -261,37 +262,41 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             } else {
                 if (!isInterface) {
                     if (isGetMethod) {
+                        String methodName = BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.split("_")[2]; // equals "GET"
                         cgMethod = createGetDeleteMethod(
                             telegrams, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getNoAuxiliaryAuthentication(), argProcessStructure.getMetaIdList(),
                             BlancoRestGeneratorKtConstants.GET_CONTROLLER_METHOD,
                             "Get",
-                            BlancoRestGeneratorKtConstants.HTTP_METHOD_GET.split("_")[2] // Means GET
-                        );
+                            methodName,
+                                argProcessStructure.getMethodMetaInfoMap().get(methodName));
                         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Get");
                     } else if (isDeleteMethod) {
+                        String methodName = BlancoRestGeneratorKtConstants.HTTP_METHOD_DELETE.split("_")[2]; // equals "DELETE"
                         cgMethod = createGetDeleteMethod(
                             telegrams, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getNoAuxiliaryAuthentication(), argProcessStructure.getMetaIdList(),
                             BlancoRestGeneratorKtConstants.DELETE_CONTROLLER_METHOD,
                             "Delete",
-                            BlancoRestGeneratorKtConstants.HTTP_METHOD_DELETE.split("_")[2] // Means DELETE
-                        );
+                            methodName,
+                                argProcessStructure.getMethodMetaInfoMap().get(methodName));
                         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Delete");
                     } else if (isPutMethod) {
+                        String methodName = BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.split("_")[2]; // equals "PUT"
                         cgMethod = createPostPutMethod(
                             telegrams, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getNoAuxiliaryAuthentication(), argProcessStructure.getMetaIdList(),
                             BlancoRestGeneratorKtConstants.PUT_CONTROLLER_METHOD,
                             "Put",
-                            BlancoRestGeneratorKtConstants.HTTP_METHOD_PUT.split("_")[2] // Meas PUT
-                        );
+                            methodName, // Means PUT
+                                argProcessStructure.getMethodMetaInfoMap().get(methodName));
                         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Put");
                     } else {
                         /* PostMethod */
+                        String methodName = BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.split("_")[2]; // equals "POST"
                         cgMethod = createPostPutMethod(
                             telegrams, argInjectedParameterId, argProcessStructure.getNoAuthentication(), argProcessStructure.getNoAuxiliaryAuthentication(), argProcessStructure.getMetaIdList(),
                             BlancoRestGeneratorKtConstants.POST_CONTROLLER_METHOD,
                             "Post",
-                            BlancoRestGeneratorKtConstants.HTTP_METHOD_POST.split("_")[2] // Meas POST
-                        );
+                            methodName, // Means POST
+                                argProcessStructure.getMethodMetaInfoMap().get(methodName));
                         fCgSourceFile.getImportList().add("io.micronaut.http.annotation.Post");
                     }
                 } else {
@@ -320,6 +325,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
      * @param argExecuteMethodId
      * @param argMethodAnn
      * @param argStrMethodName
+     * @param argMethodMetaInfoStructure
      * @return
      */
     private BlancoCgMethod createPostPutMethod(
@@ -330,8 +336,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             final List<String> argMetaIdList,
             final String argExecuteMethodId,
             final String argMethodAnn,
-            final String argStrMethodName
-    ) {
+            final String argStrMethodName,
+            BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure argMethodMetaInfoStructure) {
         String methodAnn = argMethodAnn;
 
         /*
@@ -366,6 +372,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         }
 
         String additionalPath = inputTelegram.getAdditionalPath();
+        if (argMethodMetaInfoStructure != null && !BlancoStringUtil.null2Blank(argMethodMetaInfoStructure.getAdditionalPath()).trim().isEmpty()) {
+            // prefer telegramProcess
+            additionalPath = argMethodMetaInfoStructure.getAdditionalPath();
+        }
         boolean isAdditionalPath = !BlancoStringUtil.null2Blank(additionalPath).trim().isEmpty();
 
         /*
@@ -387,6 +397,11 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (!BlancoStringUtil.null2Blank(inputTelegram.getPathQueryFormat()).trim().isEmpty()) {
             hasPathQueryFormat = true;
             pathQueryFormats = inputTelegram.getPathQueryFormat();
+        }
+        if (argMethodMetaInfoStructure != null && !BlancoStringUtil.null2Blank(argMethodMetaInfoStructure.getPathQueryFormat()).trim().isEmpty()) {
+            // prefer telegramProcess
+            hasPathQueryFormat = true;
+            pathQueryFormats = argMethodMetaInfoStructure.getPathQueryFormat();
         }
 
         List<String> requestBeanField = new ArrayList<>();
@@ -568,6 +583,13 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Sets the annotation.
          */
         cgExecutorMethod.getAnnotationList().add(methodAnn);
+        /*
+         * Set additional annotation
+         */
+
+        if (argMethodMetaInfoStructure != null && argMethodMetaInfoStructure.getAnnotationList() != null && !argMethodMetaInfoStructure.getAnnotationList().isEmpty()) {
+            cgExecutorMethod.getAnnotationList().addAll(argMethodMetaInfoStructure.getAnnotationList());
+        }
 
         /*
          * First, generates the HttpRequest parameter.
@@ -745,6 +767,7 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
      * @param argNoAuthentication
      * @param argNoAuxiliaryAuthentication
      * @param argMetaIdList
+     * @param argMethodMetaInfoStructure
      */
     private BlancoCgMethod createGetDeleteMethod(
             final HashMap<String, BlancoRestGeneratorKtTelegramStructure> argTelegrams,
@@ -754,8 +777,8 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
             final List<String> argMetaIdList,
             final String argExecuteMethodId,
             final String argMethodAnn,
-            final String argStrMethodName
-    ) {
+            final String argStrMethodName,
+            BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure argMethodMetaInfoStructure) {
         String methodAnn = argMethodAnn;
 
         /*
@@ -768,6 +791,10 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         }
 
         String additionalPath = inputTelegram.getAdditionalPath();
+        if (argMethodMetaInfoStructure != null && !BlancoStringUtil.null2Blank(argMethodMetaInfoStructure.getAdditionalPath()).trim().isEmpty()) {
+            // prefer telegramProcess
+            additionalPath = argMethodMetaInfoStructure.getAdditionalPath();
+        }
         Boolean isAdditionalPath = false;
         if (BlancoStringUtil.null2Blank(additionalPath).trim().length() > 0) {
             isAdditionalPath = true;
@@ -792,6 +819,11 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
         if (!BlancoStringUtil.null2Blank(inputTelegram.getPathQueryFormat()).trim().isEmpty()) {
             hasPathQueryFormat = true;
             pathQueryFormats = inputTelegram.getPathQueryFormat();
+        }
+        if (argMethodMetaInfoStructure != null && !BlancoStringUtil.null2Blank(argMethodMetaInfoStructure.getPathQueryFormat()).trim().isEmpty()) {
+            // prefer telegramProcess
+            hasPathQueryFormat = true;
+            pathQueryFormats = argMethodMetaInfoStructure.getPathQueryFormat();
         }
 
         List<String> requestBeanConst = new ArrayList<>();
@@ -942,6 +974,12 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
          * Sets the annotation.
          */
         cgExecutorMethod.getAnnotationList().add(methodAnn);
+        /*
+         * Set additional annotation
+         */
+        if (argMethodMetaInfoStructure != null && argMethodMetaInfoStructure.getAnnotationList() != null && !argMethodMetaInfoStructure.getAnnotationList().isEmpty()) {
+            cgExecutorMethod.getAnnotationList().addAll(argMethodMetaInfoStructure.getAnnotationList());
+        }
 
         /*
          * First, generates the HttpRequest parameter.
@@ -1520,6 +1558,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 BlancoStringUtil.null2Blank(argProcessStructure
                         .getDescription()));
         fCgSourceFile.getClassList().add(fCgClass);
+        if (isVerbose()) {
+            System.out.println("%%% controller = " + controllerClassId);
+        }
         // The telegram processing class is always public final.
         fCgClass.setAccess("public");
         fCgClass.setFinal(true);
@@ -1621,6 +1662,9 @@ public class BlancoRestGeneratorKtPlainStyleExpander extends BlancoRestGenerator
                 .size(); index++) {
             final String imported = (String) argProcessStructure.getImportList()
                     .get(index);
+            if (isVerbose()) {
+                System.out.println("%%% generateTelegramProcess : import " + imported);
+            }
             fCgSourceFile.getImportList().add(imported);
         }
 

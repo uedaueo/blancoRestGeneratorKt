@@ -229,6 +229,14 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     private Boolean fHasArrayRequest = false;
 
     /**
+     * メソッドメタ情報
+     *
+     * フィールド: [methodMetaInfoMap]。
+     * デフォルト: [new java.util.HashMap&lt;&gt;()]。
+     */
+    private Map<String, BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure> fMethodMetaInfoMap = new java.util.HashMap<>();
+
+    /**
      * フィールド [name] の値を設定します。
      *
      * フィールドの説明: [電文ID]。
@@ -886,6 +894,29 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
     }
 
     /**
+     * フィールド [methodMetaInfoMap] の値を設定します。
+     *
+     * フィールドの説明: [メソッドメタ情報]。
+     *
+     * @param argMethodMetaInfoMap フィールド[methodMetaInfoMap]に設定する値。
+     */
+    public void setMethodMetaInfoMap(final Map<String, BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure> argMethodMetaInfoMap) {
+        fMethodMetaInfoMap = argMethodMetaInfoMap;
+    }
+
+    /**
+     * フィールド [methodMetaInfoMap] の値を取得します。
+     *
+     * フィールドの説明: [メソッドメタ情報]。
+     * デフォルト: [new java.util.HashMap&lt;&gt;()]。
+     *
+     * @return フィールド[methodMetaInfoMap]から取得した値。
+     */
+    public Map<String, BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure> getMethodMetaInfoMap() {
+        return fMethodMetaInfoMap;
+    }
+
+    /**
      * Gets the string representation of this value object.
      *
      * <P>Precautions for use</P>
@@ -929,6 +960,7 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         buf.append(",errorTelegrams=" + fErrorTelegrams);
         buf.append(",hasPrimitiveRequest=" + fHasPrimitiveRequest);
         buf.append(",hasArrayRequest=" + fHasArrayRequest);
+        buf.append(",methodMetaInfoMap=" + fMethodMetaInfoMap);
         buf.append("]");
         return buf.toString();
     }
@@ -1038,5 +1070,8 @@ public class BlancoRestGeneratorKtTelegramProcessStructure {
         // Name: fHasArrayRequest
         // Type: java.lang.Boolean
         target.fHasArrayRequest = this.fHasArrayRequest;
+        // Name: fMethodMetaInfoMap
+        // Type: java.util.Map
+        // Field[fMethodMetaInfoMap] is an unsupported type[java.util.Mapjava.lang.String, blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure].
     }
 }

@@ -409,6 +409,21 @@ JavaDocに利用されます</value>
 
             </tableblock>
 
+            <propertyblock name="blancotelegramprocess-methodinfo" waitY="1">
+                <startstring>電文処理定義(Kt)・メソッド情報</startstring>
+                <propertykey name="method" waitX="3">
+                    <value>メソッド</value>
+                </propertykey>
+                <propertykey name="annotation" waitX="3">
+                    <value>アノテーション</value>
+                </propertykey>
+                <propertykey name="additionalPath" waitX="3">
+                    <value>追加パス</value>
+                </propertykey>
+                <propertykey name="pathQueryFormat" waitX="3">
+                    <value>Pathクエリ書式</value>
+                </propertykey>
+            </propertyblock>
         </blancocalcparser>
     </target>
 </blanco>

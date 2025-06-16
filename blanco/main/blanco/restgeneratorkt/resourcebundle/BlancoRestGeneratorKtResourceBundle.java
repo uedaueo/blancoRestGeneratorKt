@@ -394,6 +394,26 @@ public class BlancoRestGeneratorKtResourceBundle {
     }
 
     /**
+     * bundle[BlancoRestGeneratorKt], key[META2XML.PROCESS_METHODINFO]
+     *
+     * [blancotelegramprocess-methodinfo] (ja)<br>
+     *
+     * @return key[META2XML.PROCESS_METHODINFO]に対応する値。外部から読み込みができない場合には、定義書の値を戻します。必ずnull以外の値が戻ります。
+     */
+    public String getMeta2xmlProcessMethodinfo() {
+        // 初期値として定義書の値を利用します。
+        String strFormat = "blancotelegramprocess-methodinfo";
+        try {
+            if (fResourceBundle != null) {
+                strFormat = fResourceBundle.getString("META2XML.PROCESS_METHODINFO");
+            }
+        } catch (MissingResourceException ex) {
+        }
+        // 置換文字列はひとつもありません。
+        return strFormat;
+    }
+
+    /**
      * bundle[BlancoRestGeneratorKt], key[META2XML.PROCESS_LIST]
      *
      * [blancotelegramprocess-list] (ja)<br>

@@ -3,10 +3,7 @@ package blanco.restgeneratorkt;
 import blanco.commons.util.BlancoNameUtil;
 import blanco.commons.util.BlancoStringUtil;
 import blanco.restgeneratorkt.resourcebundle.BlancoRestGeneratorKtResourceBundle;
-import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtGetRequestBindStructure;
-import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramFieldStructure;
-import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramProcessStructure;
-import blanco.restgeneratorkt.valueobject.BlancoRestGeneratorKtTelegramStructure;
+import blanco.restgeneratorkt.valueobject.*;
 import blanco.xml.bind.BlancoXmlBindingUtil;
 import blanco.xml.bind.BlancoXmlUnmarshaller;
 import blanco.xml.bind.valueobject.BlancoXmlDocument;
@@ -1021,6 +1018,13 @@ public class BlancoRestGeneratorKtXmlParser {
             parseProcessGetRequestBind(elementInterfaceRoot, processStructure);
         }
 
+        // TelegramProcessDefinition inheritance
+        final List<BlancoXmlElement> methodMetaInfoList = BlancoXmlBindingUtil
+                .getElementsByTagName(argElementSheet, fBundle.getMeta2xmlProcessMethodinfo());
+        if (methodMetaInfoList != null && methodMetaInfoList.size() != 0) {
+            parseProcessMethodMetaInfo(methodMetaInfoList, processStructure);
+        }
+
         /*
          * Determines the telegram ID from telegram process ID, and sets only the defined one to processStructure.
          * The telegram ID is determined by the following rule.
@@ -1327,6 +1331,53 @@ public class BlancoRestGeneratorKtXmlParser {
             structure.setKind(kind);
 
             argProcessStructure.getGetRequestBindList().add(structure);
+        }
+    }
+
+    /**
+     * Parses an XML document in the form of an  intermediate XML file to get "methodMetaInfo".
+     * @param argMethodMetaInfoList
+     * @param argProcessStructure
+     */
+    private void parseProcessMethodMetaInfo(
+            final List<BlancoXmlElement>  argMethodMetaInfoList,
+            final BlancoRestGeneratorKtTelegramProcessStructure argProcessStructure) {
+
+        for (int index = 0;
+             argMethodMetaInfoList != null &&
+                     index < argMethodMetaInfoList.size();
+             index++) {
+            final BlancoXmlElement methodMetaInfo = argMethodMetaInfoList
+                    .get(index);
+
+            /* method */
+            final String method = BlancoXmlBindingUtil
+                    .getTextContent(methodMetaInfo, "method");
+            if (BlancoStringUtil.null2Blank(method).trim().isEmpty()) {
+                continue;
+            }
+
+            BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure methodMetaInfoStructure = new BlancoRestGeneratorKtTelegramProcessMethodMetaInfoStructure();
+            methodMetaInfoStructure.setMethod(method);
+
+            final String annotation = BlancoXmlBindingUtil
+                    .getTextContent(methodMetaInfo, "annotation");
+            if (!BlancoStringUtil.null2Blank(annotation).trim().isEmpty()) {
+                methodMetaInfoStructure.setAnnotationList(createAnnotaionList(annotation));
+            }
+
+            final String additionalPath = BlancoXmlBindingUtil
+                    .getTextContent(methodMetaInfo, "additionalPath");
+            if (!BlancoStringUtil.null2Blank(additionalPath).trim().isEmpty()) {
+                methodMetaInfoStructure.setAdditionalPath(additionalPath);
+            }
+
+            final String pathQueryFormat = BlancoXmlBindingUtil
+                    .getTextContent(methodMetaInfo, "pathQueryFormat");
+            if (!BlancoStringUtil.null2Blank(pathQueryFormat).trim().isEmpty()) {
+                methodMetaInfoStructure.setPathQueryFormat(pathQueryFormat);
+            }
+            argProcessStructure.getMethodMetaInfoMap().put(method, methodMetaInfoStructure);
         }
     }
 
